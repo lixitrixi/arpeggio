@@ -1,0 +1,25 @@
+TO ADD:
+
+Voice channel connection timeout
+
+Add reaction buttons to help menu, queue, and playlists
+
+Playlist commands:
+.pl (displays playlist)
+.pl -add [query] (adds song to user's playlist)
+.pl -del [index] (deletes specified entry)
+.pl -shuffle (shuffles user's playlist)
+.pl -play (plays the user's playlist)
+.pl -format (name WIP, returns a python list of song urls that can be )
+.pl -build (makes a playlist from a given list of song urls)
+
+Fun functions/games:
+scp entry finder
+D&D dice roller
+Tic Tac Toe
+Block-programming game similar to Hour of Code games
+    - add emojis to turn to left or right
+    - looping emojis, repeat once emojis
+    - number of "frames" needed to solve the level shown after completion
+    - coins that increase the score of each level?
+
