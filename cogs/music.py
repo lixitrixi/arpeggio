@@ -89,7 +89,7 @@ class Music(commands.Cog):
                 colour=discord.Colour.from_rgb(255, 59, 59)
             )
 
-            search_error.add_field(name=":confused:  Couldn't find any results", value="Try searching again or contacting my [Support Server](https://discord.gg/P7aBBRM)")
+            search_error.add_field(name=":confused:  Couldn't find any results", value="Try searching again or contact my [Support Server](https://discord.gg/P7aBBRM)")
 
             return await ctx.send(embed=search_error)
         
@@ -136,7 +136,7 @@ class Music(commands.Cog):
             await ctx.invoke(self._connect)
 
         if ctx.author.id not in [member.id for member in self.bot.get_channel(player.channel_id).members]:
-            return await ctx.send('You must be in the same channel as the bot to use this command!\n(If you think this error is a mistake, let us know on our Support Server: https://discord.gg/P7aBBRM')
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         await ctx.send(f":mag_right:  Searching  `{query}`")
 
@@ -173,7 +173,7 @@ class Music(commands.Cog):
     async def pause(self, ctx):
         player = self.get_player(ctx.guild.id)
         
-        if ctx.author not in self.bot.get_channel(player.channel_id).members:
+        if ctx.author.id not in [member.id for member in self.bot.get_channel(player.channel_id).members]:
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         await player.set_pause(True)
@@ -193,6 +193,9 @@ class Music(commands.Cog):
     async def skip(self, ctx):
         player = self.get_player(ctx.guild.id)
 
+        if ctx.author.id not in [member.id for member in self.bot.get_channel(player.channel_id).members]:
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
+
         if player.queue.is_empty():
             return await ctx.send("Nothing to skip!")
         
@@ -205,11 +208,17 @@ class Music(commands.Cog):
     async def restart(self, ctx):
         player = self.get_player(ctx.guild.id)
 
+        if ctx.author.id not in [member.id for member in self.bot.get_channel(player.channel_id).members]:
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
+
         await player.seek()
     
     @commands.command()
     async def remove(self, ctx, index: int = -1):
         player = self.get_player(ctx.guild.id)
+
+        if ctx.author.id not in [member.id for member in self.bot.get_channel(player.channel_id).members]:
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         if len(player.queue.tracks) < 2:
             return await ctx.send("No tracks to remove!")
@@ -228,6 +237,9 @@ class Music(commands.Cog):
     async def clear(self, ctx):
         player = self.get_player(ctx.guild.id)
 
+        if ctx.author.id not in [member.id for member in self.bot.get_channel(player.channel_id).members]:
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
+
         player.queue.clear()
 
         await ctx.message.add_reaction('✅')
@@ -235,6 +247,9 @@ class Music(commands.Cog):
     @commands.command()
     async def move(self, ctx, first: int, second: int):
         player = self.get_player(ctx.guild.id)
+
+        if ctx.author.id not in [member.id for member in self.bot.get_channel(player.channel_id).members]:
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         if len(player.tracks) < 3:
             return await ctx.send("Not enough songs in the queue to move!")
