@@ -4,11 +4,14 @@ from discord.ext import commands
 import json
 import os
 
+with open('../tokens.json', 'r') as f:
+    tokens = json.load(f)
+    TOKEN = tokens['arpeggio']
 
 # Functions
 def get_prefix(bot, message):
     with open('data/prefixes.json', 'r') as f:
-            prefixes = json.load(f)
+        prefixes = json.load(f)
 
     try:
         return prefixes[str(message.guild.id)]
@@ -88,4 +91,4 @@ for file in os.listdir('cogs'): # load .py files in cogs folder as extensions
     if file.endswith('.py'):
         bot.load_extension(f'cogs.{file[:-3]}')
 
-bot.run('NzMyNzEyMDkzNzU2OTQ4NTc5.Xw4lUA.KAp__rUel_iVgfo7I6kWkUlQFfk')
+bot.run(TOKEN)
