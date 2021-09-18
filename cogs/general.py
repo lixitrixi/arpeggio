@@ -28,6 +28,7 @@ class General(commands.Cog):
 
         await ctx.send(f"Server prefix was changed to  `{prefix}`")
     
+    @commands.command(aliases=['invite'])
     @commands.command()
     async def info(self, ctx):
         infoEmbed = discord.Embed(
