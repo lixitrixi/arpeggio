@@ -4,7 +4,7 @@ from discord.ext import commands
 import json
 import os
 
-with open('../tokens.json', 'r') as f:
+with open('/root/tokens.json', 'r') as f:
     tokens = json.load(f)
     TOKEN = tokens['arpeggio']
 
