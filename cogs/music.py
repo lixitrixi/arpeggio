@@ -135,10 +135,8 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self._connect)
 
-        await ctx.send(f"Debug: {[member.id for member in self.bot.get_channel(player.channel_id).members]}")
-
-        # if ctx.author.id not in [member.id for member in self.bot.get_channel(player.channel_id).members]:
-        #     return await ctx.send('You must be in the same channel as the bot to use this command!')
+        if ctx.author.id not in [member.id for member in self.bot.get_channel(player.channel_id).members]:
+            return await ctx.send('You must be in the same channel as the bot to use this command!\n(If you think this error is a mistake, let us know on our [Support Server](https://discord.gg/P7aBBRM)')
 
         await ctx.send(f":mag_right:  Searching  `{query}`")
 
