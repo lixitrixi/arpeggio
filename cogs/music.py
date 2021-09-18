@@ -7,7 +7,7 @@ from builds import Queue, Playlist
 
 
 # Functions
-def format_time(ms): # formats milliseconds to hrs:min:sec
+def format_time(ms): # formats milliseconds to min:sec
     minutes = int((ms / 1000) / 60)
     seconds = int((ms / 1000) % 60)
 
@@ -15,6 +15,17 @@ def format_time(ms): # formats milliseconds to hrs:min:sec
         seconds = f"0{seconds}"
 
     return f"{minutes}:{seconds}"
+
+def parse_time(time): # parses min:sec to milliseconds or seconds to milliseconds
+    time = time.split(':')
+    if len(time) == 2:
+        try: return int(time[0])*60+int(time[1])
+        except ValueError: 
+            return None
+    else:
+        try: return int(time)
+        except ValueError:
+            return None
 
 # Cog
 class Music(commands.Cog):
@@ -205,13 +216,19 @@ class Music(commands.Cog):
         await ctx.send(f":cd:  Playing __{str(player.queue.tracks[0]['track'])}__")
     
     @commands.command()
-    async def restart(self, ctx):
+    async def seek(self, ctx, pos=0):
         player = self.get_player(ctx.guild.id)
 
         if ctx.author.id not in [member.id for member in self.bot.get_channel(player.channel_id).members]:
             return await ctx.send('You must be in the same channel as the bot to use this command!')
-
-        await player.seek()
+        
+        time = parse_time(pos)
+        if not time:
+            return await ctx.send("Try again using either `seek (position in seconds)` or `seek (min):(sec)`")
+        try:
+            await player.seek(pos)
+        except Exception:
+            return await ctx.send(":confused: There was an error finding that position in the current track.")
     
     @commands.command()
     async def remove(self, ctx, index: int = -1):
