@@ -87,7 +87,7 @@ async def set_status(ctx, *, text): # changes the bot's playing status
 @bot.command()
 @commands.is_owner()
 async def clear_status(ctx):
-    await bot.change_presence(status=None)
+    await bot.change_presence(status=discord.Status.online, activity=None)
     await ctx.message.add_reaction('✅')
 
 
