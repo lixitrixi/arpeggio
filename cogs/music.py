@@ -65,7 +65,7 @@ class Music(commands.Cog):
         else:
             return str(tracks[0]), [tracks[0]] # track name, track
     
-    def author_in_vc(self, ctx):
+    async def author_in_vc(self, ctx):
         player = self.get_player(ctx.guild.id)
         return ctx.author.id in [member.id for member in self.bot.get_channel(player.channel_id).members]
 
@@ -168,7 +168,7 @@ class Music(commands.Cog):
         player = self.get_player(ctx.guild.id)
         
         if not self.author_in_vc(ctx):
-            return
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         await player.set_pause(True)
         await ctx.message.add_reaction('⏸')
@@ -178,7 +178,7 @@ class Music(commands.Cog):
         player = self.get_player(ctx.guild.id)
 
         if not self.author_in_vc(ctx):
-            return
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         await player.set_pause(False)
         await ctx.message.add_reaction('▶')
@@ -203,7 +203,7 @@ class Music(commands.Cog):
         player = self.get_player(ctx.guild.id)
 
         if not self.author_in_vc(ctx):
-            return
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
         
         time = parse_time(pos)
         if not time:
@@ -218,7 +218,7 @@ class Music(commands.Cog):
         player = self.get_player(ctx.guild.id)
 
         if not self.author_in_vc(ctx):
-            return
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         if len(player.queue.tracks) < 2:
             return await ctx.send("No tracks to remove!")
@@ -238,7 +238,7 @@ class Music(commands.Cog):
         player = self.get_player(ctx.guild.id)
 
         if not self.author_in_vc(ctx):
-            return
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         player.queue.clear()
 
@@ -249,7 +249,7 @@ class Music(commands.Cog):
         player = self.get_player(ctx.guild.id)
 
         if not self.author_in_vc(ctx):
-            return
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         if len(player.tracks) < 3:
             return await ctx.send("Not enough songs in the queue to move!")
