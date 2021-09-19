@@ -37,7 +37,7 @@ class General(commands.Cog):
         infoEmbed.set_thumbnail(url='https://cdn.discordapp.com/attachments/566302530053734450/740368259584622592/Anime_Girl_Arppegio.png')
         infoEmbed.add_field(name="About", value=f"Arpeggio is a simple-to-use music bot that comes with everything you need to streamline your music playing experience!", inline=False)
         infoEmbed.add_field(name="Credits", value="Developed by <@!402954494406819862> and <@!454041644912738324> with invaluable help from the amazing volunteers at the Pythonista Guild.", inline=False)
-        infoEmbed.add_field(name="Links", value="[Support Server](https://discord.gg/fmPTwfw) | [Invite!](https://discord.com/api/oauth2/authorize?client_id=732712093756948579&permissions=3427392&scope=bot) | [GitHub](https://github.com/lixitrixi/arpeggio)")
+        infoEmbed.add_field(name="Links", value="[Support Server](https://discord.gg/fmPTwfw) | [Invite!](https://discord.com/api/oauth2/authorize?client_id=732712093756948579&permissions=3427392&scope=bot) | [Top.gg Page](https://top.gg/bot/732712093756948579) | [GitHub](https://github.com/lixitrixi/arpeggio)")
 
         await ctx.send(embed=infoEmbed)
 
