@@ -105,6 +105,7 @@ class Music(commands.Cog):
         player = self.get_player(ctx.guild.id)
         await ctx.send(f':satellite:  Connecting to **{channel.name}**')
         await player.connect(channel.id)
+        await player.set_pause(False)
     
     @commands.command(aliases=['disconnect'])
     async def leave(self, ctx):
@@ -148,6 +149,7 @@ class Music(commands.Cog):
         if player.queue.is_empty():
             await player.play(tracks[0])
             await ctx.send(f":cd:  Playing __{name}__")
+            await player.set_pause(False)
 
         else:
             await ctx.send(f":pencil:  Added __{name}__ to the queue")
