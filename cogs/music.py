@@ -142,7 +142,7 @@ class Music(commands.Cog):
                 colour=discord.Colour.from_rgb(255, 59, 59)
             )
 
-            search_error.add_field(name=":confused:  Couldn't find any results", value="Try searching again or contacting my [Support Server](https://discord.gg/P7aBBRM)")
+            search_error.add_field(name=":confused:  Couldn't find any results", value="Try searching again or contact my [Support Server](https://discord.gg/P7aBBRM)")
 
             return await ctx.send(embed=search_error)
 
@@ -165,7 +165,7 @@ class Music(commands.Cog):
 
         await ctx.send(embed=player.queue.format(player.position, page))
     
-    @commands.command(aliases=['stop'])
+    @commands.command()
     async def pause(self, ctx):
         player = self.get_player(ctx.guild.id)
         
@@ -190,7 +190,7 @@ class Music(commands.Cog):
         player = self.get_player(ctx.guild.id)
 
         if not self.author_in_vc(ctx):
-            return
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         if player.queue.is_empty():
             return await ctx.send("Nothing to skip!")
@@ -199,6 +199,17 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('⏩')
 
         await ctx.send(f":cd:  Playing __{str(player.queue.tracks[0]['track'])}__")
+    
+    @commands.command()
+    async def stop(self, ctx):
+        player = self.get_player(ctx.guild.id)
+
+        if not self.author_in_vc(ctx):
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
+        
+        player.queue.clear()
+        player.queue.tracks.pop(0)
+        await player.stop()
     
     @commands.command()
     async def seek(self, ctx, pos=0):
