@@ -13,6 +13,17 @@ def format_time(ms): # formats milliseconds to hrs:min:sec
 
     return f"{minutes}:{seconds}"
 
+def parse_time(time): # parses min:sec to milliseconds or seconds to milliseconds
+    time = str(time).split(':')
+    if len(time) == 2:
+        try: return int(time[0])*60+int(time[1])
+        except ValueError: 
+            return None
+    else:
+        try: return int(time)
+        except ValueError:
+            return None
+
 def format_page_count(length, page):
     returnString = f""
 

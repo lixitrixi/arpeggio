@@ -59,7 +59,7 @@ async def on_guild_remove(guild):
         json.dump(prefixes, f, indent=4)
 
 
-# Admin Commands
+# Owner Commands
 @bot.command()
 @commands.is_owner()
 async def reload(ctx): # reloads all cogs
