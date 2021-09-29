@@ -5,7 +5,7 @@ import json
 import os
 from builds import get_prefix
 
-with open('--/tokens.json', 'r') as f:
+with open('../tokens.json', 'r') as f:
     tokens = json.load(f)
     TOKEN = tokens['arpeggio']
 
