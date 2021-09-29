@@ -57,7 +57,7 @@ class Help(commands.Cog):
         else:
             try:
                 Embed = helpEmbeds[category]
-                Embed.set_footer(f"My prefix on this server is {get_prefix(self.bot, ctx)}")
+                Embed.set_footer(f"My prefix on this server is {get_prefix(ctx)}")
             except KeyError:
                 return await ctx.send('Specified help menu does not exist')
 
