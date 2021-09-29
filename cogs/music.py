@@ -208,6 +208,8 @@ class Music(commands.Cog):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
         
         player.queue.clear(0)
+        await ctx.message.add_reaction('⏹️')
+
         await player.stop()
     
     @commands.command()
