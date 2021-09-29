@@ -212,6 +212,12 @@ class Music(commands.Cog):
 
         await player.stop()
     
+    @commands.command(aliases=['q'])
+    async def current(self, ctx):
+        player = self.get_player(ctx.guild.id)
+
+        await ctx.send(f"Currently playing:\n{player.queue.tracks[0].uri}")
+    
     @commands.command()
     async def seek(self, ctx, pos=0):
         player = self.get_player(ctx.guild.id)
