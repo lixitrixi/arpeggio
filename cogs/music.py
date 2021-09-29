@@ -212,7 +212,7 @@ class Music(commands.Cog):
 
         await player.stop()
     
-    @commands.command(aliases=['q'])
+    @commands.command(aliases=['nowplaying', 'np'])
     async def current(self, ctx):
         player = self.get_player(ctx.guild.id)
 
