@@ -216,6 +216,9 @@ class Music(commands.Cog):
     async def current(self, ctx):
         player = self.get_player(ctx.guild.id)
 
+        if player.queue.is_empty():
+            return await ctx.send("Nothing is currently playing!")
+
         await ctx.send(f"Currently playing:\n{player.queue.tracks[0].uri}")
     
     @commands.command()
