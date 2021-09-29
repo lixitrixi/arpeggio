@@ -8,7 +8,7 @@
         "join": "Joins the voice channel you are in",
         "leave": "Disconnects the bot from a voice channel",
         "play/p [query]": "Searches and plays a track with the specified keywords",
-        "search/s`": "Displays the top 5 results of a YT search",
+        "search/s": "Displays the top 5 results of a YT search",
         "pause": "Pauses the current track",
         "stop": "Removes all tracks from the Queue and stops playback",
         "resume": "Resumes playback",
