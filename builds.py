@@ -2,8 +2,18 @@
 import discord
 import math
 import random
+import json
 
 # Functions
+def get_prefix(bot, ctx):
+    with open('data/prefixes.json', 'r') as f:
+        prefixes = json.load(f)
+
+    try:
+        return prefixes[str(ctx.guild.id)]
+    except KeyError:
+        return '.'
+
 def format_time(ms): # formats milliseconds to hrs:min:sec
     minutes = int((ms / 1000) / 60)
     seconds = int((ms / 1000) % 60)

@@ -1,0 +1,27 @@
+{
+    "general": {
+        "ping": "Displays the bot's latency",
+        "info": "Shows general information about the bot",
+        "changePrefix [new prefix]": "Changes the bot's prefix in your server"
+    },
+    "music": {
+        "join": "Joins the voice channel you are in",
+        "leave": "Disconnects the bot from a voice channel",
+        "play/p [query]": "Searches and plays a track with the specified keywords",
+        "search/s`": "Displays the top 5 results of a YT search",
+        "pause": "Pauses the current track",
+        "stop": "Removes all tracks from the Queue and stops playback",
+        "resume": "Resumes playback",
+        "current": "Shows the currently playing track as a video link",
+        "queue": "Shows the track queue for your server",
+        "skip": "Skips to the next track in the queue",
+        "clear": "Clears all tracks after the current from the Queue",
+        "seek [min]:[sec]": "Seeks the given position in the current track, default 0",
+        "move [from] [to]": "Moves the track at the first index to the second index",
+        "remove [index]": "Removes the track at the specified index, defaults to the last track"
+    },
+    "fun": {
+        "roll [value]": "Rolls a die with the given number of sides (default 1d6); supports D&D dice syntax",
+        "coin": "Flips a coin"
+    }
+}

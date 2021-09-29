@@ -3,20 +3,11 @@ import discord
 from discord.ext import commands
 import json
 import os
+from builds import get_prefix
 
-with open('/root/tokens.json', 'r') as f:
+with open('--/tokens.json', 'r') as f:
     tokens = json.load(f)
     TOKEN = tokens['arpeggio']
-
-# Functions
-def get_prefix(bot, message):
-    with open('data/prefixes.json', 'r') as f:
-        prefixes = json.load(f)
-
-    try:
-        return prefixes[str(message.guild.id)]
-    except KeyError:
-        return '.'
 
 
 # Initiation
