@@ -64,8 +64,8 @@ class Queue:
     def delete(self, index):
         self.tracks.pop(index)
     
-    def clear(self):
-        del(self.tracks[1:])
+    def clear(self, n=1):
+        del(self.tracks[n:])
     
     def move(self, first, second):
         movable = self.tracks.pop(first)

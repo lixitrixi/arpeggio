@@ -207,8 +207,7 @@ class Music(commands.Cog):
         if not self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
         
-        player.queue.clear()
-        player.queue.tracks.pop(0)
+        player.queue.clear(0)
         await player.stop()
     
     @commands.command()
