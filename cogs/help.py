@@ -13,28 +13,27 @@ generalHelp.add_field(name='_ _', value="`ping` : Displays the bot's latency\n\n
 
 
 with open('data/commands.json', 'r') as f:
-    commands = json.load(f)
+    command_list = json.load(f)
 
 generalHelp = discord.Embed(
     title=":bulb:  General Commands",
     colour=discord.Colour.from_rgb(245, 206, 66)
 )
-generalHelp.add_field(name='_ _', value='\n\n'.join([f"`{key}` {commands['general'][key]}" for key in commands['general'].keys()]))
+generalHelp.add_field(name='_ _', value='\n\n'.join([f"`{key}` {command_list['general'][key]}" for key in command_list['general'].keys()]))
 
 musicHelp = discord.Embed(
     title=":notes:  Music Commands",
     colour=discord.Colour.from_rgb(245, 206, 66)
 )
-musicHelp.add_field(name='_ _', value='\n\n'.join([f"`{key}` {commands['music'][key]}" for key in commands['music'].keys()]))
+musicHelp.add_field(name='_ _', value='\n\n'.join([f"`{key}` {command_list['music'][key]}" for key in command_list['music'].keys()]))
 
 funHelp = discord.Embed(
     title=":tada:  Fun Commands",
     colour=discord.Colour.from_rgb(245, 206, 66)
 )
-funHelp.add_field(name='_ _', value='\n\n'.join([f"`{key}` {commands['fun'][key]}" for key in commands['fun'].keys()]))
+funHelp.add_field(name='_ _', value='\n\n'.join([f"`{key}` {command_list['fun'][key]}" for key in command_list['fun'].keys()]))
 
 helpEmbeds = {'general': generalHelp, 'music': musicHelp, 'fun': funHelp}
-
 
 directory = discord.Embed(
     colour=discord.Colour.from_rgb(255, 60, 60)
@@ -58,7 +57,7 @@ class Help(commands.Cog):
         else:
             try:
                 Embed = helpEmbeds[category]
-                Embed.set_footer(f"My prefix on this server is {get_prefix(self.bot, ctx)}")
+                # Embed.set_footer(f"My prefix on this server is {get_prefix(self.bot, ctx)}")
             except KeyError:
                 return await ctx.send('Specified help menu does not exist')
 
