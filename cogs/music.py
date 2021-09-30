@@ -161,7 +161,7 @@ class Music(commands.Cog):
         player = self.get_player(ctx.guild.id)
 
         if player.queue.is_empty():
-            return await ctx.send("Nothing is currently playing!")
+            return await ctx.send("The Queue is empty!")
 
         await ctx.send(embed=player.queue.format(player.position, page))
     
