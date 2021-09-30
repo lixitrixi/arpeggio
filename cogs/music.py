@@ -219,7 +219,7 @@ class Music(commands.Cog):
         if player.queue.is_empty():
             return await ctx.send("Nothing is currently playing!")
 
-        await ctx.send(f"Currently playing:\n{player.queue.tracks[0].uri}")
+        await ctx.send(f"Currently playing:\n{player.queue.tracks[0]['track'].uri}")
     
     @commands.command()
     async def seek(self, ctx, pos=0):
