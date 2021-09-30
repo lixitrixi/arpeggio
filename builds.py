@@ -5,7 +5,7 @@ import random
 import json
 
 # Functions
-def get_prefix(bot=None, ctx=None):
+def get_prefix(bot, ctx):
     with open('data/prefixes.json', 'r') as f:
         prefixes = json.load(f)
 
