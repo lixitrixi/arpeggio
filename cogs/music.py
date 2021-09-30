@@ -198,8 +198,7 @@ class Music(commands.Cog):
         await player.stop()
         await ctx.message.add_reaction('⏩')
         
-        if player.queue.is_empty():
-            await ctx.send(f":cd:  Playing __{str(player.queue.tracks[0][0])}__")
+        await ctx.send(f":cd:  Playing __{str(player.queue.tracks[0][0])}__")
     
     @commands.command()
     async def stop(self, ctx):
