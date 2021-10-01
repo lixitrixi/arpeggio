@@ -57,7 +57,7 @@ class Music(commands.Cog):
 
         if not tracks:
             print(f"No tracks found for '{query}'")
-            return None
+            return None, None
         
         if isinstance(tracks, wavelink.player.TrackPlaylist):
             return tracks.data['playlistInfo']['name'], tracks.tracks # playlist name, playlist content
