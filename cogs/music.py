@@ -130,7 +130,7 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self._connect)
 
-        if not self.author_in_vc(ctx):
+        if not await await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         await ctx.send(f":mag_right:  Searching  `{query}`")
@@ -169,7 +169,7 @@ class Music(commands.Cog):
     async def pause(self, ctx):
         player = self.get_player(ctx.guild.id)
         
-        if not self.author_in_vc(ctx):
+        if not await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         await player.set_pause(True)
@@ -179,7 +179,7 @@ class Music(commands.Cog):
     async def resume(self, ctx):
         player = self.get_player(ctx.guild.id)
 
-        if not self.author_in_vc(ctx):
+        if not await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         await player.set_pause(False)
@@ -189,7 +189,7 @@ class Music(commands.Cog):
     async def skip(self, ctx):
         player = self.get_player(ctx.guild.id)
 
-        if not self.author_in_vc(ctx):
+        if not await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         if player.queue.is_empty():
@@ -204,7 +204,7 @@ class Music(commands.Cog):
     async def stop(self, ctx):
         player = self.get_player(ctx.guild.id)
 
-        if not self.author_in_vc(ctx):
+        if not await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
         
         player.queue.clear(0)
@@ -225,7 +225,7 @@ class Music(commands.Cog):
     async def seek(self, ctx, pos="0"):
         player = self.get_player(ctx.guild.id)
 
-        if not self.author_in_vc(ctx):
+        if not await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
         
         time = parse_time(pos)
@@ -240,7 +240,7 @@ class Music(commands.Cog):
     async def remove(self, ctx, index: int = -1):
         player = self.get_player(ctx.guild.id)
 
-        if not self.author_in_vc(ctx):
+        if not await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         if len(player.queue.tracks) < 2:
@@ -260,7 +260,7 @@ class Music(commands.Cog):
     async def clear(self, ctx):
         player = self.get_player(ctx.guild.id)
 
-        if not self.author_in_vc(ctx):
+        if not await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         player.queue.clear()
@@ -271,7 +271,7 @@ class Music(commands.Cog):
     async def move(self, ctx, first: int, second: int):
         player = self.get_player(ctx.guild.id)
 
-        if not self.author_in_vc(ctx):
+        if not await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         if len(player.tracks) < 3:
