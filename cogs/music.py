@@ -130,7 +130,7 @@ class Music(commands.Cog):
         if not player.is_connected:
             await ctx.invoke(self._connect)
 
-        if not await await self.author_in_vc(ctx):
+        if not await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         await ctx.send(f":mag_right:  Searching  `{query}`")
