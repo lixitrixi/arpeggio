@@ -222,7 +222,7 @@ class Music(commands.Cog):
         await ctx.send(f"Currently playing:\n{player.queue.tracks[0][0].uri}")
     
     @commands.command()
-    async def seek(self, ctx, pos=0):
+    async def seek(self, ctx, pos="0"):
         player = self.get_player(ctx.guild.id)
 
         if not self.author_in_vc(ctx):

@@ -30,7 +30,7 @@ def parse_time(time): # parses min:sec to milliseconds or seconds to millisecond
         except ValueError: 
             return None
     else:
-        try: return int(time)
+        try: return int(time[0])
         except ValueError:
             return None
 
