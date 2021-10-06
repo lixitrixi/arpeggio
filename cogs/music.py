@@ -229,12 +229,10 @@ class Music(commands.Cog):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
         
         time = parse_time(pos)
-        print(time)
-        await ctx.send(str(time))
         if not time:
             return await ctx.send("Try again using either `seek (position in seconds)` or `seek (min):(sec)`")
         try:
-            await player.seek(pos)
+            await player.seek(time)
         except Exception:
             return await ctx.send(":confused: There was an error finding that position in the current track.")
 
