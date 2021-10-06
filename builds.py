@@ -24,15 +24,20 @@ def format_time(ms): # formats milliseconds to hrs:min:sec
     return f"{minutes}:{seconds}"
 
 def parse_time(time): # parses min:sec to milliseconds or seconds to milliseconds
-    time = str(time).split(':')
-    if len(time) == 2:
-        try: return int(time[0])*60+int(time[1])
-        except ValueError: 
+    if ':' in time:
+        time = time.split(':')
+        if len(time) != 2:
+            return None
+        try:
+            return int(time[0]*60000) + int(time[1])*1000
+        except Exception:
             return None
     else:
-        try: return int(time[0])
-        except ValueError:
+        try:
+            return int(time)*1000
+        except Exception:
             return None
+        
 
 def format_page_count(length, page):
     returnString = f""
@@ -57,7 +62,10 @@ class Queue:
         self.tracks = [] # list of (track obj, requester)
     
     def next(self):
-        self.tracks.pop(0)
+        try:
+            self.tracks.pop(0)
+        except IndexError:
+            return None
 
         if self.tracks:
             return self.tracks[0][0]

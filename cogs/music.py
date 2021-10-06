@@ -235,6 +235,8 @@ class Music(commands.Cog):
             await player.seek(pos)
         except Exception:
             return await ctx.send(":confused: There was an error finding that position in the current track.")
+
+        await ctx.message.add_reaction('↔️')
     
     @commands.command()
     async def remove(self, ctx, index: int = -1):
