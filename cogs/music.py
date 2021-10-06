@@ -229,8 +229,8 @@ class Music(commands.Cog):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
         
         time = parse_time(pos)
-        await ctx.send(str(time))
         print(time)
+        await ctx.send(str(time))
         if not time:
             return await ctx.send("Try again using either `seek (position in seconds)` or `seek (min):(sec)`")
         try:
