@@ -29,7 +29,7 @@ def parse_time(time): # parses min:sec to milliseconds or seconds to millisecond
         if len(time) != 2:
             return None
         try:
-            return int(time[0]*60000) + int(time[1])*1000
+            return int(time[0])*60000 + int(time[1])*1000
         except Exception:
             return None
     else:
