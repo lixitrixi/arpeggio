@@ -276,7 +276,7 @@ class Music(commands.Cog):
         if not await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
-        if len(player.tracks) < 3:
+        if len(player.queue.tracks) < 3:
             return await ctx.send("Not enough songs in the queue to move!")
 
         player.queue.move(first, second)
