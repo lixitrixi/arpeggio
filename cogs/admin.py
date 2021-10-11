@@ -15,18 +15,36 @@ class Admin(commands.Cog):
     async def reload(self, ctx): # reloads all cogs
         for file in os.listdir('cogs'):
             if file.endswith('.py'):
-                self.bot.unload_extension(f'cogs.{file[:-3]}')
-                self.bot.load_extension(f'cogs.{file[:-3]}')
-        
-        await ctx.message.add_reaction('✅')
+                try:
+                    self.bot.unload_extension(f'cogs.{file[:-3]}')
+                except Exception:
+                    pass
+                try:
+                    self.bot.load_extension(f'cogs.{file[:-3]}')
+                except Exception:
+                    await ctx.send(f"{file} could not be loaded.")
 
     @commands.command()
     @commands.is_owner()
     async def load(self, ctx, ext):
         for file in os.listdir('cogs'):
             if file.endswith(f'{ext}.py'):
-                self.bot.load_extension(f'cogs.{file[:-3]}')
-                await ctx.message.add_reaction('✅')
+                try:
+                    self.bot.load_extension(f'cogs.{file[:-3]}')
+                    await ctx.message.add_reaction('✅')
+                except Exception:
+                    await ctx.message.add_reaction('❌')
+    
+    @commands.command()
+    @commands.is_owner()
+    async def unload(self, ctx, ext):
+        for file in os.listdir('cogs'):
+            if file.endswith(f'{ext}.py'):
+                try:
+                    self.bot.unload_extension(f'cogs.{file[:-3]}')
+                    await ctx.message.add_reaction('✅')
+                except Exception:
+                    await ctx.message.add_reaction('❌')
 
     @commands.command()
     @commands.is_owner()
