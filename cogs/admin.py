@@ -13,6 +13,7 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def reload(self, ctx): # reloads all cogs
+        full_success = True
         for file in os.listdir('cogs'):
             if file.endswith('.py'):
                 try:
@@ -23,6 +24,10 @@ class Admin(commands.Cog):
                     self.bot.load_extension(f'cogs.{file[:-3]}')
                 except Exception:
                     await ctx.send(f"{file} could not be loaded.")
+                    full_success = False
+        
+        if full_success:
+            await ctx.message.add_reaction('✅')
 
     @commands.command()
     @commands.is_owner()
