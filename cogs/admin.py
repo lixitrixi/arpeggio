@@ -74,7 +74,10 @@ class Admin(commands.Cog):
     @commands.is_owner()
     async def global_announce(self, ctx, *, message):
         for guild in self.bot.guilds:
-            await guild.text_channels[0].send(message)
+            try:
+                await guild.text_channels[0].send(message)
+            except Exception:
+                pass
 
 def setup(bot):
     bot.add_cog(Admin(bot))
