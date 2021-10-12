@@ -61,10 +61,13 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def guild_count(self, ctx):
-        with open('data/prefixes.json', 'r') as f:
-            prefixes = json.load(f)
+        await ctx.send(f"Currently on {len(self.bot.guilds)} guilds!")
 
-        await ctx.send(f"Currently on {len(prefixes.keys())} guilds!")
+    @commands.command()
+    @commands.is_owner()
+    async def global_announce(self, ctx, message):
+        for guild in self.bot.guilds:
+            await guild.text_channels[0].send(message)
 
 def setup(bot):
     bot.add_cog(Admin(bot))
