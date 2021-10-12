@@ -31,22 +31,22 @@ async def on_message(message):
 
 @bot.event
 async def on_guild_join(guild): # adds an entry to prefixes.json (default prefix: '.')
-    with open('data/prefixes.json', 'r') as f:
+    with open('../prefixes.json', 'r') as f:
         prefixes = json.load(f)
 
     prefixes[str(guild.id)] = '.'
 
-    with open('data/prefixes.json', 'w') as f:
+    with open('../prefixes.json', 'w') as f:
         json.dump(prefixes, f, indent=4)
 
 @bot.event
 async def on_guild_remove(guild):
-    with open('data/prefixes.json', 'r') as f:
+    with open('../prefixes.json', 'r') as f:
         prefixes = json.load(f)
 
     prefixes.pop(str(guild.id))
 
-    with open('data/prefixes.json', 'w') as f:
+    with open('../prefixes.json', 'w') as f:
         json.dump(prefixes, f, indent=4)
 
 # Runtime

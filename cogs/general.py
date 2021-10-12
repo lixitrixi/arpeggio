@@ -18,12 +18,12 @@ class General(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def changePrefix(self, ctx, prefix):
         
-        with open('data/prefixes.json', 'r') as f:
+        with open('../prefixes.json', 'r') as f:
             prefixes = json.load(f)
 
         prefixes[str(ctx.guild.id)] = prefix
 
-        with open('data/prefixes.json', 'w') as f: #updates the file
+        with open('../prefixes.json', 'w') as f: #updates the file
             json.dump(prefixes, f, indent=4)
 
         await ctx.send(f"Server prefix was changed to  `{prefix}`")

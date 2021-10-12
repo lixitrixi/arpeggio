@@ -6,7 +6,7 @@ import json
 
 # Functions
 def get_prefix(bot, ctx):
-    with open('data/prefixes.json', 'r') as f:
+    with open('../prefixes.json', 'r') as f:
         prefixes = json.load(f)
 
     try:
