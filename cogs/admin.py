@@ -65,7 +65,7 @@ class Admin(commands.Cog):
 
     @commands.command()
     @commands.is_owner()
-    async def global_announce(self, ctx, message):
+    async def global_announce(self, ctx, *, message):
         for guild in self.bot.guilds:
             await guild.text_channels[0].send(message)
 
