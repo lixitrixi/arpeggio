@@ -72,7 +72,7 @@ class Admin(commands.Cog):
     
     @commands.command()
     @commands.is_owner()
-    async def disconnect(self, ctx):
+    async def close_bot(self, ctx):
         music = self.bot.get_cog('Music')
 
         for guild in self.bot.guilds: # disconnect any instances currently in VC
