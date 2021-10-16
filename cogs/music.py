@@ -305,7 +305,8 @@ class Music(commands.Cog):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
         player.queue.shuffle()
-    
+
+        await ctx.message.add_reaction('🔀')
 
 def setup(bot):
     bot.add_cog(Music(bot))
