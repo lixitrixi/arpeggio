@@ -239,6 +239,17 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('↔️')
     
     @commands.command()
+    async def restart(self, ctx):
+        player = self.get_player(ctx.guild.id)
+
+        if not await self.author_in_vc(ctx):
+            return await ctx.send('You must be in the same channel as the bot to use this command!')
+
+        await player.seek(0)
+
+        await ctx.message.add_reaction('⏪')
+    
+    @commands.command()
     async def remove(self, ctx, index: int = -1):
         player = self.get_player(ctx.guild.id)
 

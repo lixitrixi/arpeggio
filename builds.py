@@ -141,7 +141,9 @@ class Playlist:
         self.tracks = []
     
     def shuffle(self):
-        random.shuffle(self.tracks)
+        upcoming = self.tracks[1:]
+        random.shuffle(upcoming)
+        self.tracks = [self.tracks[0]] + upcoming
     
     def format(self):
         playlist_embed = discord.Embed(
