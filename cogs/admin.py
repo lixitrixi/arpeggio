@@ -79,7 +79,7 @@ class Admin(commands.Cog):
             player = music.get_player(guild.id)
             await player.disconnect()
         
-        await self.bot.close()
+        await self.bot.logout()
 
 def setup(bot):
     bot.add_cog(Admin(bot))
