@@ -69,6 +69,17 @@ class Admin(commands.Cog):
     @commands.is_owner()
     async def guild_count(self, ctx):
         await ctx.send(f"Currently on **{len(self.bot.guilds)}** guilds!")
+    
+    @commands.command()
+    @commands.is_owner()
+    async def disconnect(self, ctx):
+        music = self.bot.get_cog('Music')
+
+        for guild in self.bot.guilds: # disconnect any instances currently in VC
+            player = music.get_player(guild.id)
+            await player.disconnect()
+        
+        await self.bot.close()
 
 def setup(bot):
     bot.add_cog(Admin(bot))
