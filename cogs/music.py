@@ -304,7 +304,7 @@ class Music(commands.Cog):
         if not await self.author_in_vc(ctx):
             return await ctx.send('You must be in the same channel as the bot to use this command!')
 
-        player.shuffle()
+        player.queue.shuffle()
     
 
 def setup(bot):
