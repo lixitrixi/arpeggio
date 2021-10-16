@@ -68,16 +68,7 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def guild_count(self, ctx):
-        await ctx.send(f"Currently on {len(self.bot.guilds)} guilds!")
-
-    # @commands.command()
-    # @commands.is_owner()
-    # async def global_announce(self, ctx, *, message):
-    #     for guild in self.bot.guilds:
-    #         try:
-    #             await guild.text_channels[0].send(message)
-    #         except Exception:
-    #             pass
+        await ctx.send(f"Currently on **{len(self.bot.guilds)}** guilds!")
 
 def setup(bot):
     bot.add_cog(Admin(bot))
