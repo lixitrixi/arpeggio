@@ -1,7 +1,7 @@
 # Imports
 import discord
 from discord.ext import commands
-import random
+import random as r
 import dice
 
 class Fun(commands.Cog):
@@ -21,7 +21,13 @@ class Fun(commands.Cog):
     
     @commands.command(aliases=['coinflip'])
     async def coin(self, ctx):
-        await ctx.send(random.choice(['Heads!', 'Tails!']))
+        await ctx.send(r.choice(['Heads!', 'Tails!']))
+    
+    @commands.command(aliases=['random_list', 'randomlist'])
+    async def rlist(self, ctx, n): # returns randomized list of numbers 1-n
+        rlist = list(range(1,n+1))
+        r.shuffle(rlist)
+        await ctx.send(f"{ctx.author.mention}\n{rlist}")
 
         
 def setup(bot):
