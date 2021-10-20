@@ -27,7 +27,8 @@ class Fun(commands.Cog):
     async def rlist(self, ctx, n): # returns randomized list of numbers 1-n
         rlist = list(range(1,n+1))
         r.shuffle(rlist)
-        await ctx.send(f"{ctx.author.mention}\n{rlist}")
+        msg = ', '.join(rlist)
+        await ctx.send(f"{ctx.author.mention}\n**{msg}**")
 
         
 def setup(bot):
