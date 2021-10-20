@@ -14,6 +14,7 @@ class Fun(commands.Cog):
     async def roll(self, ctx, val="1d6"):
         try:
             roll_results = dice.roll(val)
+            print(roll_results)
         except Exception:
             return await ctx.send('Invalid input form: use either a single integer or something of the form "#d#"\nEx: 3d4 (rolls a 4-sided die 3 times and returns the sum)')
 
@@ -27,6 +28,7 @@ class Fun(commands.Cog):
     async def rlist(self, ctx, n): # returns randomized list of numbers 1-n
         rlist = list(range(1,n+1))
         r.shuffle(rlist)
+        print(rlist)
         await ctx.send(f"{ctx.author.mention}\n**{', '.join(map(str, rlist))}**")
 
         
