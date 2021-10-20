@@ -80,6 +80,22 @@ class Admin(commands.Cog):
             await player.disconnect()
         
         await self.bot.logout()
+    
+    @commands.command()
+    @commands.is_owner()
+    async def n_playing(self, ctx): # returns the number of servers arpy is playing music on
+        music = self.bot.get_cog('Music')
+
+        n = 0
+
+        for guild in self.bot.guilds:
+            player = music.get_player(guild.id)
+            if not player.queue.is_empty():
+                n += 1
+    
+        await ctx.send(f"Playing music on **{n}** guilds")
+            
+
 
 def setup(bot):
     bot.add_cog(Admin(bot))
