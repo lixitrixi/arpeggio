@@ -24,7 +24,7 @@ class Fun(commands.Cog):
         await ctx.send(r.choice(['Heads!', 'Tails!']))
     
     @commands.command(aliases=['random_list', 'randomlist'])
-    async def rlist(self, ctx, n): # returns randomized list of numbers 1-n
+    async def rlist(self, ctx, n: int): # returns randomized list of numbers 1-n
         rlist = [*range(1,n+1)]
         r.shuffle(rlist)
         await ctx.send(f"{ctx.author.mention}\n**{str(rlist)}**")
