@@ -26,6 +26,7 @@
     },
     "fun": {
         "roll [value]": "Rolls a die with the given number of sides (default 1d6); supports D&D dice syntax",
-        "coin": "Flips a coin"
+        "coin": "Flips a coin",
+        "rlist [n]": "Sends back a random list of 1-n"
     }
 }
