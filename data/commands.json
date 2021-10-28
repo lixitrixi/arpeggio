@@ -2,7 +2,9 @@
     "general": {
         "ping": "Displays the bot's latency",
         "info": "Shows general information about the bot",
-        "changePrefix [new prefix]": "Changes the bot's prefix in your server"
+        "changePrefix [new prefix]": "Changes the bot's prefix in your server",
+        "invite": "Sends Arpeggio's invite link",
+        "vote": "Sends Arpeggio's Top.gg vote link"
     },
     "music": {
         "join": "Joins the voice channel you are in",
