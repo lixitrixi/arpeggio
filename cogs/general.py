@@ -29,7 +29,7 @@ class General(commands.Cog):
 
         await ctx.send(f"Server prefix was changed to  `{prefix}`")
     
-    @commands.command(aliases=['invite'])
+    @commands.command()
     async def info(self, ctx):
 
         infoEmbed = discord.Embed(
@@ -43,13 +43,13 @@ class General(commands.Cog):
 
         await ctx.send(embed=infoEmbed)
     
-    # @commands.command()
-    # async def invite(self, ctx):
-    #     await ctx.send("Invite me here! https://discord.com/api/oauth2/authorize?client_id=732712093756948579&permissions=3427392&scope=bot")
+    @commands.command()
+    async def invite(self, ctx):
+        await ctx.send("Invite me here! https://discord.com/api/oauth2/authorize?client_id=732712093756948579&permissions=3427392&scope=bot")
     
-    # @commands.command()
-    # async def vote(self, ctx):
-    #     await ctx.send("Vote for me here! https://top.gg/bot/732712093756948579/vote")
+    @commands.command()
+    async def vote(self, ctx):
+        await ctx.send("Vote for me here! https://top.gg/bot/732712093756948579/vote")
 
 
     # Errors
