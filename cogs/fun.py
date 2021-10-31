@@ -29,6 +29,9 @@ class Fun(commands.Cog):
         r.shuffle(rlist)
         await ctx.send(f"{ctx.author.mention}\n{str(rlist)}")
 
+    @commands.command()
+    async def guild_icon(self, ctx):
+        await ctx.send(ctx.guild.icon_url)
         
 def setup(bot):
     bot.add_cog(Fun(bot))
