@@ -13,7 +13,10 @@ class General(commands.Cog):
     # Commands
     @commands.command()
     async def ping(self, ctx):
-        await ctx.send(f'Pong! ({round(self.bot.latency*1000)}ms)')
+        await ctx.send(embed=utils.embed(
+            f'Pong! ({round(self.bot.latency*1000)}ms)',
+            color = (90, 160, 230)
+        ))
     
     @commands.command(aliases=['changePrefix', 'changeprefix', 'set_prefix', 'setPrefix', 'setprefix'])
     @commands.has_permissions(administrator=True)
@@ -27,7 +30,10 @@ class General(commands.Cog):
         with open('../prefixes.json', 'w') as f: #updates the file
             json.dump(prefixes, f, indent=4)
 
-        await ctx.send(f"Server prefix was changed to  `{prefix}`")
+        await ctx.send(embed=utils.embed(
+            f"Server prefix was changed to  `{prefix}`",
+            color = (90, 160, 230)
+        ))
     
     @commands.command()
     async def invite(self, ctx):
