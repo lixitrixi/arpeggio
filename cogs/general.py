@@ -15,9 +15,9 @@ class General(commands.Cog):
     async def ping(self, ctx):
         await ctx.send(f'Pong! ({round(self.bot.latency*1000)}ms)')
     
-    @commands.command(aliases=['change_prefix', 'changeprefix'])
+    @commands.command(aliases=['changePrefix', 'changeprefix', 'set_prefix', 'setPrefix', 'setprefix'])
     @commands.has_permissions(administrator=True)
-    async def changePrefix(self, ctx, prefix):
+    async def change_prefix(self, ctx, prefix):
         
         with open('../prefixes.json', 'r') as f:
             prefixes = json.load(f)
