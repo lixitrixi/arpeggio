@@ -11,7 +11,7 @@ import importlib
 # get bot token from outside repo
 with open('../tokens.json', 'r') as f:
     tokens = json.load(f)
-    TOKEN = tokens['arpeggio_canary']
+    TOKEN = tokens['arpeggio']
 
 # initiation
 bot = commands.Bot(command_prefix=utils.get_prefix)
