@@ -1,32 +1,35 @@
 {
     "general": {
         "ping": "Displays the bot's latency",
-        "info": "Shows general information about the bot",
-        "changePrefix [new prefix]": "Changes the bot's prefix in your server",
-        "invite": "Sends Arpeggio's invite link",
-        "vote": "Sends Arpeggio's Top.gg vote link"
+        "change_prefix (prefix)": "Changes the bot's command prefix for your guild",
+        "invite": "Shows the bot's invite link",
+        "vote": "Shows the bot's Top.gg vote link",
+        "info": "Sends importand links (support server, GitHub repo, etc.)"
     },
     "music": {
-        "join": "Joins the voice channel you are in",
-        "leave": "Disconnects the bot from a voice channel",
-        "play/p [query]": "Searches and plays a track with the specified keywords",
-        "search/s": "Displays the top 5 results of a YT search",
-        "pause": "Pauses the current track",
-        "stop": "Removes all tracks from the Queue and stops playback",
+        "join/j": "Joins your voice channel",
+        "leave": "Leaves the voice channel",
+        "search/s (query)": "Searches a query on YouTube and sends back the top 5 results",
+        "play/p (query)": "Searches and plays a track; accepts keywords or playlist and video links",
+        "pause": "Pauses playback",
         "resume": "Resumes playback",
-        "current": "Shows the currently playing track as a video link",
-        "queue": "Shows the track queue for your server",
-        "skip": "Skips to the next track in the queue",
-        "clear": "Clears all tracks after the current from the Queue",
-        "seek [min]:[sec]": "Seeks the given position in the current track, default 0",
-        "restart": "Alternative to `seek 00:00`; restarts the current track",
-        "move [from] [to]": "Moves the track at the first index to the second index",
-        "shuffle": "(This command is currently not functioning) Randomizes the Queue",
-        "remove [index]": "Removes the track at the specified index, defaults to the last track"
+        "stop": "Empties the queue and stops playback",
+        "queue [page]": "Displays the current and upcoming tracks; each page contains 5 tracks",
+        "current/nowplaying": "Shows the currently playing track link",
+        "loop": "Enables the queue's looping feature; after the queue finishes, it will start again with the track for which looping was first enabled",
+        "unloop": "Disables the queue's looping feature",
+        "skip": "Skips the current track",
+        "clear": "Clears all upcoming tracks from the queue",
+        "move (i) (f)": "Inserts the track at position (i) into position (f) in the queue",
+        "remove [i]": "Deletes the track at position (i); defaults to the last track",
+        "restart": "Restarts the current track",
+        "seek [pos]": "Jumps to the given position in the current track; can be 'hr:min:sec', 'min:sec', or 'sec'; defaults to 00:00",
+        "shuffle": "Randomizes the order of upcoming tracks"
     },
     "fun": {
-        "roll [value]": "Rolls a die with the given number of sides (default 1d6); supports D&D dice syntax",
+        "roll [value]": "Rolls a die with the given number of sides; default 1d6; supports D&D dice syntax",
         "coin": "Flips a coin",
-        "rlist [n]": "Sends back a random list of 1-n"
+        "rlist (n)": "Sends back a random list of numbers 1 through (n)",
+        "guild_icon": "Sends the guild's icon as an image"
     }
 }

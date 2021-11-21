@@ -1,0 +1,14 @@
+{
+    "NotInSameVoice": "You must be in the same voice channel as the bot to use this command!",
+    "NoResults": "No results; check your query or contact our support server",
+    "NoChannel": "You must be in a voice channel to use this command!",
+    "NoQuery": "Try that again with some keywords, a video link, or a playlist link!",
+    "QueueEmpty": "The queue is empty!",
+    "StealingBot": "Stealing the music bot is not allowed!",
+    "AlreadyConnected": "Already connected!",
+    "ParsingError": "There was an error while parsing your input",
+    "IndexError": "Given index does not exist!",
+    "TargetCurrentTrack": "You cannot target the current track with this command!",
+    "NotEnoughTracks": "There are not enough tracks in the queue to run this command",
+    "PageError": "Specific page does not exist"
+}

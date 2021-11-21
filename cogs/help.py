@@ -2,65 +2,45 @@
 import discord
 from discord.ext import commands
 import json
-from builds import get_prefix
-
-# Help Embeds
-generalHelp = discord.Embed(
-    title=":bulb:  General Commands",
-    colour=discord.Colour.from_rgb(245, 206, 66)
-)
-generalHelp.add_field(name='_ _', value="`ping` : Displays the bot's latency\n\n`info` : Shows general information about the bot\n\n`changePrefix [new prefix]` : Changes the bot's prefix in your server")
-
+import utils
 
 with open('data/commands.json', 'r') as f:
-    command_list = json.load(f)
+    command_dict = json.load(f)
 
-generalHelp = discord.Embed(
-    title=":bulb:  General Commands",
-    colour=discord.Colour.from_rgb(245, 206, 66)
-)
-generalHelp.add_field(name='_ _', value='\n\n'.join([f"`{key}` {command_list['general'][key]}" for key in command_list['general'].keys()]))
-
-musicHelp = discord.Embed(
-    title=":notes:  Music Commands",
-    colour=discord.Colour.from_rgb(245, 206, 66)
-)
-musicHelp.add_field(name='_ _', value='\n\n'.join([f"`{key}` {command_list['music'][key]}" for key in command_list['music'].keys()]))
-
-funHelp = discord.Embed(
-    title=":tada:  Fun Commands",
-    colour=discord.Colour.from_rgb(245, 206, 66)
-)
-funHelp.add_field(name='_ _', value='\n\n'.join([f"`{key}` {command_list['fun'][key]}" for key in command_list['fun'].keys()]))
-
-helpEmbeds = {'general': generalHelp, 'music': musicHelp, 'fun': funHelp}
-
-directory = discord.Embed(
-    colour=discord.Colour.from_rgb(255, 60, 60)
-)
-directory.add_field(name="General", value="`help general`", inline=False)
-directory.add_field(name="Music", value="`help music`", inline=False)
-directory.add_field(name="Fun", value="`help fun`", inline=False)
+embeds = {
+    'general': utils.embed('\n\n'.join([f"` {key} ` : {command_dict['general'][key]}" for key in command_dict['general'].keys()])),
+    'music': utils.embed('\n\n'.join([f"` {key} ` : {command_dict['music'][key]}" for key in command_dict['music'].keys()])),
+    'fun': utils.embed('\n\n'.join([f"` {key} ` : {command_dict['fun'][key]}" for key in command_dict['fun'].keys()])),
+}
 
 # Cog
 class Help(commands.Cog):
-    
+
     def __init__(self, bot):
         self.bot = bot
-
-    # Commands
-    @commands.command(aliases=['h'])
-    async def help(self, ctx, *, category=None):
-        if not category:
-            Embed = directory
-        
+    
+    @commands.command(aliases=['h']) # if no category is given, send the directory, otherwise send the specfic category of commands
+    async def help(self, ctx, *, cat=None):
+        prefix = utils.get_prefix(self.bot, ctx.message)
+        if not cat:
+            embed = utils.embed(f"Use `{prefix}help (page)` for specific commands!\n\nHelp pages:\n- " + '\n- '.join(command_dict.keys()), color=(90, 160, 230))
         else:
-            try:
-                Embed = helpEmbeds[category]
-            except KeyError:
-                return await ctx.send('Specified help menu does not exist')
-
-        await ctx.send(embed=Embed)
+            if cat in ['general', 'gen']:
+                embed = embeds['general']
+                embed.title = ":bulb:  General Commands"
+            elif cat in ['music', 'queue']:
+                embed = embeds['music']
+                embed.title = ":notes:  Music Commands"
+            elif cat in ['fun']:
+                embed = embeds['fun']
+                embed.title = ":tada:  Fun Commands"
+            else:
+                raise Exception(f"Specified help page does not exist")
+            
+            embed.color = discord.Color.from_rgb(90, 160, 230)
+            embed.set_footer(text=f"(required)⠀[optional]⠀|⠀My command prefix for this server is: {prefix}")
+        
+        await ctx.send(embed=embed)
 
 
 def setup(bot):

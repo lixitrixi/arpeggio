@@ -3,7 +3,9 @@ import discord
 from discord.ext import commands
 import json
 import os
+import utils
 
+import traceback
 # Cog
 class Admin(commands.Cog):
 
@@ -13,7 +15,6 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def reload(self, ctx): # reloads all cogs
-        success = True
         for file in os.listdir('cogs'):
             if file.endswith('.py'):
                 try:
@@ -24,12 +25,10 @@ class Admin(commands.Cog):
                     self.bot.load_extension(f'cogs.{file[:-3]}')
                 except Exception:
                     success = False
-                    await ctx.send(f"{file} could not be loaded.")
-        
-        if success:
-            await ctx.message.add_reaction('✅')
-        else:
-            await ctx.message.add_reaction('❌')
+                    raise Exception(f"{file} could not be loaded")
+
+        await ctx.invoke(self.bot.get_command('reload_utils'))
+        await ctx.message.add_reaction('✅')
 
     @commands.command()
     @commands.is_owner()
@@ -39,12 +38,16 @@ class Admin(commands.Cog):
                 try:
                     self.bot.load_extension(f'cogs.{file[:-3]}')
                     await ctx.message.add_reaction('✅')
-                except Exception:
+                except Exception as err:
                     await ctx.message.add_reaction('❌')
+                    print(str(err.__traceback__))
     
     @commands.command()
     @commands.is_owner()
     async def unload(self, ctx, ext):
+        if ext == 'admin':
+            return await ctx.send("You fool! Use reload instead")
+
         for file in os.listdir('cogs'):
             if file.endswith(f'{ext}.py'):
                 try:
@@ -65,7 +68,7 @@ class Admin(commands.Cog):
         await self.bot.change_presence(status=discord.Status.online, activity=None)
         await ctx.message.add_reaction('✅')
 
-    @commands.command()
+    @commands.command(aliases=["gc"])
     @commands.is_owner()
     async def guild_count(self, ctx):
         await ctx.send(f"Currently on **{len(self.bot.guilds)}** guilds!")

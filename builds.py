@@ -1,157 +1,125 @@
 # Imports
 import discord
-import math
+import utils
 import random
-import json
-
-# Functions
-def get_prefix(bot, ctx):
-    with open('../prefixes.json', 'r') as f:
-        prefixes = json.load(f)
-
-    try:
-        return prefixes[str(ctx.guild.id)]
-    except KeyError:
-        return '.'
-
-def format_time(ms): # formats milliseconds to hrs:min:sec
-    minutes = int((ms / 1000) / 60)
-    seconds = int((ms / 1000) % 60)
-
-    if seconds < 10:
-        seconds = f"0{seconds}"
-
-    return f"{minutes}:{seconds}"
-
-def parse_time(time): # parses min:sec to milliseconds or seconds to milliseconds
-    if ':' in time:
-        time = time.split(':')
-        if len(time) != 2:
-            return None
-        try:
-            return int(time[0])*60000 + int(time[1])*1000
-        except Exception:
-            return None
-    else:
-        try:
-            return int(time)*1000
-        except Exception:
-            return None
-        
-
-def format_page_count(length, page):
-    returnString = f""
-
-    if length - page*5 > 0:
-        returnString = f"+ {length - page*5} tracks | "
-    
-    returnString += f"Page {page} / {math.ceil(length/5)}"
-
-    return returnString
-
-def add_apos(word): # correctly formats a word with an apostraphe
-    if word.endswith('s'):
-        return f"{word}'"
-    else:
-        return f"{word}'s"
+import math
 
 
-# Classes
-class Queue:
+# Queue class
+class Queue():
     def __init__(self):
-        self.tracks = [] # list of (track obj, requester)
+        self.tracks = []
+        self.looping = False
+        self.history = [] # if looping, add these to the queue
     
-    def next(self):
-        try:
-            self.tracks.pop(0)
-        except IndexError:
-            return None
-
-        if self.tracks:
-            return self.tracks[0][0]
-        else:
-            return None
-        
-    def add(self, tracks):
+    def add(self, tracks: list):
+        '''
+        takes one or multiple track objects and appends them to the queue
+        '''
         for track in tracks:
             self.tracks.append(track)
     
+    def next(self):
+        '''
+        pops the first track and returns the next; if queue ends and is looping, appends first track to history and returns the first track
+        '''
+        if self.looping:
+            self.history.append(self.tracks[0])
+
+        self.tracks.pop(0)
+
+        if self.is_empty():
+            if self.looping:
+                self.tracks = self.history
+                self.history = []
+                return self.tracks[0]
+            else:
+                return None
+        else:
+            return self.tracks[0]
+    
     def is_empty(self):
         return self.tracks == []
     
-    def delete(self, index):
-        self.tracks.pop(index)
+    def delete(self, i):
+        '''
+        removes track at given index
+        '''
+        self.tracks.pop(i)
     
-    def clear(self, n=1):
-        del(self.tracks[n:])
+    def clear(self):
+        '''
+        clears all but the first track from the queue
+        '''
+        del(self.tracks[1:])
     
     def move(self, first, second):
+        '''
+        picks up a track and plops it at the given index, shifting all lower tracks down
+        '''
         movable = self.tracks.pop(first)
-
         self.tracks.insert(second, movable)
     
-    def format(self, player_pos, page=1): # returns a Discord embed with the current and next track(s)
-        queue_embed = discord.Embed(
-            colour=discord.Colour.from_rgb(255, 59, 59)
+    def shuffle(self):
+        '''
+        shuffles all tracks after the first
+        '''
+        new = self.tracks[1:]
+        random.shuffle(new)
+        self.tracks = [self.tracks[0]] + new
+    
+    def current(self):
+        return self.tracks[0]
+    
+    def format_footer(self, page):
+        final = []
+        if self.looping:
+            final.append('Looping enabled')
+        if len(self.tracks) > 6:
+            final.append(f"+ {len(self.tracks) - 6} track{'s' if len(self.tracks) > 7 else ''}")
+        if len(self.tracks) > 1:
+            final.append(f"Page {page} / {math.ceil((len(self.tracks)-1)/5)}")
+        return ' | '.join(final)
+    
+    def embed(self, player_pos, page=1):
+        '''
+        returns a Discord embed displaying the queue
+        player_pos: the position of the player in the current song (milliseconds)
+        page: each page displays 5 tracks
+        '''
+        tracks = self.tracks
+        current = tracks[0]
+
+        embed = discord.Embed(
+            colour=discord.Colour.from_rgb(90, 180, 90)
         )
 
-        current = self.tracks[0]
-
-        if current[0].is_stream:
-            queue_embed.add_field(name="Currently Streaming", value=f"[{str(current[0])}]({current[0].uri}) | {current[1]}", inline=False)
-        else:
-            queue_embed.add_field(name="Currently Playing", value=f"[{str(current[0])}]({current[0].uri}) | {format_time(player_pos)} / {format_time(current[0].length)} | {current[1]}", inline=False)
+        if current.is_stream: # Track | @mention
+            embed.add_field(name="Currently Streaming", 
+                value=f"[{str(current)}]({current.uri}) | {current.info['requester']}"
+                )
+        else: # Track | time/total | @mention
+            embed.add_field(name="Currently Playing", 
+                value=f"[{str(current)}]({current.uri}) | {utils.format_time(player_pos)} / {utils.format_time(current.length)} | {current.info['requester']}"
+                )
         
         if len(self.tracks) > 1:
-            queue_list = []
-            
-            for index, entry in enumerate(self.tracks[((page-1)*5)+1:page*5+1]):
-                track = entry[0]
-                requester = entry[1]
+            up_next = []
+
+            try:
+                tracks = tracks[(page-1)*5+1:min(page*5+1, len(tracks))]
+            except Exception:
+                raise Exception("PageError")
+
+            for i, track in enumerate(tracks):
+                i = i+(page-1)*5+1
                 if track.is_stream:
-                    queue_list.append(f"**{index+1+((page-1)*5)}.** [{str(track)}]({track.uri}) | Stream | {requester}")
-                else:  
-                    queue_list.append(f"**{index+1+((page-1)*5)}.** [{str(track)}]({track.uri}) | {format_time(track.length)} | {requester}")
+                    up_next.append(f"**{i}.** [{str(track)}]({track.uri}) | Stream | {track.info['requester']}")
+                else:
+                    up_next.append(f"**{i}.** [{str(track)}]({track.uri}) | {utils.format_time(track.length)} | {track.info['requester']}")
 
-            queue_embed.add_field(name="Queue", value='\n\n'.join(queue_list), inline=False)
-
-            if len(self.tracks) > 6:
-                queue_embed.set_footer(text=format_page_count(len(self.tracks)-1, page))
-
-        return queue_embed
-
-class Playlist:
-    def __init__(self, owner, tracks): #takes list of tracks attributed to the owner
-        self.tracks = tracks # list of tracks
-        self.owner = owner
-    
-    def is_empty(self):
-        return self.tracks == []
-
-    def add(self, tracks):
-        self.tracks += tracks
-
-    def compress(self):
-        return [track.uri for track in self.tracks]
-    
-    def delete(self, index):
-        self.tracks.pop(index)
-
-    def clear(self):
-        self.tracks = []
-    
-    def shuffle(self):
-        upcoming = self.tracks[1:]
-        random.shuffle(upcoming)
-        self.tracks = [self.tracks[0]] + upcoming
-    
-    def format(self):
-        playlist_embed = discord.Embed(
-        colour=discord.Colour.from_rgb(255, 60, 60)
-        )
-    
-        playlist_embed.add_field(name="\a", value='\n\n'.join([f"**{i+1}.** [{str(track)}]({track.uri}) | {format_time(track.length)}" for i, track in enumerate(self.tracks)]), inline=False)
-
-        playlist_embed.set_author(name=f"{add_apos(self.owner.display_name)} Playlist", icon_url=self.owner.avatar_url)
+            embed.add_field(name="Up Next", value='\n\n'.join(up_next), inline=False)
         
-        return playlist_embed
+        embed.set_footer(text=self.format_footer(page))
+        
+        return embed

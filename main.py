@@ -2,18 +2,20 @@
 import discord
 from discord.ext import commands
 import json
+import csv
+import utils
 import os
-from builds import get_prefix
+import importlib
 
+
+# get bot token from outside repo
 with open('../tokens.json', 'r') as f:
     tokens = json.load(f)
-    TOKEN = tokens['arpeggio']
+    TOKEN = tokens['arpeggio_canary']
 
-
-# Initiation
-bot = commands.Bot(command_prefix=get_prefix)
-
-bot.remove_command('help')
+# initiation
+bot = commands.Bot(command_prefix=utils.get_prefix)
+bot.remove_command('help') # we add our own later
 bot.add_check(commands.guild_only())
 
 
@@ -22,35 +24,12 @@ bot.add_check(commands.guild_only())
 async def on_ready():
     print(f"Logged in as {bot.user.name} | {bot.user.id}")
 
-@bot.event
-async def on_message(message):
-    if message.content == '<@!732712093756948579>':
-        await message.channel.send(f"Hi! My prefix is `{get_prefix(bot, message)}`")
-    
-    await bot.process_commands(message)
+@bot.command()
+async def reload_utils(ctx):
+    importlib.reload(utils)
+    await ctx.message.add_reaction('✅')
 
-@bot.event
-async def on_guild_join(guild): # adds an entry to prefixes.json (default prefix: '.')
-    with open('../prefixes.json', 'r') as f:
-        prefixes = json.load(f)
-
-    prefixes[str(guild.id)] = '.'
-
-    with open('../prefixes.json', 'w') as f:
-        json.dump(prefixes, f, indent=4)
-
-@bot.event
-async def on_guild_remove(guild):
-    with open('../prefixes.json', 'r') as f:
-        prefixes = json.load(f)
-
-    prefixes.pop(str(guild.id))
-
-    with open('../prefixes.json', 'w') as f:
-        json.dump(prefixes, f, indent=4)
-
-# Runtime
-
+# load cogs
 for file in os.listdir('cogs'): # load .py files in cogs folder as extensions
     if file.endswith('.py'):
         try:
@@ -58,4 +37,5 @@ for file in os.listdir('cogs'): # load .py files in cogs folder as extensions
         except Exception:
             print(f"Cog '{file[:-3]}' could not be loaded")
 
-bot.run(TOKEN)
+if __name__ == "__main__":
+    bot.run(TOKEN)
