@@ -119,7 +119,7 @@ class Music(commands.Cog):
         await player.connect(channel.id)
         await player.set_pause(False)
     
-    @commands.command(aliases=['leave'])
+    @commands.command(aliases=['leave', 'l'])
     async def disconnect(self, ctx):
         player = self.get_player(ctx.guild.id)
 
