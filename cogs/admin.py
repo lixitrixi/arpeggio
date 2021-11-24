@@ -67,11 +67,6 @@ class Admin(commands.Cog):
     async def clear_status(self, ctx):
         await self.bot.change_presence(status=discord.Status.online, activity=None)
         await ctx.message.add_reaction('✅')
-
-    @commands.command(aliases=["gc"])
-    @commands.is_owner()
-    async def guild_count(self, ctx):
-        await ctx.send(f"Currently on **{len(self.bot.guilds)}** guilds!")
     
     @commands.command()
     @commands.is_owner()
@@ -83,20 +78,23 @@ class Admin(commands.Cog):
             await player.disconnect()
         
         await self.bot.logout()
-    
-    @commands.command()
+
+    @commands.command(aliases=["gc"])
     @commands.is_owner()
-    async def n_playing(self, ctx): # returns the number of servers arpy is playing music on
+    async def guild_count(self, ctx):
+        guild_count = len(self.bot.guilds)
+
         music = self.bot.get_cog('Music')
 
-        n = 0
-
+        active_guilds = 0
         for guild in self.bot.guilds:
             player = music.get_player(guild.id)
             if not player.queue.is_empty():
-                n += 1
-    
-        await ctx.send(f"Playing music on **{n}** guilds")
+                active_guilds += 1
+
+        await ctx.send(embed=utils.embed(
+            f"Guild count: {guild_count}\nActively listening guilds: {active_guilds}"
+        ))
             
 
 
