@@ -84,7 +84,7 @@ class Queue():
         final = []
         if self.looping:
             final.append('Looping enabled')
-        if len(self.tracks) > 6:
+        if len(self.tracks) > 0:
             final.append(f"+ {len(self.tracks) - 6} track{'s' if len(self.tracks) > 7 else ''}")
             final.append(f"Page {page} / {math.ceil((len(self.tracks)-1)/5)}")
         return ' | '.join(final)
