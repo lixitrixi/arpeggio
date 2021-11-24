@@ -1,9 +1,9 @@
 # Imports
 import discord
 from discord.ext import commands
-import json
 import os
 import utils
+import builds
 
 import traceback
 # Cog
@@ -78,6 +78,19 @@ class Admin(commands.Cog):
             await player.disconnect()
         
         await self.bot.logout()
+    
+    @commands.command()
+    @commands.is_owner()
+    async def reload_queues(self, ctx):
+        music = self.bot.get_cog('Music')
+
+        for guild in self.bot.guilds:
+            player = music.get_player(guild.id)
+
+            try:
+                player.queue = builds.Queue(player.queue)
+            except Exception: # player queue wasn't initialized yet, ignore
+                pass
 
     @commands.command(aliases=["gc"])
     @commands.is_owner()

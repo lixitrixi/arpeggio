@@ -7,10 +7,19 @@ import math
 
 # Queue class
 class Queue():
-    def __init__(self):
-        self.tracks = []
-        self.looping = False
-        self.history = [] # if looping, add these to the queue
+    def __init__(self, source=None):
+        '''
+        creates a queue instance
+        source (optional): pass an existing queue instance to copy
+        '''
+        if source:
+            self.tracks = source.tracks
+            self.looping = source.looping
+            self.history = source.history
+        else:
+            self.tracks = []
+            self.looping = False
+            self.history = [] # if looping, add these to the queue
     
     def add(self, tracks: list):
         '''
