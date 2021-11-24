@@ -87,10 +87,9 @@ class Admin(commands.Cog):
         for guild in self.bot.guilds:
             player = music.get_player(guild.id)
 
-            try:
-                player.queue = builds.Queue(player.queue)
-            except Exception: # player queue wasn't initialized yet, ignore
-                pass
+            if hasattr(player, 'queue'):
+                setattr(player, 'queue', builds.Queue(player.queue))
+
         await ctx.message.add_reaction('✅')
 
     @commands.command(aliases=["gc"])
