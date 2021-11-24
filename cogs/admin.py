@@ -91,6 +91,7 @@ class Admin(commands.Cog):
                 player.queue = builds.Queue(player.queue)
             except Exception: # player queue wasn't initialized yet, ignore
                 pass
+        await ctx.message.add_reaction('✅')
 
     @commands.command(aliases=["gc"])
     @commands.is_owner()
