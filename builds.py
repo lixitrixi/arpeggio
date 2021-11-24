@@ -84,7 +84,7 @@ class Queue():
         final = []
         if self.looping:
             final.append('Looping enabled')
-        if len(self.tracks) > 0:
+        if len(self.tracks) > 6:
             final.append(f"+ {len(self.tracks) - 6} track{'s' if len(self.tracks) > 7 else ''}")
             final.append(f"Page {page} / {math.ceil((len(self.tracks)-1)/5)}")
         return ' | '.join(final)
@@ -128,6 +128,7 @@ class Queue():
 
             embed.add_field(name="Up Next", value='\n\n'.join(up_next), inline=False)
         
-        embed.set_footer(text=self.format_footer(page))
+        # embed.set_footer(text=self.format_footer(page))
+        embed.set_footer(text="AKDJSLFNLDKJSHFKLJSDHFJKLAS THIS WORKS")
         
         return embed
