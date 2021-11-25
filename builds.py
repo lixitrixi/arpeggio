@@ -107,7 +107,7 @@ class Queue():
                 value=f"[{str(current)}]({current.uri}) | {current.info['requester']}"
                 )
         else: # Track | time/total | @mention
-            embed.add_field(name="Currently Playing", 
+            embed.add_field(name="Currently Working!", 
                 value=f"[{str(current)}]({current.uri}) | {utils.format_time(player_pos)} / {utils.format_time(current.length)} | {current.info['requester']}"
                 )
         
