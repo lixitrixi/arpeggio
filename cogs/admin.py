@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 import os
 import utils
+import importlib
 import builds
 
 import traceback
@@ -84,11 +85,13 @@ class Admin(commands.Cog):
     async def reload_queues(self, ctx):
         music = self.bot.get_cog('Music')
 
+        importlib.reload(builds)
+
         for guild in self.bot.guilds:
             player = music.get_player(guild.id)
 
             if hasattr(player, 'queue'):
-                setattr(player, 'queue', builds.Queue(player.queue))
+                player.queue = builds.Queue(player.queue)
 
         await ctx.message.add_reaction('✅')
 
