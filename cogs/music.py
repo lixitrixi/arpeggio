@@ -258,7 +258,8 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('⏩')
         
         if len(player.queue.tracks) > 0:
-            await ctx.send(embed=utils.embed(f"Playing __{str(player.queue.current())}__", emoji="cd"))
+            next = player.queue.current()
+            await ctx.send(embed=utils.embed(f"Playing [{str(next)}]({next.uri})", emoji="cd"))
     
     @commands.command()
     async def restart(self, ctx):
