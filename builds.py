@@ -107,7 +107,7 @@ class Queue():
                 value=f"[{str(current)}]({current.uri}) | {current.info['requester']}"
                 )
         else: # Track | time/total | @mention
-            embed.add_field(name="Currently Working!", 
+            embed.add_field(name="Currently Playing!", 
                 value=f"[{str(current)}]({current.uri}) | {utils.format_time(player_pos)} / {utils.format_time(current.length)} | {current.info['requester']}"
                 )
         
@@ -128,7 +128,6 @@ class Queue():
 
             embed.add_field(name="Up Next", value='\n\n'.join(up_next), inline=False)
         
-        # embed.set_footer(text=self.format_footer(page))
-        embed.set_footer(text="AKDJSLFNLDKJSHFKLJSDHFJKLAS THIS WORKS")
+        embed.set_footer(text=self.format_footer(page))
         
         return embed
