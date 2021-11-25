@@ -90,8 +90,10 @@ class Admin(commands.Cog):
         for guild in self.bot.guilds:
             player = music.get_player(guild.id)
 
-            if hasattr(player, 'queue'):
+            try:
                 player.queue = builds.Queue(player.queue)
+            except Exception:
+                pass
 
         await ctx.message.add_reaction('✅')
 
