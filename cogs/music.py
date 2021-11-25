@@ -141,7 +141,7 @@ class Music(commands.Cog):
 
         self.author_in_vc(ctx)
         
-        await ctx.send(embed=utils.embed(f"Searching  ` {query} `", emoji='mag_right'))
+        await ctx.send(embed=utils.embed(f"Searching ` {query} `", emoji='mag_right'))
 
         name, tracks = await self.get_tracks(query)
 

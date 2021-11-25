@@ -85,9 +85,9 @@ class Queue():
         if self.looping:
             final.append('Looping enabled')
         if len(self.tracks) > 6:
-            final.append(f"+ {len(self.tracks) - 6} track{'s' if len(self.tracks) > 7 else ''}")
             final.append(f"Page {page} / {math.ceil((len(self.tracks)-1)/5)}")
-        return ' | '.join(final)
+            final.append(f"+ {len(self.tracks) - 6} track{'s' if len(self.tracks) > 7 else ''}")
+        return ' | '.join(final)
     
     def embed(self, player_pos, page=1):
         '''
