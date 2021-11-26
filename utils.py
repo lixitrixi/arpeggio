@@ -8,10 +8,9 @@ def get_prefix(bot, message):
     try:
         with open('../prefixes.json', 'r') as f:
             prefixes = json.load(f)
-            prefix = prefixes[str(message.guild.id)]
-            return prefix
+        prefix = prefixes[str(message.guild.id)]
+        return prefix
     except Exception:
-        print(f"WARNING: Prefix not found for guild: {message.guild.id}")
         return "."
 
 # embed template to share a line of feedback
