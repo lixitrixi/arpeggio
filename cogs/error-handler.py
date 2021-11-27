@@ -14,8 +14,6 @@ class ErrorHandler(commands.Cog):
     async def on_command_error(self, ctx, error):
         error = getattr(error, 'original', error)
 
-        print(error)
-
         if isinstance(error, commands.CommandNotFound):
             return
 
