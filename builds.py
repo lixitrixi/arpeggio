@@ -3,6 +3,7 @@ import discord
 import utils
 import random
 import math
+from config import *
 
 
 # Queue class
@@ -99,7 +100,7 @@ class Queue():
         current = tracks[0]
 
         embed = discord.Embed(
-            colour=discord.Colour.from_rgb(90, 180, 90)
+            colour=QUEUE_EMBED_COLOR
         )
 
         if current.is_stream: # Track | @mention

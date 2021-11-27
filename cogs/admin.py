@@ -41,7 +41,6 @@ class Admin(commands.Cog):
                     await ctx.message.add_reaction('✅')
                 except Exception as err:
                     await ctx.message.add_reaction('❌')
-                    print(str(err.__traceback__))
     
     @commands.command()
     @commands.is_owner()
