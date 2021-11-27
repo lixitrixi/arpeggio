@@ -11,7 +11,7 @@ def get_prefix(bot, message):
         prefix = prefixes[str(message.guild.id)]
         return prefix
     except Exception:
-        return "."
+        return "." if bot.user.name == 'Arpeggio' else ','
 
 # embed template to share a line of feedback
 def embed(content: str, color=(90, 180, 90), emoji=''):
