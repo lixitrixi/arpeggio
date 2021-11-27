@@ -3,7 +3,6 @@ import discord
 from discord.ext import commands
 import json
 import utils
-from config import *
 
 # Cog
 class Events(commands.Cog):
@@ -18,7 +17,7 @@ class Events(commands.Cog):
                 embed=utils.embed(
                     f"Hi! My command prefix for this server is `{utils.get_prefix(self.bot, message)}`"
                     f"\nUse `{utils.get_prefix(self.bot, message)}help` for a list of commands",
-                    color=INFO_EMBED_COLOR
+                    color=(90, 160, 230)
                     )
                 )
 

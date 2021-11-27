@@ -2,7 +2,6 @@
 import discord
 from discord.ext import commands
 import json
-from config import *
 
 # get the bot's prefix on a given guild
 def get_prefix(bot, message):
@@ -15,7 +14,7 @@ def get_prefix(bot, message):
         return "." if bot.user.name == 'Arpeggio' else ','
 
 # embed template to share a line of feedback
-def embed(content: str, color=DEFAULT_EMBED_COLOR, emoji=''):
+def embed(content: str, color=(90, 180, 90), emoji=''):
     '''
     content: text to display
     color: rgb of embed accent color, default 
@@ -30,7 +29,7 @@ def embed(content: str, color=DEFAULT_EMBED_COLOR, emoji=''):
             emoji = f":{emoji}:"
 
     embed = discord.Embed(
-        colour = color,
+        colour = discord.Colour.from_rgb(*color),
         description = f"{emoji}{' ' if emoji else ''}{content}"
     )
 

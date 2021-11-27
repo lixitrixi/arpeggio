@@ -3,7 +3,6 @@ import discord
 from discord.ext import commands
 import json
 import utils
-from config import *
 
 # Cog
 class General(commands.Cog):
@@ -16,7 +15,7 @@ class General(commands.Cog):
     async def ping(self, ctx):
         await ctx.send(embed=utils.embed(
             f'Pong! ({round(self.bot.latency*1000)}ms)',
-            color=INFO_EMBED_COLOR
+            color=(90, 160, 230)
         ))
     
     @commands.command(aliases=['changePrefix', 'changeprefix', 'set_prefix', 'setPrefix', 'setprefix'])
@@ -33,28 +32,28 @@ class General(commands.Cog):
 
         await ctx.send(embed=utils.embed(
             f"Server prefix was changed to  `{prefix}`",
-            color=INFO_EMBED_COLOR
+            color=(90, 160, 230)
         ))
     
     @commands.command()
     async def invite(self, ctx):
         await ctx.send(embed=utils.embed(
             "Invite me [here](https://discord.com/api/oauth2/authorize?client_id=732712093756948579&permissions=3427392&scope=bot)!",
-            color=INFO_EMBED_COLOR
+            color=(90, 160, 230)
             ))
     
     @commands.command()
     async def vote(self, ctx):
         await ctx.send(embed=utils.embed(
             "Vote for me [here](https://top.gg/bot/732712093756948579/vote)!", emoji='upvote',
-            color=INFO_EMBED_COLOR
+            color=(90, 160, 230)
             ))
     
     @commands.command(aliases=['links', 'support'])
     async def info(self, ctx):
         await ctx.send(embed=utils.embed(
             "[Support Server](https://discord.gg/fmPTwfw) | [Invite!](https://discord.com/api/oauth2/authorize?client_id=732712093756948579&permissions=3427392&scope=bot) | [Vote!](https://top.gg/bot/732712093756948579/vote) | [GitHub](https://github.com/lixitrixi/arpeggio)",
-            color=INFO_EMBED_COLOR
+            color=(90, 160, 230)
         ))
 
 def setup(bot):

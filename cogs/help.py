@@ -3,7 +3,6 @@ import discord
 from discord.ext import commands
 import json
 import utils
-from config import *
 
 with open('data/commands.json', 'r') as f:
     command_dict = json.load(f)
@@ -26,7 +25,7 @@ class Help(commands.Cog):
         if not cat:
             embed = utils.embed(
                 f"Use `{prefix}help (page)` for specific commands!\n\nHelp pages:\n- " + '\n- '.join(command_dict.keys()),
-                color=HELP_EMBED_COLOR
+                color=(255, 216, 45)
                 )
         else:
             if cat in ['general', 'gen']:
@@ -41,7 +40,7 @@ class Help(commands.Cog):
             else:
                 raise Exception(f"Specified help page does not exist")
             
-            embed.color = HELP_EMBED_COLOR
+            embed.color = (255, 216, 45)
             embed.set_footer(text=f"(required)⠀[optional]⠀|⠀My command prefix for this server is: {prefix}")
         
         await ctx.send(embed=embed)

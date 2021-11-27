@@ -3,7 +3,6 @@ import discord
 from discord.ext import commands
 import json
 import utils
-from config import *
 
 # Cog
 class ErrorHandler(commands.Cog):
@@ -26,7 +25,7 @@ class ErrorHandler(commands.Cog):
             pass # error isn't documented, just send the raw exception
 
         await ctx.send(
-            embed=utils.embed(error, color=ERROR_EMBED_COLOR, emoji='error')
+            embed=utils.embed(error, color=(255, 60, 60), emoji='error')
         )
 
 def setup(bot):
