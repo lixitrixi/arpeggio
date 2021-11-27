@@ -78,7 +78,7 @@ class Admin(commands.Cog):
             player = music.get_player(guild.id)
             await player.disconnect()
         
-        await self.bot.logout()
+        await self.bot.close()
     
     @commands.command()
     @commands.is_owner()
