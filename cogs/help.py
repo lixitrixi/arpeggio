@@ -2,16 +2,20 @@
 import discord
 from discord.ext import commands
 import json
-import utils
+from reactionmenu import ReactionMenu, Button, ButtonType
+
 
 with open('data/commands.json', 'r') as f:
     command_dict = json.load(f)
 
-embeds = {
-    'general': utils.embed('\n\n'.join([f"` {key} ` : {command_dict['general'][key]}" for key in command_dict['general'].keys()])),
-    'music': utils.embed('\n\n'.join([f"` {key} ` : {command_dict['music'][key]}" for key in command_dict['music'].keys()])),
-    'fun': utils.embed('\n\n'.join([f"` {key} ` : {command_dict['fun'][key]}" for key in command_dict['fun'].keys()])),
-}
+embeds = []
+
+for section in command_dict.keys():
+    embed = discord.Embed(
+        title = f"{section[0].upper()}{section[1:]} Commands",
+        description = '\n\n'.join([f"` {key} ` : {command_dict[section][key]}" for key in command_dict[section].keys()])
+    )
+    embeds.append(embed)
 
 # Cog
 class Help(commands.Cog):
@@ -19,31 +23,12 @@ class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(aliases=['h']) # if no category is given, send the directory, otherwise send the specfic category of commands
-    async def help(self, ctx, *, cat=None):
-        prefix = utils.get_prefix(self.bot, ctx.message)
-        if not cat:
-            embed = utils.embed(
-                f"Use `{prefix}help (page)` for specific commands!\n\nHelp pages:\n- " + '\n- '.join(command_dict.keys()),
-                color=(255, 216, 45)
-                )
-        else:
-            if cat in ['general', 'gen']:
-                embed = embeds['general']
-                embed.title = ":bulb:  General Commands"
-            elif cat in ['music', 'queue']:
-                embed = embeds['music']
-                embed.title = ":notes:  Music Commands"
-            elif cat in ['fun']:
-                embed = embeds['fun']
-                embed.title = ":tada:  Fun Commands"
-            else:
-                raise Exception(f"Specified help page does not exist")
-            
-            embed.color = (255, 216, 45)
-            embed.set_footer(text=f"(required)⠀[optional]⠀|⠀My command prefix for this server is: {prefix}")
+    @commands.command(aliases=['h']) # send a reaction menu for viewing different help pages
+    async def help(self, ctx):
+        help_menu = ReactionMenu(ctx, back_button='◀️', next_button='▶️', config=ReactionMenu.STATIC, show_page_director=False, navigation_speed=ReactionMenu.FAST)
+        [help_menu.add_page(embed) for embed in embeds]
         
-        await ctx.send(embed=embed)
+        await help_menu.start()
 
 
 def setup(bot):
