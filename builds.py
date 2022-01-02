@@ -19,13 +19,14 @@ class Queue():
         else:
             self.tracks = []
             self.looping = False
-            self.history = [] # if looping, add these to the queue
+            self.history = [] # if looping, add these to the queue when the last track is done
     
     def add(self, tracks: list):
         '''
         takes one or multiple track objects and appends them to the queue
         '''
         for track in tracks:
+            if len(self.tracks) > 100: break
             self.tracks.append(track)
     
     def next(self):
@@ -87,7 +88,7 @@ class Queue():
         if len(self.tracks) > 6:
             final.append(f"Page {page} / {math.ceil((len(self.tracks)-1)/5)}")
             final.append(f"+ {len(self.tracks) - 6} track{'s' if len(self.tracks) > 7 else ''}")
-        return ' | '.join(final)
+        return ' | '.join(final)
     
     def embed(self, player_pos, page=1):
         '''

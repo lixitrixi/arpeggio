@@ -159,6 +159,9 @@ class Music(commands.Cog):
             track.info['requester'] = ctx.author.mention
         
         player.queue.add(tracks)
+
+        if len(player.queue.tracks) + len(tracks) > 100:
+            await ctx.send(embed=utils.embed("There can be a maximum of 100 tracks in the queue!", color=(255, 60, 60), emoji='error'))
     
     @commands.command(aliases=['q'])
     async def queue(self, ctx, page: int = 1):
