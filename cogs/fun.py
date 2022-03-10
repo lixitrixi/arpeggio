@@ -32,6 +32,12 @@ class Fun(commands.Cog):
     @commands.command()
     async def guild_icon(self, ctx):
         await ctx.send(ctx.guild.icon_url)
+
+    @commands.command()
+    async def theworldispainandsuffering(self, ctx):
+        await ctx.send(
+            "You aren't alone :)\nI hope this meme helps: https://www.youtube.com/watch?v=JhDIILjlhBQ"
+        )
         
 def setup(bot):
     bot.add_cog(Fun(bot))
