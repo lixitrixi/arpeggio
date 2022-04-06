@@ -3,6 +3,8 @@ import discord
 from discord.ext import commands
 # from discord.ext import menus
 import wavelink
+import sys
+sys.path.append('../arpeggio/')
 import builds
 import utils
 
@@ -35,8 +37,6 @@ class Music(commands.Cog):
     
     @commands.Cog.listener()
     async def on_wavelink_track_end(player, track, reason):
-        player = player
-
         track = player.queue.next()
 
         if track:
@@ -321,3 +321,5 @@ def setup(bot):
     except Exception as ex:
         print(ex)
         print(ex.message)
+    
+print('\ntest\n')
