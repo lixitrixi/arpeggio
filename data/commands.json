@@ -1,11 +1,4 @@
 {
-    "general": {
-        "ping": "Displays the bot's latency",
-        "change_prefix (prefix)": "Changes the bot's command prefix for your guild",
-        "invite": "Shows the bot's invite link",
-        "vote": "Shows the bot's Top.gg vote link",
-        "info": "Sends importand links (support server, GitHub repo, etc.)"
-    },
     "music": {
         "join/j": "Joins your voice channel",
         "leave/l": "Leaves the voice channel",
@@ -13,11 +6,13 @@
         "play/p (query)": "Searches and plays a track; accepts keywords or playlist and video links",
         "pause": "Pauses playback",
         "resume": "Resumes playback",
+        "toggle_pause/tp": "Toggles playback",
         "stop": "Empties the queue and stops playback",
         "queue/q [page]": "Displays the current and upcoming tracks; each page contains 5 tracks",
         "current/nowplaying": "Shows the currently playing track link",
         "loop": "Enables the queue's looping feature; after the queue finishes, it will start again with the track for which looping was first enabled",
         "unloop": "Disables the queue's looping feature",
+        "toggle_loop/tl": "Toggles the queue's looping feature",
         "skip": "Skips the current track",
         "clear": "Clears all upcoming tracks from the queue",
         "move (i) (f)": "Inserts the track at position (i) into position (f) in the queue",
@@ -25,6 +20,13 @@
         "restart": "Restarts the current track",
         "seek [pos]": "Jumps to the given position in the current track; can be 'hr:min:sec', 'min:sec', or 'sec'; defaults to 00:00",
         "shuffle": "Randomizes the order of upcoming tracks"
+    },
+    "general": {
+        "ping": "Displays the bot's latency",
+        "change_prefix (prefix)": "Changes the bot's command prefix for your guild",
+        "invite": "Shows the bot's invite link",
+        "vote": "Shows the bot's Top.gg vote link",
+        "info": "Sends importand links (support server, GitHub repo, etc.)"
     },
     "fun": {
         "roll [value]": "Rolls a die with the given number of sides; default 1d6; supports D&D dice syntax",

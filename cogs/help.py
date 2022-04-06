@@ -2,7 +2,7 @@
 import discord
 from discord.ext import commands
 import json
-from reactionmenu import ReactionMenu, Button, ButtonType
+from reactionmenu import ReactionMenu
 
 
 with open('data/commands.json', 'r') as f:
@@ -15,6 +15,7 @@ for section in command_dict.keys():
         title = f"{section[0].upper()}{section[1:]} Commands",
         description = '\n\n'.join([f"` {key} ` : {command_dict[section][key]}" for key in command_dict[section].keys()])
     )
+    embed.set_footer(text="(required) [optional]")
     embeds.append(embed)
 
 # Cog

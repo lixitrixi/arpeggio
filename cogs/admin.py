@@ -29,6 +29,7 @@ class Admin(commands.Cog):
                     raise Exception(f"{file} could not be loaded")
 
         await ctx.invoke(self.bot.get_command('reload_utils'))
+        await ctx.invoke(self.bot.get_command('reload_queues'))
         await ctx.message.add_reaction('✅')
 
     @commands.command()

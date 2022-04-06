@@ -1,10 +1,10 @@
 # Imports
 import discord
 from discord.ext import commands
+from discord.ext import menus
 import wavelink
 import builds
 import utils
-
 
 # Cog
 class Music(commands.Cog):
@@ -38,7 +38,7 @@ class Music(commands.Cog):
             if track:
                 await player.play(track)
     
-    def get_player(self, guild_id):
+    def get_player(self, guild_id) -> wavelink.Player:
         '''
         returns the player object for the given guild
         '''
@@ -162,15 +162,13 @@ class Music(commands.Cog):
 
         if len(player.queue.tracks) + len(tracks) > 100:
             await ctx.send(embed=utils.embed("There can be a maximum of 100 tracks in the queue!", color=(90, 160, 230), emoji='info'))
-    
+
     @commands.command(aliases=['q'])
     async def queue(self, ctx, page: int = 1):
         player = self.get_player(ctx.guild.id)
 
         if player.queue.is_empty():
             raise Exception("QueueEmpty")
-        
-        await ctx.send(embed=player.queue.embed(player.position, page=page))
     
     @commands.command()
     async def loop(self, ctx):
@@ -195,6 +193,16 @@ class Music(commands.Cog):
         player.queue.history = []
         await ctx.message.add_reaction('✅')
     
+    @commands.command(aliases=['tl'])
+    async def toggle_loop(self, ctx):
+        self.author_in_vc(ctx)
+        player = self.get_player(ctx.guild.id)
+
+        if player.queue.looping:
+            await ctx.invoke(self.unloop)
+        else:
+            await ctx.invoke(self.loop)
+    
     @commands.command()
     async def pause(self, ctx):
         self.author_in_vc(ctx)
@@ -211,6 +219,16 @@ class Music(commands.Cog):
         await player.set_pause(False)
         await ctx.message.add_reaction('▶')
     
+    @commands.command(aliases=['tp'])
+    async def toggle_pause(self, ctx):
+        self.author_in_vc(ctx)
+        player = self.get_player(ctx.guild.id)
+
+        if player.is_paused:
+            await ctx.invoke(self.resume)
+        else:
+            await ctx.invoke(self.pause)
+    
     @commands.command() # clear queue and history, stop player
     async def stop(self, ctx):
         self.author_in_vc(ctx)
@@ -221,7 +239,7 @@ class Music(commands.Cog):
         player.queue.looping = False
         await player.stop()
 
-        await ctx.message.add_reaction('⏹️')
+        await ctx.message.add_reaction('⏹')
     
     @commands.command()
     async def clear(self, ctx):
