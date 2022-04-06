@@ -22,14 +22,14 @@ bot.add_check(commands.guild_only())
 async def on_ready():
     print(f"Logged in as {bot.user.name} | {bot.user.id}")
 
-@bot.event
-async def on_message(msg):
-    cont = msg.content.split()
-    f = cont.pop(0)
-    f = f.lower()
-    msg.content = f + ' ' + ' '.join(cont)
+# @bot.event
+# async def on_message(msg):
+#     cont = msg.content.split()
+#     f = cont.pop(0)
+#     f = f.lower()
+#     msg.content = f + (' ' + ' '.join(cont) if cont else '')
 
-    await bot.process_commands(msg)
+#     await bot.process_commands(msg)
 
 @bot.command()
 async def reload_utils(ctx):
