@@ -7,8 +7,8 @@ import wavelink
 # import tools.utils as utils
 import sys
 sys.path.insert(0, '../arpeggio/tools/')
-import utils
 import builds
+import utils
 
 # Cog
 class Music(commands.Cog):
