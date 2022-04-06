@@ -2,7 +2,6 @@
     "music": {
         "join/j": "Joins your voice channel",
         "leave/l": "Leaves the voice channel",
-        "search/s (query)": "Searches a query on YouTube and sends back the top 5 results",
         "play/p (query)": "Searches and plays a track; accepts keywords or playlist and video links",
         "pause": "Pauses playback",
         "resume": "Resumes playback",

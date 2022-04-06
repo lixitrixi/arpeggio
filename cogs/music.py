@@ -6,48 +6,41 @@ import wavelink
 import builds
 import utils
 
+class Player(wavelink.Player):
+    def __init__(self):
+        self.queue = builds.Queue()
+
 # Cog
 class Music(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-
-        if not hasattr(bot, 'wavelink'): # add wavelink client
-            self.bot.wavelink = wavelink.Client(bot=self.bot)
-
         self.bot.loop.create_task(self.start_nodes())
     
     async def start_nodes(self):
         await self.bot.wait_until_ready()
-
-        node = await self.bot.wavelink.initiate_node(host='0.0.0.0',
-                                              port=2333,
-                                              rest_uri='http://0.0.0.0:2333',
-                                              password='youshallnotpass',
-                                              identifier='TEST',
-                                              region='us_central')
-        
-        node.set_hook(self.on_lavalink_event)
+        await wavelink.NodePool.create_node(bot=self.bot,
+                                            host='0.0.0.0',
+                                            port=2333,
+                                            password='youshallnotpass')
     
-    async def on_lavalink_event(self, event):
-        if isinstance(event, wavelink.events.TrackEnd):
-            player = event.player
-
-            track = player.queue.next()
-
-            if track:
-                await player.play(track)
+    @commands.Cog.listener()
+    async def on_wavelink_track_end(node: wavelink.Node):
+        print(f"Node {node.id} is ready!")
     
-    def get_player(self, guild_id) -> wavelink.Player:
-        '''
-        returns the player object for the given guild
-        '''
-        player = self.bot.wavelink.get_player(guild_id)
+    @commands.Cog.listener()
+    async def on_wavelink_node_ready(self, node: wavelink.Node):
+        """Event fired when a node has finished connecting."""
+        print(f'Node: <{node.identifier}> is ready!')
+    
+    @commands.Cog.listener()
+    async def on_wavelink_track_end(player, track, reason):
+        player = player
 
-        if not hasattr(player, 'queue'):
-            player.queue = builds.Queue()
+        track = player.queue.next()
 
-        return player
+        if track:
+            await player.play(track)
     
     async def get_tracks(self, query):
         '''
@@ -70,98 +63,89 @@ class Music(commands.Cog):
 
     # check if command author is in the bot's VC, and throw error if no
     def author_in_vc(self, ctx):
-        player = self.get_player(ctx.guild.id)
+        vc = ctx.guild.voice_client
         try: 
-            member_ids = [member.id for member in self.bot.get_channel(player.channel_id).members]
+            member_ids = [member.id for member in self.bot.get_channel(vc.channel_id).members]
         except AttributeError:
             raise Exception("NotInSameVoice")
         if not ctx.author.id in member_ids:
             raise Exception("NotInSameVoice")
     
-    # music commands
-    @commands.command(aliases=['s', 'ytsearch'])
-    async def search(self, ctx, *, query=None):
-        '''
-        searches a query on youtube and returns top 5 results
-        '''
-        if not query:
-            raise Exception("NoQuery")
+    # @commands.command(aliases=['join', 'j'])
+    # async def connect(self, ctx):
+    #     if not hasattr(ctx.author.voice, 'channel'):
+    #         raise Exception("NoChannel")
+    #     channel = ctx.author.voice.channel
 
-        await ctx.send(embed=utils.embed(f"Searching  ` {query} `", emoji='mag_right'))
+    #     if player.channel_id == channel.id:
+    #         raise Exception("AlreadyConnected")
+    #     elif player.channel_id and len(self.bot.get_channel(player.channel_id).members) > 1:
+    #         raise Exception("StealingBot")
+        
+    #     if not ctx.voice_client:
+    #         vc: wavelink.Player = await ctx.author.voice.channel.connect(cls=wavelink.Player)
+    #     else:
+    #         vc: wavelink.Player = ctx.voice_client
+        
+    #     await ctx.send(embed=utils.embed(f"Connecting to **{channel.name}**", emoji="satellite"))
+    #     player: wavelink.Player = await ctx.author.voice.channel.connect(cls=wavelink.Player)
 
-        tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
+    #     await player.set_pause(False)
+    #     await ctx.guild.change_voice_state(channel=channel, self_deaf=True) # you're welcome skye
 
-        if not tracks:
-            raise Exception("NoResults")
+    #     return player
 
-        results = utils.embed(
-            '\n\n'.join([f"**{i+1}.** [{str(track)}]({track.uri}) | {utils.format_time(track.length)}" for i, track in enumerate(tracks[0:5])])
-        )
-
-        await ctx.send(embed=results)
-    
     @commands.command(aliases=['join', 'j'])
-    async def connect(self, ctx):
+    async def connect(self, ctx: commands.Context):
         try:
-            channel = ctx.author.voice.channel
+            channel = channel or ctx.author.channel.voice
         except AttributeError:
-            raise Exception("NoChannel")
+            raise Exception('NoChannel')
 
-        player = self.get_player(ctx.guild.id)
-
-        if player.channel_id == channel.id:
-            raise Exception("AlreadyConnected")
-
-        elif player.channel_id and len(self.bot.get_channel(player.channel_id).members) > 1:
-            raise("StealingBot")
-
-        await ctx.send(embed=utils.embed(f"Connecting to **{channel.name}**", emoji="satellite"))
-        await player.connect(channel.id)
-        await player.set_pause(False)
-        await ctx.guild.change_voice_state(channel=channel, self_deaf=True) # you're welcome skye
+        vc: Player = await channel.connect(cls=Player())
+        return vc
     
     @commands.command(aliases=['leave', 'l'])
     async def disconnect(self, ctx):
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        if len(self.bot.get_channel(player.channel_id).members) > 1: # if bot is alone it's ok
+        if len(self.bot.get_channel(vc.channel_id).members) > 1: # if bot is alone it's ok
             self.author_in_vc(ctx)
 
-        await player.disconnect()
+        await vc.disconnect()
         await ctx.message.add_reaction('👋')
 
     @commands.command(aliases=['p'])
-    async def play(self, ctx, *, query=None):
+    async def play(self, ctx, *, query:str=None):
         if not query:
             raise Exception("NoQuery")
         
-        player = self.get_player(ctx.guild.id)
-
-        if not player.is_connected:
-            await ctx.invoke(self.connect)
+        vc = await ctx.invoke(self.connect)
 
         self.author_in_vc(ctx)
         
         await ctx.send(embed=utils.embed(f"Searching ` {query} `", emoji='mag_right'))
 
-        name, tracks = await self.get_tracks(query)
+        match query.split(':')[0].lower():
+            case "sc" | "soundcloud":
+                track = await wavelink.SoundCloudTrack.search(query=query)
+            case "sp" | "spotify":
+                ... # spotify implementation
+            case _:
+                track = await wavelink.YouTubeTrack.search(query=query, return_first=True)
 
-        if len(tracks) == 1:
-            name = f"[{str(tracks[0])}]({tracks[0].uri})"
-
-        if player.queue.is_empty():
-            await player.play(tracks[0])
-            await ctx.send(embed=utils.embed(f"Playing __{name}__", emoji="cd"))
-            await player.set_pause(False)
+        if vc.queue.is_empty():
+            await vc.play(track)
+            await ctx.send(embed=utils.embed(f"Playing __{track}__", emoji="cd"))
+            await vc.set_pause(False)
         else:
-            await ctx.send(embed=utils.embed(f"Added __{name}__ to the queue", emoji="pencil"))
+            await ctx.send(embed=utils.embed(f"Added __{track}__ to the queue", emoji="pencil"))
 
-        for track in tracks: # attribute author's mention string to each track
-            track.info['requester'] = ctx.author.mention
+        track.info['requester'] = ctx.author.mention
         
-        player.queue.add(tracks)
+        vc.queue.add(track)
 
-        if len(player.queue.tracks) + len(tracks) > 100:
+        if len(vc.queue.tracks) + len(track) > 100:
             await ctx.send(embed=utils.embed("There can be a maximum of 100 tracks in the queue!", color=(90, 160, 230), emoji='info'))
 
     @commands.command(aliases=['q'])
