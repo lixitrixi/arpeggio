@@ -332,4 +332,8 @@ class Music(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(Music(bot))
+    try:
+        bot.add_cog(Music(bot))
+    except Exception as ex:
+        print(ex)
+        print(ex.message)
