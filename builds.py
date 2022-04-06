@@ -1,9 +1,25 @@
 # Imports
 import discord
+# from discord.ext import menus
 import utils
 import random
 import math
 
+# class QueueMenu(menus.Menu):
+#     async def send_initial_message(self, ctx, channel, queue):
+#         return await channel.send(embed=queue)
+        
+#     @menus.button('\N{THUMBS UP SIGN}')
+#     async def on_skip(self, payload):
+#         await self.message.edit(content=f'Thanks {self.ctx.author}!')
+
+#     @menus.button('\N{THUMBS DOWN SIGN}')
+#     async def on_toggle_pause(self, payload):
+#         await self.message.edit(content=f"That's not nice {self.ctx.author}...")
+
+#     @menus.button('\N{BLACK SQUARE FOR STOP}\ufe0f')
+#     async def on_stop(self, payload):
+#         self.stop()
 
 # Queue class
 class Queue():
@@ -31,7 +47,8 @@ class Queue():
     
     def next(self):
         '''
-        pops the first track and returns the next; if queue ends and is looping, appends first track to history and returns the first track
+        pops the first track and returns the next;
+        if queue ends and is looping, appends first track to history and returns the first track
         '''
         if self.looping:
             self.history.append(self.tracks[0])
@@ -84,13 +101,13 @@ class Queue():
     def format_footer(self, page):
         final = []
         if self.looping:
-            final.append('Looping enabled')
+            final.append("Looping")
         if len(self.tracks) > 6:
             final.append(f"Page {page} / {math.ceil((len(self.tracks)-1)/5)}")
             final.append(f"+ {len(self.tracks) - 6} track{'s' if len(self.tracks) > 7 else ''}")
         return ' | '.join(final)
     
-    def embed(self, player_pos, page=1):
+    def embed(self, player, page=1):
         '''
         returns a Discord embed displaying the queue
         player_pos: the position of the player in the current song (milliseconds)
@@ -104,12 +121,12 @@ class Queue():
         )
 
         if current.is_stream: # Track | @mention
-            embed.add_field(name="Currently Streaming", 
+            embed.add_field(name=f"Currently Streaming{' (Paused)' if player.is_paused else ''}", 
                 value=f"[{str(current)}]({current.uri}) | {current.info['requester']}"
                 )
         else: # Track | time/total | @mention
-            embed.add_field(name="Currently Playing", 
-                value=f"[{str(current)}]({current.uri}) | {utils.format_time(player_pos)} / {utils.format_time(current.length)} | {current.info['requester']}"
+            embed.add_field(name=f"Currently Playing{' (Paused)' if player.is_paused else ''}", 
+                value=f"[{str(current)}]({current.uri}) | {utils.format_time(player.position)} / {utils.format_time(current.length)} | {current.info['requester']}"
                 )
         
         if len(self.tracks) > 1:
