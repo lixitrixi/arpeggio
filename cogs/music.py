@@ -126,13 +126,13 @@ class Music(commands.Cog):
         
         await ctx.send(embed=utils.embed(f"Searching ` {query} `", emoji='mag_right'))
 
-        match query.split(':')[0].lower():
-            case "sc" | "soundcloud":
-                track = await wavelink.SoundCloudTrack.search(query=query)
-            case "sp" | "spotify":
-                ... # spotify implementation
-            case _:
-                track = await wavelink.YouTubeTrack.search(query=query, return_first=True)
+        pre = query.split(':')[0].lower()
+        if pre in ["sc" , "soundcloud"]:
+            track = await wavelink.SoundCloudTrack.search(query=query)
+        elif pre in ["sp" | "spotify"]:
+            ... # spotify implementation
+        else:
+            track = await wavelink.YouTubeTrack.search(query=query, return_first=True)
 
         if vc.queue.is_empty():
             await vc.play(track)
@@ -307,11 +307,11 @@ class Music(commands.Cog):
     @commands.command()
     async def shuffle(self, ctx):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        if len(player.queue.tracks) < 3:
+        if vc.queue.len < 3:
             raise Exception("NotEnoughTracks")
-        player.queue.shuffle()
+        vc.queue.shuffle()
         await ctx.message.add_reaction('🔀')
 
 

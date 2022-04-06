@@ -45,6 +45,10 @@ class Queue():
             if len(self.tracks) > 100: break
             self.tracks.append(track)
     
+    @property
+    def len(self):
+        return len(self.tracks)
+    
     def next(self):
         '''
         pops the first track and returns the next;
