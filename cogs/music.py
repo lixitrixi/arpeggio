@@ -160,6 +160,8 @@ class Music(commands.Cog):
         
         player.queue.add(tracks)
 
+        print(player.queue.is_empty()) # debugging
+
         if len(player.queue.tracks) + len(tracks) > 100:
             await ctx.send(embed=utils.embed("There can be a maximum of 100 tracks in the queue!", color=(90, 160, 230), emoji='info'))
 
