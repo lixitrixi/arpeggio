@@ -3,10 +3,16 @@ import discord
 from discord.ext import commands
 # from discord.ext import menus
 import wavelink
-import sys
-sys.path.append('../arpeggio/')
-import builds
-import utils
+
+try:
+    import builds
+    import utils
+except Exception:
+    print('\n\n\n:((((((\n\n\n')
+# import sys
+# sys.path.append('../arpeggio/')
+# import builds
+# import utils
 
 # Cog
 class Music(commands.Cog):
