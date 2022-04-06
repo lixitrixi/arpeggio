@@ -322,4 +322,4 @@ def setup(bot):
         print(ex)
         print(ex.message)
     
-print('\ntest\n')
+    print('\ntest\n')
