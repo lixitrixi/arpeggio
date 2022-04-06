@@ -25,7 +25,7 @@ class Admin(commands.Cog):
                 try:
                     self.bot.load_extension(f'cogs.{file[:-3]}')
                 except Exception as ex:
-                    raise Exception(f"{file} could not be loaded:\n{ex.message}")
+                    raise Exception(f"{file} could not be loaded")
 
         await ctx.invoke(self.bot.get_command('reload_utils'))
         await ctx.invoke(self.bot.get_command('reload_queues'))
