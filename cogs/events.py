@@ -20,12 +20,6 @@ class Events(commands.Cog):
                     color=(90, 160, 230)
                     )
                 )
-        cont = msg.content.split()
-        f = cont.pop(0)
-        f = f.lower()
-        msg.content = f + (' ' + ' '.join(cont) if cont else '')
-
-        await self.bot.process_commands(msg)
 
     @commands.Cog.listener() # add new entry when joining a guild
     async def on_guild_join(self, guild):
