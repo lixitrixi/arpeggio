@@ -118,6 +118,7 @@ class Music(commands.Cog):
         await ctx.send(embed=utils.embed(f"Connecting to **{channel.name}**", emoji="satellite"))
         await player.connect(channel.id)
         await player.set_pause(False)
+        await ctx.guild.change_voice_state(channel=channel, self_deaf=True) # you're welcome skye
     
     @commands.command(aliases=['leave', 'l'])
     async def disconnect(self, ctx):
@@ -159,8 +160,6 @@ class Music(commands.Cog):
             track.info['requester'] = ctx.author.mention
         
         player.queue.add(tracks)
-
-        print(player.queue.is_empty()) # debugging
 
         if len(player.queue.tracks) + len(tracks) > 100:
             await ctx.send(embed=utils.embed("There can be a maximum of 100 tracks in the queue!", color=(90, 160, 230), emoji='info'))
