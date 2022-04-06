@@ -2,8 +2,6 @@
 import discord
 from discord.ext import commands
 import json
-import sys
-sys.path.insert(0, '../arpeggio/tools/')
 import utils
 
 # Cog

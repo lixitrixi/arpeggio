@@ -3,10 +3,6 @@ import discord
 from discord.ext import commands
 # from discord.ext import menus
 import wavelink
-# from ..tools.builds import Queue
-# import tools.utils as utils
-import sys
-sys.path.insert(0, '../arpeggio/tools/')
 import builds
 import utils
 
