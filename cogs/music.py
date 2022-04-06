@@ -3,6 +3,8 @@ import discord
 from discord.ext import commands
 # from discord.ext import menus
 import wavelink
+import sys
+sys.path.append('../arpeggio/')
 import builds
 import utils
 
