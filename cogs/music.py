@@ -120,7 +120,7 @@ class Music(commands.Cog):
         await ctx.send(embed=utils.embed(f"Connecting to **{channel.name}**", emoji="satellite"))
         await player.connect(channel.id)
         await player.set_pause(False)
-        await ctx.guild.change_voice_state(channel=channel, self_deaf=True) # you're welcome skye
+        # await ctx.guild.change_voice_state(channel=channel, self_deaf=True) # you're welcome skye
     
     @commands.command(aliases=['leave', 'l'])
     async def disconnect(self, ctx):

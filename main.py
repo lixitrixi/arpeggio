@@ -24,10 +24,10 @@ async def on_ready():
 
 @bot.event
 async def on_message(msg):
-    # cont = msg.content.split()
-    # f = cont.pop(0)
-    # f = f.lower()
-    # msg.content = f + ' ' + ' '.join(cont)
+    cont = msg.content.split()
+    f = cont.pop(0)
+    f = f.lower()
+    msg.content = f + ' ' + ' '.join(cont)
 
     await bot.process_commands(msg)
 
