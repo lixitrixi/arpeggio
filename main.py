@@ -3,10 +3,13 @@ import discord
 from discord.ext import commands
 import json
 import csv
-import utils
 import os
 import importlib
 
+import sys
+sys.path.insert(0, 'tools/')
+import utils
+import builds
 
 # get bot token from outside repo
 with open('../tokens.json', 'r') as f:

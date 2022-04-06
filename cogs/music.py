@@ -3,8 +3,12 @@ import discord
 from discord.ext import commands
 # from discord.ext import menus
 import wavelink
-import builds
+# from ..tools.builds import Queue
+# import tools.utils as utils
+import sys
+sys.path.insert(0, '../arpeggio/tools/')
 import utils
+import builds
 
 # Cog
 class Music(commands.Cog):
