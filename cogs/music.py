@@ -27,13 +27,9 @@ class Music(commands.Cog):
                                             password='youshallnotpass')
     
     @commands.Cog.listener()
-    async def on_wavelink_track_end(node: wavelink.Node):
-        print(f"Node {node.id} is ready!")
-    
-    @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
         """Event fired when a node has finished connecting."""
-        print(f'Node: <{node.identifier}> is ready!')
+        print(f'Node: {node.identifier} is ready!')
     
     @commands.Cog.listener()
     async def on_wavelink_track_end(player, track, reason):

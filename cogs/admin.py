@@ -6,8 +6,8 @@ import importlib
 import utils
 import builds
 import music
+import wavelink
 
-import traceback
 # Cog
 class Admin(commands.Cog):
 
@@ -72,10 +72,8 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def close_bot(self, ctx):
-        music = self.bot.get_cog('Music')
-
-        for guild in self.bot.guilds: # disconnect any instances currently in VC
-            vc: music.Player = ctx.voice_client
+        for guild in self.bot.guilds: # disconnect all player clients
+            vc: music.Player = guild.voice_client
             await vc.disconnect()
         
         await self.bot.close()
@@ -83,15 +81,11 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def reload_queues(self, ctx):
-        music = self.bot.get_cog('Music')
-
         importlib.reload(builds)
 
-        for guild in self.bot.guilds:
-            vc: music.Player = ctx.voice_client
-
-            if hasattr(music, 'queue'):
-                vc.queue = builds.Queue(vc.queue)
+        for player in wavelink.NodePool.get_node().players:
+            if hasattr(player, 'queue'):
+                player.queue = builds.Queue(player.queue)
 
         await ctx.message.add_reaction('✅')
 
@@ -100,12 +94,9 @@ class Admin(commands.Cog):
     async def guild_count(self, ctx):
         guild_count = len(self.bot.guilds)
 
-        music = self.bot.get_cog('Music')
-
         active_guilds = 0
-        for guild in self.bot.guilds:
-            vc: music.Player = ctx.voice_client
-            if not vc.queue.is_empty():
+        for player in wavelink.NodePool.get_node().players:
+            if not player.queue.is_empty():
                 active_guilds += 1
 
         await ctx.send(embed=utils.embed(
