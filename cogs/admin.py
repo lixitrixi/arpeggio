@@ -5,6 +5,7 @@ import os
 import importlib
 import utils
 import builds
+import music
 
 import traceback
 # Cog
@@ -74,8 +75,8 @@ class Admin(commands.Cog):
         music = self.bot.get_cog('Music')
 
         for guild in self.bot.guilds: # disconnect any instances currently in VC
-            player = music.get_player(guild.id)
-            await player.disconnect()
+            vc: music.Player = ctx.voice_client
+            await vc.disconnect()
         
         await self.bot.close()
     
@@ -87,10 +88,10 @@ class Admin(commands.Cog):
         importlib.reload(builds)
 
         for guild in self.bot.guilds:
-            player = music.get_player(guild.id)
+            vc: music.Player = ctx.voice_client
 
-            if hasattr(player, 'queue'):
-                player.queue = builds.Queue(player.queue)
+            if hasattr(music, 'queue'):
+                vc.queue = builds.Queue(vc.queue)
 
         await ctx.message.add_reaction('✅')
 
@@ -103,8 +104,8 @@ class Admin(commands.Cog):
 
         active_guilds = 0
         for guild in self.bot.guilds:
-            player = music.get_player(guild.id)
-            if not player.queue.is_empty():
+            vc: music.Player = ctx.voice_client
+            if not vc.queue.is_empty():
                 active_guilds += 1
 
         await ctx.send(embed=utils.embed(

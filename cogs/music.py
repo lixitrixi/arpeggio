@@ -153,9 +153,9 @@ class Music(commands.Cog):
 
     @commands.command(aliases=['q'])
     async def queue(self, ctx, page: int = 1):
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        if player.queue.is_empty():
+        if vc.queue.is_empty():
             raise Exception("QueueEmpty")
     
     @commands.command()
@@ -164,9 +164,9 @@ class Music(commands.Cog):
         enables the player's looping feature
         '''
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        player.queue.looping = True
+        vc.queue.looping = True
         await ctx.message.add_reaction('🔁')
     
     @commands.command()
@@ -175,18 +175,18 @@ class Music(commands.Cog):
         disables the player's looping
         '''
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        player.queue.looping = False
-        player.queue.history = []
+        vc.queue.looping = False
+        vc.queue.history = []
         await ctx.message.add_reaction('✅')
     
     @commands.command(aliases=['tl'])
     async def toggle_loop(self, ctx):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        if player.queue.looping:
+        if vc.queue.looping:
             await ctx.invoke(self.unloop)
         else:
             await ctx.invoke(self.loop)
@@ -194,25 +194,25 @@ class Music(commands.Cog):
     @commands.command()
     async def pause(self, ctx):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        await player.set_pause(True)
+        await vc.set_pause(True)
         await ctx.message.add_reaction('⏸')
 
     @commands.command(aliases=['res'])
     async def resume(self, ctx):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        await player.set_pause(False)
+        await vc.set_pause(False)
         await ctx.message.add_reaction('▶')
     
     @commands.command(aliases=['tp'])
     async def toggle_pause(self, ctx):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        if player.is_paused:
+        if vc.is_paused:
             await ctx.invoke(self.resume)
         else:
             await ctx.invoke(self.pause)
@@ -220,28 +220,28 @@ class Music(commands.Cog):
     @commands.command() # clear queue and history, stop player
     async def stop(self, ctx):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        player.queue.tracks = []
-        player.queue.history = []
-        player.queue.looping = False
-        await player.stop()
+        vc.queue.tracks = []
+        vc.queue.history = []
+        vc.queue.looping = False
+        await vc.stop()
 
         await ctx.message.add_reaction('⏹')
     
     @commands.command()
     async def clear(self, ctx):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        player.queue.clear()
+        vc.queue.clear()
         await ctx.message.add_reaction('✅')
     
     @commands.command(aliases=['nowplaying', 'now_playing'])
     async def current(self, ctx):
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        current = player.queue.current()
+        current = vc.queue.current()
 
         await ctx.send(embed=utils.embed(
             f"[{str(current)}]({current.uri})"
@@ -250,45 +250,45 @@ class Music(commands.Cog):
     @commands.command()
     async def seek(self, ctx, pos='0'):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        await player.seek(min(utils.parse_time(pos), player.queue.current().length)) # make sure position isn't past the length of the song
+        await vc.seek(min(utils.parse_time(pos), vc.queue.current().length)) # make sure position isn't past the length of the song
         await ctx.message.add_reaction('↔️')
     
     @commands.command()
     async def skip(self, ctx):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        if player.queue.is_empty():
+        if vc.queue.is_empty():
             raise Exception("QueueEmpty")
         
-        await player.stop()
+        await vc.stop()
         await ctx.message.add_reaction('⏩')
         
-        if len(player.queue.tracks) > 0:
-            next = player.queue.current()
+        if len(vc.queue.tracks) > 0:
+            next = vc.queue.current()
             await ctx.send(embed=utils.embed(f"Playing [{str(next)}]({next.uri})", emoji="cd"))
     
     @commands.command()
     async def restart(self, ctx):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        await player.seek(0)
-        player.set_pause(False)
+        await vc.seek(0)
+        vc.set_pause(False)
         await ctx.message.add_reaction('⏪')
     
     @commands.command()
     async def remove(self, ctx, i=-1):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
         if i == 0:
             raise Exception("TargetCurrentTrack")
 
         try:
-            player.queue.delete(int(i))
+            vc.queue.delete(int(i))
         except IndexError:
             raise Exception("IndexError")
         await ctx.message.add_reaction('✅')
@@ -296,13 +296,13 @@ class Music(commands.Cog):
     @commands.command()
     async def move(self, ctx, i:int, f:int):
         self.author_in_vc(ctx)
-        player = self.get_player(ctx.guild.id)
+        vc: Player = ctx.voice_client
 
-        if len(player.queue.tracks) < 3:
+        if len(vc.queue.tracks) < 3:
             raise Exception("NotEnoughTracks")
 
         try:
-            player.queue.move(i, f)
+            vc.queue.move(i, f)
         except IndexError:
             raise Exception("IndexError")
         await ctx.message.add_reaction('✅')
