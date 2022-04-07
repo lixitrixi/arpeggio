@@ -98,7 +98,7 @@ class Music(commands.Cog):
     @commands.command(aliases=['join', 'j'])
     async def connect(self, ctx: commands.Context):
         try:
-            channel = channel or ctx.author.channel.voice
+            channel = ctx.author.channel.voice
         except AttributeError:
             raise Exception('NoChannel')
 
@@ -321,5 +321,3 @@ def setup(bot):
     except Exception as ex:
         print(ex)
         print(ex.message)
-    
-    print('\ntest\n')
