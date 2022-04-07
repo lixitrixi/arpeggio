@@ -102,7 +102,10 @@ class Music(commands.Cog):
         except AttributeError:
             raise Exception('NoChannel')
 
-        vc: Player = await channel.connect(cls=Player())
+        if not ctx.voice_client:
+            vc: Player = await channel.connect(cls=Player)
+        else:
+            vc: Player = ctx.voice_client
         return vc
     
     @commands.command(aliases=['leave', 'l'])
