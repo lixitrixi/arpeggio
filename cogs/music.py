@@ -38,24 +38,24 @@ class Music(commands.Cog):
         if track:
             await player.play(track)
     
-    async def get_tracks(self, query):
-        '''
-        searches a query and returns name, track object(s)
-        can hand youtube playlists, in which case name will be the playlist name and multiple tracks will be returned
-        '''
-        if query.startswith('https://'): # if a specific link is given, load that instead of a ytsearch
-            tracks = await self.bot.wavelink.get_tracks(query)
+    # async def get_tracks(self, query):
+    #     '''
+    #     searches a query and returns name, track object(s)
+    #     can hand youtube playlists, in which case name will be the playlist name and multiple tracks will be returned
+    #     '''
+    #     if query.startswith('https://'): # if a specific link is given, load that instead of a ytsearch
+    #         tracks = await self.bot.wavelink.get_tracks(query)
         
-        else:
-            tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
+    #     else:
+    #         tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
 
-        if not tracks:
-            raise Exception("NoResults")
+    #     if not tracks:
+    #         raise Exception("NoResults")
         
-        if isinstance(tracks, wavelink.player.TrackPlaylist):
-            return tracks.data['playlistInfo']['name'], tracks.tracks # playlist name, playlist content
-        else:
-            return str(tracks[0]), [tracks[0]]
+    #     if isinstance(tracks, wavelink.player.TrackPlaylist):
+    #         return tracks.data['playlistInfo']['name'], tracks.tracks # playlist name, playlist content
+    #     else:
+    #         return str(tracks[0]), [tracks[0]]
 
     # check if command author is in the bot's VC, and throw error if no
     def author_in_vc(self, ctx):
@@ -106,7 +106,7 @@ class Music(commands.Cog):
     
     @commands.command(aliases=['leave', 'l'])
     async def disconnect(self, ctx):
-        vc: Player = ctx.voice_client
+        vc: wavelink.Player = ctx.voice_client
 
         if len(self.bot.get_channel(vc.channel_id).members) > 1: # if bot is alone it's ok
             self.author_in_vc(ctx)
