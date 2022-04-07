@@ -114,38 +114,49 @@ class Music(commands.Cog):
         await vc.disconnect()
         await ctx.message.add_reaction('👋')
 
-    @commands.command(aliases=['p'])
-    async def play(self, ctx, *, query:str=None):
-        if not query:
-            raise Exception("NoQuery")
+    # @commands.command(aliases=['p'])
+    # async def play(self, ctx, *, query:str=None):
+    #     if not query:
+    #         raise Exception("NoQuery")
         
-        vc = await ctx.invoke(self.connect)
+    #     vc = await ctx.invoke(self.connect)
 
-        self.author_in_vc(ctx)
+    #     self.author_in_vc(ctx)
         
-        await ctx.send(embed=utils.embed(f"Searching ` {query} `", emoji='mag_right'))
+    #     await ctx.send(embed=utils.embed(f"Searching ` {query} `", emoji='mag_right'))
 
-        pre = query.split(':')[0].lower()
-        if pre in ["sc" , "soundcloud"]:
-            track = await wavelink.SoundCloudTrack.search(query=query)
-        elif pre in ["sp" | "spotify"]:
-            ... # spotify implementation
+    #     pre = query.split(':')[0].lower()
+    #     if pre in ["sc" , "soundcloud"]:
+    #         track = await wavelink.SoundCloudTrack.search(query=query)
+    #     elif pre in ["sp" | "spotify"]:
+    #         ... # spotify implementation
+    #     else:
+    #         track = await wavelink.YouTubeTrack.search(query=query, return_first=True)
+
+    #     if vc.queue.is_empty():
+    #         await vc.play(track)
+    #         await ctx.send(embed=utils.embed(f"Playing __{track}__", emoji="cd"))
+    #         await vc.set_pause(False)
+    #     else:
+    #         await ctx.send(embed=utils.embed(f"Added __{track}__ to the queue", emoji="pencil"))
+
+    #     track.info['requester'] = ctx.author.mention
+        
+    #     vc.queue.add(track)
+
+    #     if len(vc.queue.tracks) + len(track) > 100:
+    #         await ctx.send(embed=utils.embed("There can be a maximum of 100 tracks in the queue!", color=(90, 160, 230), emoji='info'))
+
+    @commands.command()
+    async def play(self, ctx: commands.Context, *, search: wavelink.YouTubeTrack):
+        """Play a song with the given search query.
+        If not connected, connect to our voice channel.
+        """
+        if not ctx.voice_client:
+            vc: wavelink.Player = await ctx.author.voice.channel.connect(cls=wavelink.Player)
         else:
-            track = await wavelink.YouTubeTrack.search(query=query, return_first=True)
-
-        if vc.queue.is_empty():
-            await vc.play(track)
-            await ctx.send(embed=utils.embed(f"Playing __{track}__", emoji="cd"))
-            await vc.set_pause(False)
-        else:
-            await ctx.send(embed=utils.embed(f"Added __{track}__ to the queue", emoji="pencil"))
-
-        track.info['requester'] = ctx.author.mention
-        
-        vc.queue.add(track)
-
-        if len(vc.queue.tracks) + len(track) > 100:
-            await ctx.send(embed=utils.embed("There can be a maximum of 100 tracks in the queue!", color=(90, 160, 230), emoji='info'))
+            vc: wavelink.Player = ctx.voice_client
+        await vc.play(search)
 
     @commands.command(aliases=['q'])
     async def queue(self, ctx, page: int = 1):
