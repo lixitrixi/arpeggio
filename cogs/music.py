@@ -98,7 +98,7 @@ class Music(commands.Cog):
     @commands.command(aliases=['join', 'j'])
     async def connect(self, ctx: commands.Context):
         try:
-            channel = ctx.author.channel.voice
+            channel = ctx.author.voice.channel
         except AttributeError:
             raise Exception('NoChannel')
 
