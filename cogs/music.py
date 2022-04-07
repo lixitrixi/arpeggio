@@ -106,6 +106,7 @@ class Music(commands.Cog):
             vc: Player = await ctx.author.voice.channel.connect(cls=Player)
         else:
             vc: Player = ctx.voice_client
+        print('\nfoo\n')
         return vc
     
     @commands.command(aliases=['leave', 'l'])
