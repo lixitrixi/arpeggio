@@ -110,6 +110,8 @@ class Music(commands.Cog):
             vc: Player = await channel.connect(cls=Player())
         else:
             vc: Player = ctx.voice_client
+            if ctx.author.id not in [m.id for m in vc.channel.members]:
+                raise Exception("StealingBot")
         return vc
     
     @commands.command(aliases=['leave', 'l'])
