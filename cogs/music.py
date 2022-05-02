@@ -182,7 +182,7 @@ class Music(commands.Cog):
             await ctx.send(embed=utils.embed(f"Now playing [{track.title}]({track.uri})", emoji="cd"))
             await vc.set_pause(False)
         else:
-            await ctx.send(embed=utils.embed(f"Added **{partial.title}** to the queue", emoji="pencil"))
+            await ctx.send(embed=utils.embed(f"Added to the queue", emoji="pencil"))
 
         vc.queue.add([partial])
 
