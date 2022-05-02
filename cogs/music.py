@@ -195,7 +195,7 @@ class Music(commands.Cog):
         if vc.queue.is_empty():
             raise Exception("QueueEmpty")
 
-        await ctx.send(vc.queue.embed(vc, page))
+        await ctx.send(embed=vc.queue.embed(vc, page))
     
     @commands.command()
     async def loop(self, ctx):
