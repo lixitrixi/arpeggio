@@ -3,6 +3,8 @@ import discord
 from discord.ext import commands
 import os
 import importlib
+import sys
+sys.path.append('../arpeggio/')
 import builds
 import utils
 import music
