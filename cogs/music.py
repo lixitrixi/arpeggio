@@ -184,6 +184,8 @@ class Music(commands.Cog):
         else:
             await ctx.send(embed=utils.embed(f"Added [{track.title}]({track.uri}) to the queue", emoji="pencil"))
 
+        track.info['requester'] = ctx.author.mention
+
         vc.queue.add([track])
 
     @commands.command(aliases=['q'])
