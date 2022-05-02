@@ -113,6 +113,7 @@ class Music(commands.Cog):
             if len(vc.channel.members) > 1 and ctx.author.id not in [m.id for m in vc.channel.members]:
                 raise Exception("StealingBot")
             else:
+                await vc.disconnect()
                 vc: Player = await channel.connect(cls=Player())
         return vc
     
