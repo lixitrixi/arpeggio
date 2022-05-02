@@ -45,7 +45,7 @@ for file in os.listdir('cogs'): # load .py files in cogs folder as extensions
         try:
             bot.load_extension(f'cogs.{file[:-3]}')
         except Exception as ex:
-            print(f"Cog '{file[:-3]}' could not be loaded:\n{ex.with_traceback()}")
+            print(f"Cog '{file[:-3]}' could not be loaded:\n{ex}")
 
 if __name__ == "__main__":
     bot.run(TOKEN)
