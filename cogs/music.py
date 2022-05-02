@@ -162,9 +162,9 @@ class Music(commands.Cog):
         await ctx.send(embed=utils.embed(f"Searching ` {search} `", emoji='mag_right'))
 
         # process different track sources
-        search_prefix = search.split(':').lower()
+        search_prefix = search.split(':')[0].lower()
         if search_prefix=='sc':
-            partial = wavelink.PartialTrack(query=search, cls=wavelink.SoundCloudTrack)
+            partial = wavelink.PartialTrack(query=search.split(':')[1], cls=wavelink.SoundCloudTrack)
         elif search_prefix=='sp':
             raise "Spotify tracks are not supported yet"
         else:
