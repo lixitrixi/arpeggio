@@ -40,26 +40,6 @@ class Music(commands.Cog):
         if track:
             await player.play(track)
     
-    # async def get_tracks(self, query):
-    #     '''
-    #     searches a query and returns name, track object(s)
-    #     can hand youtube playlists, in which case name will be the playlist name and multiple tracks will be returned
-    #     '''
-    #     if query.startswith('https://'): # if a specific link is given, load that instead of a ytsearch
-    #         tracks = await self.bot.wavelink.get_tracks(query)
-        
-    #     else:
-    #         tracks = await self.bot.wavelink.get_tracks(f"ytsearch:{query}")
-
-    #     if not tracks:
-    #         raise Exception("NoResults")
-        
-    #     if isinstance(tracks, wavelink.player.TrackPlaylist):
-    #         return tracks.data['playlistInfo']['name'], tracks.tracks # playlist name, playlist content
-    #     else:
-    #         return str(tracks[0]), [tracks[0]]
-
-    # check if command author is in the bot's VC, and throw error if no
     def author_in_vc(self, ctx):
         vc: Player = ctx.voice_client
         try: 
@@ -69,30 +49,6 @@ class Music(commands.Cog):
         if not ctx.author.id in member_ids:
             raise Exception("NotInSameVoice")
     
-    # @commands.command(aliases=['join', 'j'])
-    # async def connect(self, ctx):
-    #     if not hasattr(ctx.author.voice, 'channel'):
-    #         raise Exception("NoChannel")
-    #     channel = ctx.author.voice.channel
-
-    #     if player.channel_id == channel.id:
-    #         raise Exception("AlreadyConnected")
-    #     elif player.channel_id and len(self.bot.get_channel(player.channel_id).members) > 1:
-    #         raise Exception("StealingBot")
-        
-    #     if not ctx.voice_client:
-    #         vc: wavelink.Player = await ctx.author.voice.channel.connect(cls=wavelink.Player)
-    #     else:
-    #         vc: wavelink.Player = ctx.voice_client
-        
-    #     await ctx.send(embed=utils.embed(f"Connecting to **{channel.name}**", emoji="satellite"))
-    #     player: wavelink.Player = await ctx.author.voice.channel.connect(cls=wavelink.Player)
-
-    #     await player.set_pause(False)
-    #     await ctx.guild.change_voice_state(channel=channel, self_deaf=True) # you're welcome skye
-
-    #     return player
-
     @commands.command()
     async def disconnect_all_players(self, ctx):
         for guild in self.bot.guilds: # disconnect all player clients
@@ -110,11 +66,12 @@ class Music(commands.Cog):
             vc: Player = await channel.connect(cls=Player())
         else:
             vc: Player = ctx.voice_client
+            if vc.channel.id == ctx.author.voice_channel.id:
+                raise Exception("AlreadyConnected")
             if len(vc.channel.members) > 1 and ctx.author.id not in [m.id for m in vc.channel.members]:
                 raise Exception("StealingBot")
-            else:
-                await vc.disconnect()
-                vc: Player = await channel.connect(cls=Player())
+            await vc.disconnect()
+            vc: Player = await channel.connect(cls=Player())
         return vc
     
     @commands.command(aliases=['leave', 'l'])
