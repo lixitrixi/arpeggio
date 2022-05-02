@@ -168,6 +168,7 @@ class Music(commands.Cog):
         # process different track sources
         await ctx.send('beep')
         search_prefix = search.split(':')[0].lower()
+        await ctx.send('boop')
         if search_prefix=='sc':
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on SoundCloud", emoji='mag_right'))
             await ctx.send('beep')
