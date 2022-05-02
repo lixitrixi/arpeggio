@@ -10,6 +10,7 @@ import utils
 
 class Player(wavelink.Player):
     def __init__(self):
+        super().__init__()
         self.queue = builds.Queue()
 
 # Cog

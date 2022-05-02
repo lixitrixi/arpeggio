@@ -25,7 +25,10 @@ async def on_ready():
 @bot.event
 async def on_message(msg):
     cont = msg.content.split()
-    f = cont.pop(0)
+    try:
+        f = cont.pop(0)
+    except Exception:
+        return
     f = f.lower()
     msg.content = f + (' ' + ' '.join(cont) if cont else '')
 
