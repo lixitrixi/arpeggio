@@ -176,17 +176,13 @@ class Music(commands.Cog):
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
             partial = wavelink.PartialTrack(query=search, cls=wavelink.YouTubeTrack)
 
-        await ctx.send('beep!')
-
         # add to queue or play
         if vc.queue.is_empty():
             track = await vc.play(partial)
             await ctx.send(embed=utils.embed(f"Now playing [{track.title}]({track.uri})", emoji="cd"))
             await vc.set_pause(False)
         else:
-            await ctx.send(embed=utils.embed(f"Added [{track.title}]({track.uri}) to the queue", emoji="pencil"))
-        
-        await ctx.send('beep!')
+            await ctx.send(embed=utils.embed(f"Added [{partial.title}]({partial.uri}) to the queue", emoji="pencil"))
 
         vc.queue.add([partial])
 
