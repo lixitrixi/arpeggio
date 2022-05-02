@@ -230,7 +230,7 @@ class Music(commands.Cog):
         else:
             await ctx.invoke(self.loop)
     
-    @commands.command()
+    @commands.command(aliases=['stop'])
     async def pause(self, ctx):
         self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -256,8 +256,8 @@ class Music(commands.Cog):
         else:
             await ctx.invoke(self.pause)
     
-    @commands.command() # clear queue and history, stop player
-    async def stop(self, ctx):
+    @commands.command() # clear queue and history, stop player, disconnect
+    async def kill(self, ctx):
         self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
@@ -265,6 +265,7 @@ class Music(commands.Cog):
         vc.queue.history = []
         vc.queue.looping = False
         await vc.stop()
+        await vc.disconnect()
 
         await ctx.message.add_reaction('⏹')
     
