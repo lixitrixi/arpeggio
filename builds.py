@@ -23,7 +23,7 @@ import math
 
 # Queue class
 class Queue():
-    def __init__(self, source=None):
+    def __init__(self, source=None, vc=None):
         '''
         creates a queue instance
         source (optional): pass an existing queue instance to copy
@@ -32,10 +32,12 @@ class Queue():
             self.tracks = source.tracks
             self.looping = source.looping
             self.history = source.history
+            self.vc = source.vc
         else:
             self.tracks = []
             self.looping = False
             self.history = [] # if looping, add these to the queue when the last track is done
+            self.vc = vc
     
     def add(self, tracks: list):
         '''
@@ -111,7 +113,7 @@ class Queue():
             final.append(f"+ {len(self.tracks) - 6} track{'s' if len(self.tracks) > 7 else ''}")
         return ' | '.join(final)
     
-    def embed(self, player, page=1):
+    def embed(self, page=1):
         '''
         returns a Discord embed displaying the queue
         player_pos: the position of the player in the current song (milliseconds)
@@ -124,23 +126,23 @@ class Queue():
         )
 
         if current.is_stream(): # Track | @mention
-            embed.add_field(name=f"Currently Streaming{' (Paused)' if player.is_paused() else ''}", 
+            embed.add_field(name=f"Currently Streaming{' (Paused)' if self.vc.is_paused() else ''}", 
                 value=f"[{str(current)}]({current.uri}) | {current.info['requester']}"
                 )
         else: # Track | time/total | @mention
-            embed.add_field(name=f"Currently Playing{' (Paused)' if player.is_paused() else ''}", 
-                value=f"[{str(current)}]({current.uri}) | {utils.format_time(player.position)} / {utils.format_time(current.length)} | {current.info['requester']}"
+            embed.add_field(name=f"Currently Playing{' (Paused)' if self.vc.is_paused() else ''}", 
+                value=f"[{str(current)}]({current.uri}) | {utils.format_time(self.vc.position)} / {utils.format_time(current.length)} | {current.info['requester']}"
                 )
         
         if len(self.tracks) > 1:
             up_next = []
 
             try:
-                self.tracks = self.tracks[(page-1)*5+1:min(page*5+1, len(self.tracks))]
+                next_tracks = self.tracks[(page-1)*5+1:min(page*5+1, len(self.tracks))]
             except Exception:
                 raise Exception("PageError")
 
-            for i, track in enumerate(self.tracks):
+            for i, track in enumerate(next_tracks):
                 i = i+(page-1)*5+1
                 if track.is_stream():
                     up_next.append(f"**{i}.** [{str(track)}]({track.uri}) | Stream | {track.info['requester']}")

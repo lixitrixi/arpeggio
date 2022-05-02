@@ -92,15 +92,8 @@ class Admin(commands.Cog):
     @commands.is_owner()
     async def guild_count(self, ctx):
         guild_count = len(self.bot.guilds)
-
-        active_guilds = 0
-        for player in wavelink.NodePool.get_node().players:
-            if not player.queue.is_empty():
-                active_guilds += 1
-
-        await ctx.send(embed=utils.embed(
-            f"Guild count: {guild_count}\nActively listening guilds: {active_guilds}"
-        ))
+        
+        await ctx.send(embed=utils.embed(f"Guild count: {guild_count}"))
             
 
 def setup(bot):

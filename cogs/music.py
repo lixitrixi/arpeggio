@@ -12,7 +12,7 @@ import utils
 class Player(wavelink.Player):
     def __init__(self):
         super().__init__()
-        self.queue = builds.Queue()
+        self.queue = builds.Queue(vc=self)
 
 # Cog
 class Music(commands.Cog):
