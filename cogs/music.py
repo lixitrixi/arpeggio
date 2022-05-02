@@ -116,7 +116,7 @@ class Music(commands.Cog):
     async def disconnect(self, ctx):
         vc: wavelink.Player = ctx.voice_client
 
-        if len(self.bot.get_channel(vc.channel_id).members) > 1: # if bot is alone it's ok
+        if len(self.bot.get_channel(vc.channel.id).members) > 1: # if bot is alone it's ok
             self.author_in_vc(ctx)
 
         await vc.disconnect()
@@ -193,7 +193,7 @@ class Music(commands.Cog):
         if vc.queue.is_empty():
             raise Exception("QueueEmpty")
 
-        await ctx.send(vc.embed(vc, page))
+        await ctx.send(vc.queue.embed(vc, page))
     
     @commands.command()
     async def loop(self, ctx):
