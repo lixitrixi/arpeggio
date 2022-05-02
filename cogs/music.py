@@ -173,10 +173,11 @@ class Music(commands.Cog):
         elif search_prefix=='sp':
             raise "Spotify tracks are not supported just yet"
         else:
+            await ctx.send('beep')
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
             track = await wavelink.YouTubeTrack.search(query=search, return_first=True)
+            await ctx.send('boop')
 
-        await ctx.send(track)
         if not track:
             raise "NoResults"
 
