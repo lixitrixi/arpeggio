@@ -11,9 +11,7 @@ import utils
 
 class Player(wavelink.Player):
     def __init__(self):
-        print('beep')
         super().__init__()
-        print('boop')
         self.queue = builds.Queue()
 
 # Cog
@@ -103,7 +101,7 @@ class Music(commands.Cog):
             raise Exception('NoChannel')
 
         if not ctx.voice_client:
-            vc: Player = await channel.connect(cls=Player)
+            vc: Player = await channel.connect(cls=Player())
         else:
             vc: Player = ctx.voice_client
         return vc
