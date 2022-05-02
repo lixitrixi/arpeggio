@@ -201,7 +201,7 @@ class Music(commands.Cog):
     async def queue(self, ctx, page: int = 1):
         vc: Player = ctx.voice_client
 
-        if vc.queue.is_empty():
+        if not vc or vc.queue.is_empty():
             raise Exception("QueueEmpty")
 
         await ctx.send(embed=vc.queue.embed(vc, page))

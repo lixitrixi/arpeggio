@@ -123,12 +123,12 @@ class Queue():
             colour=discord.Colour.from_rgb(90, 180, 90)
         )
 
-        if current.is_stream: # Track | @mention
-            embed.add_field(name=f"Currently Streaming{' (Paused)' if player.is_paused else ''}", 
+        if current.is_stream(): # Track | @mention
+            embed.add_field(name=f"Currently Streaming{' (Paused)' if player.is_paused() else ''}", 
                 value=f"[{str(current)}]({current.uri}) | {current.info['requester']}"
                 )
         else: # Track | time/total | @mention
-            embed.add_field(name=f"Currently Playing{' (Paused)' if player.is_paused else ''}", 
+            embed.add_field(name=f"Currently Playing{' (Paused)' if player.is_paused() else ''}", 
                 value=f"[{str(current)}]({current.uri}) | {utils.format_time(player.position)} / {utils.format_time(current.length)} | {current.info['requester']}"
                 )
         
@@ -142,7 +142,7 @@ class Queue():
 
             for i, track in enumerate(self.tracks):
                 i = i+(page-1)*5+1
-                if track.is_stream:
+                if track.is_stream():
                     up_next.append(f"**{i}.** [{str(track)}]({track.uri}) | Stream | {track.info['requester']}")
                 else:
                     up_next.append(f"**{i}.** [{str(track)}]({track.uri}) | {utils.format_time(track.length)} | {track.info['requester']}")
