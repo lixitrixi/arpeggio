@@ -276,7 +276,7 @@ class Music(commands.Cog):
         await vc.stop()
         await vc.disconnect()
 
-        await ctx.message.add_reaction('⏹')
+        await ctx.message.add_reaction('💀')
     
     @commands.command()
     async def clear(self, ctx):
