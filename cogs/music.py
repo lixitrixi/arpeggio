@@ -34,7 +34,7 @@ class Music(commands.Cog):
         print(f'Node: {node.identifier} is ready!')
     
     @commands.Cog.listener()
-    async def on_wavelink_track_end(player, track, reason):
+    async def on_wavelink_track_end(self, player, track, reason):
         track = player.queue.next()
 
         if track:
