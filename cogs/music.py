@@ -11,7 +11,9 @@ import utils
 
 class Player(wavelink.Player):
     def __init__(self):
+        print('beep')
         super().__init__()
+        print('boop')
         self.queue = builds.Queue()
 
 # Cog
