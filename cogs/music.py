@@ -178,7 +178,7 @@ class Music(commands.Cog):
         else:
             await ctx.send(embed=utils.embed(f"Added [{track.title}]({track.uri}) to the queue", emoji="pencil"))
         
-        vc.queue.add(partial)
+        vc.queue.add([partial])
 
     @commands.command(aliases=['q'])
     async def queue(self, ctx, page: int = 1):
