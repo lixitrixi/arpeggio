@@ -122,6 +122,9 @@ class Music(commands.Cog):
         """Play a song with the given search query.
         If not connected, connect to the user's voice channel.
         """
+        if not search:
+            raise Exception("NoQuery")
+
         if not ctx.voice_client:
             vc: Player = await ctx.invoke(self.connect)
         else:
@@ -130,7 +133,7 @@ class Music(commands.Cog):
         # process different track sources
         search_prefix = search.split(':')[0].lower()
         if search_prefix=='sc':
-            await ctx.send(embed=utils.embed(f"Searching ` {search} ` on SoundCloud", emoji='mag_right'))
+            await ctx.send(embed=utils.embed(f"Searching ` {search[2:]} ` on SoundCloud", emoji='mag_right'))
             tracks = await wavelink.SoundCloudTrack.search(query=search.split(':')[1])
             if not tracks:
                 raise Exception("NoResults")
