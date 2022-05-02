@@ -176,6 +176,9 @@ class Music(commands.Cog):
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
             track = await wavelink.YouTubeTrack.search(query=search, return_first=True)
 
+        if not track:
+            raise "NoResults"
+
         # add to queue or play
         if vc.queue.is_empty():
             await vc.play(track)
