@@ -158,10 +158,10 @@ class Music(commands.Cog):
     @commands.command(aliases=['p'])
     async def play(self, ctx: commands.Context, *, search):
         """Play a song with the given search query.
-        If not connected, connect to our voice channel.
+        If not connected, connect to the user's voice channel.
         """
         if not ctx.voice_client:
-            vc: Player = await ctx.author.voice.channel.connect(cls=Player)
+            vc: Player = await ctx.invoke(self.connect)
         else:
             vc: Player = ctx.voice_client
 
@@ -175,6 +175,8 @@ class Music(commands.Cog):
         else:
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
             partial = wavelink.PartialTrack(query=search, cls=wavelink.YouTubeTrack)
+
+        await ctx.send('beep!')
 
         # add to queue or play
         if vc.queue.is_empty():
