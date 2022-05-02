@@ -133,7 +133,7 @@ class Music(commands.Cog):
         # process different track sources
         search_prefix = search.split(':')[0].lower()
         if search_prefix=='sc':
-            await ctx.send(embed=utils.embed(f"Searching ` {search[2:]} ` on SoundCloud", emoji='mag_right'))
+            await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on SoundCloud", emoji='mag_right'))
             tracks = await wavelink.SoundCloudTrack.search(query=search.split(':')[1])
             if not tracks:
                 raise Exception("NoResults")
