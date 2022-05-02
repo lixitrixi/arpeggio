@@ -35,7 +35,7 @@ def embed(content: str, color=(90, 180, 90), emoji=''):
 
     return embed
 
-def format_time(ms):
+def format_time(sec):
     '''
     formats milliseconds into hr:min:sec
     '''
@@ -43,10 +43,10 @@ def format_time(ms):
         sec % 60
     )
     min = int(
-        (ms/(1000*60)) % 60
+        (sec/(60)) % 60
     )
     hr = int(
-        (ms/(1000*60*60)) % 60
+        (sec/(60*60)) % 60
     )
 
     if hr and hr < 10:
