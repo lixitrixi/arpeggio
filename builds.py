@@ -129,7 +129,7 @@ class Queue():
                 )
         else: # Track | time/total | @mention
             embed.add_field(name=f"Currently Playing{' (Paused)' if player.is_paused() else ''}", 
-                value=f"[{str(current)}]({current.uri}) | {utils.format_time(player.position())} / {utils.format_time(current.length)} | {current.info['requester']}"
+                value=f"[{str(current)}]({current.uri}) | {utils.format_time(player.position)} / {utils.format_time(current.length)} | {current.info['requester']}"
                 )
         
         if len(self.tracks) > 1:
