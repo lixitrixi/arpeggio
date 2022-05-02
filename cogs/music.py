@@ -93,6 +93,12 @@ class Music(commands.Cog):
 
     #     return player
 
+    @commands.command()
+    async def disconnect_all_players(self, ctx):
+        for guild in self.bot.guilds: # disconnect all player clients
+            vc: Player = guild.voice_client
+            await vc.disconnect()
+
     @commands.command(aliases=['join', 'j'])
     async def connect(self, ctx: commands.Context):
         try:

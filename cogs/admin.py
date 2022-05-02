@@ -9,7 +9,6 @@ import sys
 sys.path.append('../arpeggio/')
 import builds
 import utils
-import music
 
 # Cog
 class Admin(commands.Cog):
@@ -75,10 +74,7 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def close_bot(self, ctx):
-        for guild in self.bot.guilds: # disconnect all player clients
-            vc: music.Player = guild.voice_client
-            await vc.disconnect()
-        
+        await ctx.invoke(self.bot.get_command('disconnect_all_players'))
         await self.bot.close()
     
     @commands.command()
