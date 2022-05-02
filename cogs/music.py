@@ -169,14 +169,18 @@ class Music(commands.Cog):
         search_prefix = search.split(':')[0].lower()
         if search_prefix=='sc':
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on SoundCloud", emoji='mag_right'))
-            track = await wavelink.SoundCloudTrack.search(query=search.split(':')[1], return_first=True)
+            tracks = await wavelink.SoundCloudTrack.search(query=search.split(':')[1])
+            if not tracks:
+                raise "NoResults"
+            track = tracks[0]
         elif search_prefix=='sp':
             raise "Spotify tracks are not supported just yet"
         else:
-            await ctx.send('beep')
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
-            await ctx.send('boop')
-            track = await wavelink.YouTubeTrack.search(query=search, return_first=True)
+            tracks = await wavelink.YouTubeTrack.search(query=search)
+            if not tracks:
+                raise "NoResults"
+            track = tracks[0]
 
         if not track:
             raise "NoResults"
