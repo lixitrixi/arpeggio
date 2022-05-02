@@ -171,7 +171,7 @@ class Music(commands.Cog):
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on SoundCloud", emoji='mag_right'))
             tracks = await wavelink.SoundCloudTrack.search(query=search.split(':')[1])
             if not tracks:
-                raise "NoResults"
+                raise Exception("NoResults")
             track = tracks[0]
         elif search_prefix=='sp':
             raise "Spotify tracks are not supported just yet"
@@ -179,11 +179,11 @@ class Music(commands.Cog):
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
             tracks = await wavelink.YouTubeTrack.search(query=search)
             if not tracks:
-                raise "NoResults"
+                raise Exception("NoResults")
             track = tracks[0]
 
         if not track:
-            raise "NoResults"
+            raise Exception("NoResults")
 
         # add to queue or play
         if vc.queue.is_empty():
