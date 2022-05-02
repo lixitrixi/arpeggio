@@ -35,18 +35,15 @@ def embed(content: str, color=(90, 180, 90), emoji=''):
 
     return embed
 
-def format_time(ms):
+def format_time(sec):
     '''
-    formats milliseconds into hr:min:sec
+    formats seconds into hr:min:sec
     '''
-    sec = int(
-        (ms/1000) % 60
-    )
     min = int(
-        (ms/(1000*60)) % 60
+        (sec/60) % 60
     )
     hr = int(
-        (ms/(1000*60*60)) % 60
+        (sec/(60*60)) % 60
     )
 
     if hr and hr < 10:
@@ -62,6 +59,9 @@ def format_time(ms):
         return f"{min}:{sec}"
 
 def parse_time(time):
+    '''
+    parses hr:min:sec to milliseconds
+    '''
     time = time.split(':')
     try:
         time = list(map(int, time))
