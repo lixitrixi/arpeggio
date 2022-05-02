@@ -1,4 +1,5 @@
 # Imports
+from ast import alias
 import discord
 from discord.ext import commands
 # from discord.ext import menus
@@ -60,9 +61,9 @@ class Music(commands.Cog):
 
     # check if command author is in the bot's VC, and throw error if no
     def author_in_vc(self, ctx):
-        vc = ctx.guild.voice_client
+        vc: Player = ctx.voice_client
         try: 
-            member_ids = [member.id for member in self.bot.get_channel(vc.channel_id).members]
+            member_ids = [member.id for member in self.bot.get_channel(vc.channel.id).members]
         except AttributeError:
             raise Exception("NotInSameVoice")
         if not ctx.author.id in member_ids:
@@ -100,7 +101,7 @@ class Music(commands.Cog):
             raise Exception('NoChannel')
 
         if not ctx.voice_client:
-            vc: Player = await channel.connect(cls=Player())
+            vc: Player = await channel.connect(cls=Player)
         else:
             vc: Player = ctx.voice_client
         return vc
@@ -148,16 +149,34 @@ class Music(commands.Cog):
     #     if len(vc.queue.tracks) + len(track) > 100:
     #         await ctx.send(embed=utils.embed("There can be a maximum of 100 tracks in the queue!", color=(90, 160, 230), emoji='info'))
 
-    @commands.command()
-    async def play(self, ctx: commands.Context, *, search: wavelink.YouTubeTrack):
+    @commands.command(aliases=['p'])
+    async def play(self, ctx: commands.Context, *, search):
         """Play a song with the given search query.
         If not connected, connect to our voice channel.
         """
         if not ctx.voice_client:
-            vc: wavelink.Player = await ctx.author.voice.channel.connect(cls=wavelink.Player)
+            vc: Player = await ctx.author.voice.channel.connect(cls=Player)
         else:
-            vc: wavelink.Player = ctx.voice_client
-        await vc.play(search)
+            vc: Player = ctx.voice_client
+
+        await ctx.send(embed=utils.embed(f"Searching ` {search} `", emoji='mag_right'))
+
+        # process different track sources
+        search_prefix = search.split(':').lower()
+        if search_prefix=='sc':
+            partial = wavelink.PartialTrack(query=search, cls=wavelink.SoundCloudTrack)
+        elif search_prefix=='sp':
+            raise "Spotify tracks are not supported yet"
+        else:
+            partial = wavelink.PartialTrack(query=search, cls=wavelink.YouTubeTrack)
+
+        # add to queue or play
+        if vc.queue.is_empty():
+            track = await vc.play(partial)
+            await ctx.send(embed=utils.embed(f"Now playing [{track.title}]({track.uri})", emoji="cd"))
+        else:
+            vc.queue.add(partial)
+            await ctx.send(embed=utils.embed(f"Added [{track.title}]({track.uri}) to the queue", emoji="pencil"))
 
     @commands.command(aliases=['q'])
     async def queue(self, ctx, page: int = 1):
