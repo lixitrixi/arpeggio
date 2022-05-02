@@ -166,19 +166,15 @@ class Music(commands.Cog):
             vc: Player = ctx.voice_client
 
         # process different track sources
-        await ctx.send('beep')
         search_prefix = search.split(':')[0].lower()
-        await ctx.send('boop')
         if search_prefix=='sc':
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on SoundCloud", emoji='mag_right'))
-            await ctx.send('beep')
             track = await wavelink.SoundCloudTrack.search(query=search.split(':')[1], return_first=True)
-            await ctx.send('boop')
         elif search_prefix=='sp':
-            raise "Spotify tracks are not supported yet"
+            raise "Spotify tracks are not supported just yet"
         else:
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
-            track = await wavelink.SoundCloudTrack.search(query=search, return_first=True)
+            track = await wavelink.YouTubeTrack.search(query=search, return_first=True)
 
         # add to queue or play
         if vc.queue.is_empty():
