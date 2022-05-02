@@ -176,6 +176,7 @@ class Music(commands.Cog):
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
             track = await wavelink.YouTubeTrack.search(query=search, return_first=True)
 
+        await ctx.send(track)
         if not track:
             raise "NoResults"
 
