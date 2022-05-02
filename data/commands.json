@@ -2,7 +2,7 @@
     "music": {
         "join/j": "Joins your voice channel",
         "leave/l": "Leaves the voice channel",
-        "play/p (query)": "Searches and plays a track; accepts keywords or playlist and video links",
+        "play/p (query)": "Searches and plays a track; accepts keywords or links\nSearch SoundCloud: prefix your search with 'sc:' (ex: .play sc:song name)\n Search Spotify: prefix your search with 'sp:'",
         "pause": "Pauses playback",
         "resume": "Resumes playback",
         "toggle_pause/tp": "Toggles playback",
