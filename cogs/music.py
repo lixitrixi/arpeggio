@@ -169,22 +169,22 @@ class Music(commands.Cog):
         search_prefix = search.split(':')[0].lower()
         if search_prefix=='sc':
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on SoundCloud", emoji='mag_right'))
-            partial = wavelink.PartialTrack(query=search.split(':')[1], cls=wavelink.SoundCloudTrack)
+            track = await wavelink.SoundCloudTrack.search(query=search.split(':')[1], return_first=True)
         elif search_prefix=='sp':
             raise "Spotify tracks are not supported yet"
         else:
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
-            partial = wavelink.PartialTrack(query=search, cls=wavelink.YouTubeTrack)
+            track = await wavelink.SoundCloudTrack.search(query=search, return_first=True)
 
         # add to queue or play
         if vc.queue.is_empty():
-            track = await vc.play(partial)
+            await vc.play(track)
             await ctx.send(embed=utils.embed(f"Now playing [{track.title}]({track.uri})", emoji="cd"))
             await vc.set_pause(False)
         else:
-            await ctx.send(embed=utils.embed(f"Added to the queue", emoji="pencil"))
+            await ctx.send(embed=utils.embed(f"Added [{track.title}]({track.uri}) to the queue", emoji="pencil"))
 
-        vc.queue.add([partial])
+        vc.queue.add([track])
 
     @commands.command(aliases=['q'])
     async def queue(self, ctx, page: int = 1):
