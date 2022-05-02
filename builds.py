@@ -117,8 +117,7 @@ class Queue():
         player_pos: the position of the player in the current song (milliseconds)
         page: each page displays 5 tracks
         '''
-        tracks = self.tracks
-        current = tracks[0]
+        current = self.tracks[0]
 
         embed = discord.Embed(
             colour=discord.Colour.from_rgb(90, 180, 90)
@@ -137,11 +136,11 @@ class Queue():
             up_next = []
 
             try:
-                tracks = tracks[(page-1)*5+1:min(page*5+1, len(tracks))]
+                self.tracks = self.tracks[(page-1)*5+1:min(page*5+1, len(self.tracks))]
             except Exception:
                 raise Exception("PageError")
 
-            for i, track in enumerate(tracks):
+            for i, track in enumerate(self.tracks):
                 i = i+(page-1)*5+1
                 if track.is_stream:
                     up_next.append(f"**{i}.** [{str(track)}]({track.uri}) | Stream | {track.info['requester']}")
