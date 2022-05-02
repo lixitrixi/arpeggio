@@ -6,7 +6,7 @@
         "pause/stop": "Pauses playback",
         "resume": "Resumes playback",
         "toggle_pause/tp": "Toggles playback",
-        "kill": "Stops playback, empties the queue, and disconnects the bot from the voice channel",
+        "kill": "Stops playback, empties the queue and current track, and disconnects the bot from the voice channel",
         "queue/q [page]": "Displays the current and upcoming tracks; each page contains 5 tracks",
         "current/nowplaying": "Shows the currently playing track link",
         "loop": "Enables the queue's looping feature; after the queue finishes, it will start again with the track for which looping was first enabled",
