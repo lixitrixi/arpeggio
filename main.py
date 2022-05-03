@@ -4,12 +4,14 @@ from discord.ext import commands
 import json
 import os
 import importlib
+from cogs.music import SPOTIFY_SECRET
 import utils
 
 # get bot token from outside repo
 with open('../tokens.json', 'r') as f:
     tokens = json.load(f)
 TOKEN = tokens['arpeggio']
+SPOTIFY_SECRET = tokens['spotify']
 
 # initiation
 bot = commands.Bot(command_prefix=utils.get_prefix)

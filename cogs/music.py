@@ -15,7 +15,7 @@ class Player(wavelink.Player):
         super().__init__()
         self.queue = builds.Queue(vc=self)
 
-with open('../../tokens.json', 'r') as f:
+with open('../tokens.json', 'r') as f:
     tokens = json.load(f)
 SPOTIFY_SECRET = tokens['spotify']
 
