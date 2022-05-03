@@ -8,11 +8,16 @@ import sys
 sys.path.append('../arpeggio/')
 import builds
 import utils
+import json
 
 class Player(wavelink.Player):
     def __init__(self):
         super().__init__()
         self.queue = builds.Queue(vc=self)
+
+with open('../../tokens.json', 'r') as f:
+    tokens = json.load(f)
+SPOTIFY_SECRET = tokens['spotify']
 
 # Cog
 class Music(commands.Cog):
@@ -27,7 +32,7 @@ class Music(commands.Cog):
                                             host='0.0.0.0',
                                             port=2333,
                                             password='youshallnotpass',
-                                            spotify_client=spotify.SpotifyClient(client_id="b4729e0a7b144f44bfda14a3111cf016", client_secret="2b2403ab693446a2bf3ef5f7221b77c2"))
+                                            spotify_client=spotify.SpotifyClient(client_id="b4729e0a7b144f44bfda14a3111cf016", client_secret=SPOTIFY_SECRET))
     
     @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
@@ -74,7 +79,8 @@ class Music(commands.Cog):
             await vc.disconnect()
             vc: Player = await channel.connect(cls=Player())
 
-        
+        bot_member = ctx.guild.get_member(self.bot.user.id)
+        bot_member.edit(deafen=True)
 
         return vc
     
@@ -93,6 +99,8 @@ class Music(commands.Cog):
         """Play a song with the given search query.
         If not connected, connect to the user's voice channel.
         """
+        self.author_in_vc(ctx)
+        
         if not search:
             raise Exception("NoQuery")
 
