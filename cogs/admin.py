@@ -28,7 +28,7 @@ class Admin(commands.Cog):
                 try:
                     self.bot.load_extension(f'cogs.{file[:-3]}')
                 except Exception as ex:
-                    raise Exception(f"{file} could not be loaded")
+                    raise Exception(f"{file} could not be loaded:\n{ex}")
 
         await ctx.invoke(self.bot.get_command('reload_utils'))
         await ctx.invoke(self.bot.get_command('reload_queues'))
@@ -42,8 +42,9 @@ class Admin(commands.Cog):
                 try:
                     self.bot.load_extension(f'cogs.{file[:-3]}')
                     await ctx.message.add_reaction('✅')
-                except Exception as err:
+                except Exception as ex:
                     await ctx.message.add_reaction('❌')
+                    raise Exception(str(ex))
     
     @commands.command()
     @commands.is_owner()
