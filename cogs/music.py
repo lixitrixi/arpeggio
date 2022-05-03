@@ -80,7 +80,7 @@ class Music(commands.Cog):
             vc: Player = await channel.connect(cls=Player())
 
         bot_member = ctx.guild.get_member(self.bot.user.id)
-        bot_member.edit(deafen=True)
+        await bot_member.edit(deafen=True)
 
         return vc
     
