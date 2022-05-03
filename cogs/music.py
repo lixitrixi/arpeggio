@@ -101,7 +101,7 @@ class Music(commands.Cog):
         """
         self.author_in_vc(ctx)
 
-        playlist_name = None
+        playlist = None
         
         if not search:
             raise Exception("NoQuery")
@@ -137,7 +137,7 @@ class Music(commands.Cog):
                 raise Exception("NoResults")
                 
             if isinstance(tracks, wavelink.YouTubePlaylist):
-                playlist_info = tracks.name, tracks.uri
+                playlist = tracks.name, search
                 to_play = tracks.tracks[0]
                 tracks = tracks.tracks
             else:
@@ -149,11 +149,11 @@ class Music(commands.Cog):
             await vc.play(to_play)
             await ctx.send(embed=utils.embed(f"Now playing [{to_play.title}]({to_play.uri})", emoji="cd"))
             await vc.set_pause(False)
-        else:
-            if playlist_info:
-                await ctx.send(embed=utils.embed(f"Added [{playlist_info[0]}]({playlist_info[1]}) to the queue", emoji="pencil"))
-            else:
-                await ctx.send(embed=utils.embed(f"Added [{to_play.title}]({to_play.uri}) to the queue", emoji="pencil"))
+        elif not playlist:
+            await ctx.send(embed=utils.embed(f"Added [{to_play.title}]({to_play.uri}) to the queue", emoji="pencil"))
+        
+        if playlist:
+            await ctx.send(embed=utils.embed(f"Added [{playlist[0]}]({playlist[1]}) to the queue", emoji="pencil"))
 
         for track in tracks:
             track.info['requester'] = ctx.author.mention
