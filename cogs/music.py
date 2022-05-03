@@ -119,6 +119,11 @@ class Music(commands.Cog):
             track = tracks[0]
         elif search_prefix=='sp':
             await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on Spotify", emoji='mag_right'))
+
+            decoded = spotify.decode_url(search[3:])
+            if decoded is not None:
+                await ctx.send(f"{decoded['type']}, {decoded['id']}")
+
             tracks = await spotify.SpotifyTrack.search(query=search[3:])
             if not tracks:
                 raise Exception("NoResults")
