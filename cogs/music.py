@@ -74,10 +74,7 @@ class Music(commands.Cog):
             await vc.disconnect()
             vc: Player = await channel.connect(cls=Player())
 
-        client = ctx.guild.voice_client
-        if client:
-            channel = client.channel
-            await client.main_ws.voice_state(ctx.guild.id, channel.id, self_deafen=True)
+        
 
         return vc
     
