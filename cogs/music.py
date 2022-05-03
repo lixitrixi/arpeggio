@@ -100,6 +100,8 @@ class Music(commands.Cog):
         If not connected, connect to the user's voice channel.
         """
         self.author_in_vc(ctx)
+
+        playlist_name = None
         
         if not search:
             raise Exception("NoQuery")
@@ -116,7 +118,7 @@ class Music(commands.Cog):
             tracks = await wavelink.SoundCloudTrack.search(query=search[3:])
             if not tracks:
                 raise Exception("NoResults")
-            track = tracks[0]
+            to_play = tracks[0]
         elif search_prefix=='sp':
             await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on Spotify", emoji='mag_right'))
 
@@ -127,28 +129,36 @@ class Music(commands.Cog):
             tracks = await spotify.SpotifyTrack.search(query=search[3:])
             if not tracks:
                 raise Exception("NoResults")
-            track = tracks[0]
+            to_play = tracks[0]
         else:
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
             tracks = await wavelink.YouTubeTrack.search(query=search)
             if not tracks:
                 raise Exception("NoResults")
-            track = tracks[0]
-
-        if not track:
-            raise Exception("NoResults")
+                
+            if isinstance(tracks, wavelink.YouTubePlaylist):
+                playlist_info = tracks.name, tracks.uri
+                to_play = tracks.tracks[0]
+                tracks = tracks.tracks
+            else:
+                to_play = tracks[0]
+                tracks = [tracks[0]]
 
         # add to queue or play
         if vc.queue.is_empty():
-            await vc.play(track)
-            await ctx.send(embed=utils.embed(f"Now playing [{track.title}]({track.uri})", emoji="cd"))
+            await vc.play(to_play)
+            await ctx.send(embed=utils.embed(f"Now playing [{to_play.title}]({to_play.uri})", emoji="cd"))
             await vc.set_pause(False)
         else:
-            await ctx.send(embed=utils.embed(f"Added [{track.title}]({track.uri}) to the queue", emoji="pencil"))
+            if playlist_info:
+                await ctx.send(embed=utils.embed(f"Added [{playlist_info[0]}]({playlist_info[1]}) to the queue", emoji="pencil"))
+            else:
+                await ctx.send(embed=utils.embed(f"Added [{to_play.title}]({to_play.uri}) to the queue", emoji="pencil"))
 
-        track.info['requester'] = ctx.author.mention
+        for track in tracks:
+            track.info['requester'] = ctx.author.mention
 
-        vc.queue.add([track])
+        vc.queue.add(tracks)
 
     @commands.command(aliases=['q'])
     async def queue(self, ctx, page: int = 1):
