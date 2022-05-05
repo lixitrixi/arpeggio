@@ -99,17 +99,17 @@ class Music(commands.Cog):
         """Play a song with the given search query.
         If not connected, connect to the user's voice channel.
         """
+        if not ctx.voice_client:
+            vc: Player = await ctx.invoke(self.connect)
+        else:
+            vc: Player = ctx.voice_client
+        
         self.author_in_vc(ctx)
 
         playlist = None
         
         if not search:
             raise Exception("NoQuery")
-
-        if not ctx.voice_client:
-            vc: Player = await ctx.invoke(self.connect)
-        else:
-            vc: Player = ctx.voice_client
 
         # process different track sources
         search_prefix = search.split(':')[0].lower()
