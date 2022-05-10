@@ -76,7 +76,6 @@ class Admin(commands.Cog):
     @commands.is_owner()
     async def close_bot(self, ctx):
         await ctx.invoke(self.bot.get_command('disconnect_all_players'))
-        await self.bot.logout()
         await self.bot.close()
     
     @commands.command()
