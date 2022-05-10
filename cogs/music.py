@@ -132,7 +132,7 @@ class Music(commands.Cog):
                 to_play = tracks
                 tracks = [tracks]
             else:
-                tracks = await spotify.SpotifyTrack.search(query=decoded['id'], type=decoded[type], return_first=True) # albums or playlists
+                tracks = await spotify.SpotifyTrack.search(query=decoded['id'], type=decoded['type'], return_first=True) # albums or playlists
                 to_play = tracks[0]
 
         else:
