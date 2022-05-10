@@ -26,6 +26,17 @@ async def on_ready():
 
 @bot.event
 async def on_message(msg):
+    if msg.content == f"<@!{bot.user.id}>": # user mentioned bot; give prefix and help command
+            return await msg.channel.send(
+                embed=utils.embed(
+                    f"Hi! My command prefix for this server is `{utils.get_prefix(bot, msg)}`"
+                    f"\nUse `{utils.get_prefix(bot, msg)}help` for a list of commands",
+                    color=(90, 160, 230)
+                    )
+                )
+    elif msg.content.startswith(f"<@!{bot.user.id}>"):
+        msg.content = utils.get_prefix(bot, msg)+msg.content[msg.content.index('>')+1:]
+
     cont = msg.content.split()
     try:
         f = cont.pop(0)
