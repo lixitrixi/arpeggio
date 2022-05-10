@@ -123,7 +123,6 @@ class Music(commands.Cog):
             await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on Spotify", emoji='mag_right'))
 
             decoded = spotify.decode_url(search[3:])
-            await ctx.send(decoded['type'])
             if not decoded:
                 raise Exception("ParsingError")
             
@@ -131,12 +130,11 @@ class Music(commands.Cog):
             if not tracks:
                 raise Exception("NoResults")
             
-            if isinstance(tracks, wavelink.SpotifySearchType.playlist):
-                tracks = tracks.tracks
-                to_play = tracks[0]
-            else:
+            if str(decoded['type']) == 'SpotifySearchType.track':
                 to_play = tracks[0]
                 tracks = [tracks[0]]
+            else:
+                to_play = tracks[0]
         else:
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
             tracks = await wavelink.YouTubeTrack.search(query=search)
