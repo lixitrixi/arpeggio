@@ -128,11 +128,11 @@ class Music(commands.Cog):
                 raise Exception("ParsingError")
 
             if decoded['type'] == spotify.SpotifySearchType.track:
-                tracks = await spotify.SpotifyTrack.search(query=decoded[id], type=spotify.SpotifySearchType.track, return_first=True) # spotify tracks
+                tracks = await spotify.SpotifyTrack.search(query=decoded['id'], type=spotify.SpotifySearchType.track, return_first=True) # spotify tracks
                 to_play = tracks
                 tracks = [tracks]
             else:
-                tracks = await spotify.SpotifyTrack.search(query=decoded[id], type=decoded[type], return_first=True) # albums or playlists
+                tracks = await spotify.SpotifyTrack.search(query=decoded['id'], type=decoded[type], return_first=True) # albums or playlists
                 to_play = tracks[0]
 
         else:
