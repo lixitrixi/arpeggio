@@ -11,8 +11,8 @@ class Events(commands.Cog):
         self.bot = bot
 
     @commands.Cog.listener() # if bot is pinged, send prefix for that guild
-    async def on_msg(self, msg):
-        if msg.content == "<@732712093756948579>": # user mentioned bot; give prefix and help command
+    async def on_message(self, msg):
+        if msg.content == f"<@!{self.bot.user.id}>": # user mentioned bot; give prefix and help command
             await msg.channel.send(
                 embed=utils.embed(
                     f"Hi! My command prefix for this server is `{utils.get_prefix(self.bot, msg)}`"
