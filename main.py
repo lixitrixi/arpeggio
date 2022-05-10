@@ -35,8 +35,8 @@ async def on_message(msg):
                 )
             )
     elif msg.content.startswith(bot.user.mention):
-        msg.content.replace(bot.user.mention+' ', utils.get_prefix(bot, msg))
-        msg.content.replace(bot.user.mention, utils.get_prefix(bot, msg))
+        msg.content = msg.content.replace(bot.user.mention+' ', utils.get_prefix(bot, msg))
+        msg.content = msg.content.replace(bot.user.mention, utils.get_prefix(bot, msg))
 
     cont = msg.content.split()
     try:
