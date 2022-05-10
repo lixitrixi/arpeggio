@@ -13,7 +13,7 @@ import utils
 # Cog
 class Admin(commands.Cog):
 
-    def __init__(self, bot):
+    def __init__(self, bot:commands.Bot):
         self.bot = bot
 
     @commands.command()
@@ -76,6 +76,7 @@ class Admin(commands.Cog):
     @commands.is_owner()
     async def close_bot(self, ctx):
         await ctx.invoke(self.bot.get_command('disconnect_all_players'))
+        await self.bot.logout()
         await self.bot.close()
     
     @commands.command()
