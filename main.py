@@ -34,7 +34,7 @@ async def on_message(msg):
                     color=(90, 160, 230)
                 )
             )
-    elif msg.content.startswith(f"<@!{bot.user.id}>"):
+    elif msg.content.startswith(bot.user.mention):
         msg.content.replace(bot.user.mention+' ', utils.get_prefix(bot, msg))
         msg.content.replace(bot.user.mention, utils.get_prefix(bot, msg))
 
