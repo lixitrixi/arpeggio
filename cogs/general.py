@@ -52,7 +52,7 @@ class General(commands.Cog):
     @commands.command(aliases=['links', 'support'])
     async def info(self, ctx):
         await ctx.send(embed=utils.embed(
-            "[Support Server](https://discord.gg/fmPTwfw) | [Invite!](https://discord.com/api/oauth2/authorize?client_id=732712093756948579&permissions=11889728&scope=bot) | [Vote!](https://top.gg/bot/732712093756948579/vote) | [GitHub](https://github.com/lixitrixi/arpeggio)",
+            "[Support Server](https://discord.gg/fmPTwfw) | [Invite!](https://discord.com/api/oauth2/authorize?client_id=732712093756948579&permissions=11889728&scope=bot) | [Top.gg](https://top.gg/bot/732712093756948579) | [Vote!](https://top.gg/bot/732712093756948579/vote) | [GitHub](https://github.com/lixitrixi/arpeggio)",
             color=(90, 160, 230)
         ))
 
