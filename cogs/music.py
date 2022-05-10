@@ -114,33 +114,29 @@ class Music(commands.Cog):
         # process different track sources
         search_prefix = search.split(':')[0].lower()
         if search_prefix=='sc':
-            await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on SoundCloud", emoji='mag_right'))
+            await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on **SoundCloud**", emoji='mag_right'))
             tracks = await wavelink.SoundCloudTrack.search(query=search[3:])
             if not tracks:
                 raise Exception("NoResults")
             to_play = tracks[0]
+
         elif search_prefix=='sp':
-            await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on Spotify", emoji='mag_right'))
+            await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on **Spotify**", emoji='mag_right'))
 
             decoded = spotify.decode_url(search[3:])
             if not decoded:
                 raise Exception("ParsingError")
-            
-            await ctx.send('before')
-            tracks = await spotify.SpotifyTrack.search(query=search[3:], type=decoded['type'])
-            await ctx.send('after')
-            if not tracks:
-                raise Exception("NoResults")
-            
-            if str(decoded['type']) == 'SpotifySearchType.track':
-                await ctx.send('track')
-                to_play = tracks[0]
-                tracks = [tracks[0]]
+
+            if decoded['type'] == spotify.SpotifySearchType.track:
+                tracks = await spotify.SpotifyTrack.search(query=decoded[id], type=spotify.SpotifySearchType.track, return_first=True) # spotify tracks
+                to_play = tracks
+                tracks = [tracks]
             else:
-                await ctx.send('other')
+                tracks = await spotify.SpotifyTrack.search(query=decoded[id], type=decoded[type], return_first=True) # albums or playlists
                 to_play = tracks[0]
+
         else:
-            await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
+            await ctx.send(embed=utils.embed(f"Searching ` {search} ` on **YouTube**", emoji='mag_right'))
             tracks = await wavelink.YouTubeTrack.search(query=search)
             if not tracks:
                 raise Exception("NoResults")
