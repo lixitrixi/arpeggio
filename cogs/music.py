@@ -131,9 +131,11 @@ class Music(commands.Cog):
                 raise Exception("NoResults")
             
             if str(decoded['type']) == 'SpotifySearchType.track':
+                await ctx.send('track')
                 to_play = tracks[0]
                 tracks = [tracks[0]]
             else:
+                await ctx.send('other')
                 to_play = tracks[0]
         else:
             await ctx.send(embed=utils.embed(f"Searching ` {search} ` on YouTube", emoji='mag_right'))
