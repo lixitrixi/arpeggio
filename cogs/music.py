@@ -123,7 +123,7 @@ class Music(commands.Cog):
             await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on Spotify", emoji='mag_right'))
 
             decoded = spotify.decode_url(search[3:])
-            await ctx.send(decoded['type'], decoded['id'])
+            await ctx.send(decoded['type']+decoded['id'])
             if not decoded:
                 raise Exception("ParsingError")
             
