@@ -126,7 +126,9 @@ class Music(commands.Cog):
             if not decoded:
                 raise Exception("ParsingError")
             
+            await ctx.send('before')
             tracks = await spotify.SpotifyTrack.search(query=search[3:], type=decoded['type'])
+            await ctx.send('after')
             if not tracks:
                 raise Exception("NoResults")
             
