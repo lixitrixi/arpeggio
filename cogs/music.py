@@ -14,6 +14,7 @@ class Player(wavelink.Player):
     def __init__(self):
         super().__init__()
         self.queue = builds.Queue(vc=self)
+        self.request_channel = None
 
 with open('../tokens.json', 'r') as f:
     tokens = json.load(f)
@@ -45,6 +46,8 @@ class Music(commands.Cog):
 
         if track:
             await player.play(track)
+            if player.request_channel:
+                await player.request_channel.send(embed=utils.embed(f"Now playing [{track.title}]({track.uri})", emoji="cd"))
     
     def author_in_vc(self, ctx):
         vc: Player = ctx.voice_client
@@ -82,6 +85,8 @@ class Music(commands.Cog):
 
         bot_member = ctx.guild.get_member(self.bot.user.id)
         await bot_member.edit(deafen=True)
+
+        vc.request_channel = ctx.channel
 
         return vc
     
@@ -282,10 +287,6 @@ class Music(commands.Cog):
         
         await vc.stop()
         await ctx.message.add_reaction('⏩')
-        
-        if len(vc.queue.tracks) > 0:
-            next = vc.queue.current()
-            await ctx.send(embed=utils.embed(f"Playing [{str(next)}]({next.uri})", emoji="cd"))
     
     @commands.command()
     async def restart(self, ctx):
@@ -293,7 +294,7 @@ class Music(commands.Cog):
         vc: Player = ctx.voice_client
 
         await vc.seek(0)
-        vc.set_pause(False)
+        ctx.invoke(self.resume)
         await ctx.message.add_reaction('⏪')
     
     @commands.command()
