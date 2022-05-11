@@ -64,6 +64,11 @@ class Music(commands.Cog):
             vc: Player = guild.voice_client
             if vc:
                 await vc.disconnect()
+    
+    @commands.command()
+    async def music_channel(self, ctx:commands.Context):
+        vc: Player = ctx.voice_client
+        vc.request_channel = ctx.channel
 
     @commands.command(aliases=['join', 'j'])
     async def connect(self, ctx: commands.Context):
@@ -92,7 +97,7 @@ class Music(commands.Cog):
     
     @commands.command(aliases=['leave', 'l'])
     async def disconnect(self, ctx):
-        vc: wavelink.Player = ctx.voice_client
+        vc: Player = ctx.voice_client
 
         if len(self.bot.get_channel(vc.channel.id).members) > 1: # if bot is alone it's ok
             self.author_in_vc(ctx)
