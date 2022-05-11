@@ -4,7 +4,7 @@
     "NoChannel": "You must be in a voice channel to use this command!",
     "NoQuery": "Try that again with some keywords, a video link, or a playlist link!",
     "QueueEmpty": "The queue is empty!",
-    "StealingBot": "Stealing the music bot is not allowed!",
+    "StealingBot": "I'm already playing music in another channel!",
     "AlreadyConnected": "Already connected!",
     "ParsingError": "There was an error while parsing your input",
     "SpotifyParsingError": "Not a valid Spotify link or URL",
