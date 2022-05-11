@@ -13,7 +13,7 @@ embeds = []
 for section in command_dict.keys():
     embed = discord.Embed(
         title = f"{section[0].upper()}{section[1:]} Commands",
-        description = '\n\n'.join([f"` {key} ` : {command_dict[section][key]}" for key in command_dict[section].keys()])
+        description = '\n\n'.join([f"` {key} ` : {command_dict[section][key]}" for key in command_dict[section].keys()])
     )
     embed.set_footer(text="(required) [optional]")
     embeds.append(embed)
