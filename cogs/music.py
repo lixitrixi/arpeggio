@@ -69,6 +69,7 @@ class Music(commands.Cog):
     async def music_channel(self, ctx:commands.Context):
         vc: Player = ctx.voice_client
         vc.request_channel = ctx.channel
+        await ctx.message.add_reaction('✅')
 
     @commands.command(aliases=['join', 'j'])
     async def connect(self, ctx: commands.Context):
