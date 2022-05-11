@@ -122,11 +122,11 @@ class Music(commands.Cog):
             to_play = tracks[0]
 
         elif search_prefix=='sp':
-            await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on **Spotify**", emoji='mag_right'))
-
             decoded = spotify.decode_url(search[3:])
             if not decoded:
                 raise Exception("SpotifyParsingError")
+
+            await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on **Spotify**", emoji='mag_right'))
 
             if decoded['type'] == spotify.SpotifySearchType.track:
                 tracks = await spotify.SpotifyTrack.search(query=decoded['id'], type=spotify.SpotifySearchType.track, return_first=True) # spotify tracks
