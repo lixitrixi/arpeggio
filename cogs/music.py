@@ -126,7 +126,7 @@ class Music(commands.Cog):
 
             decoded = spotify.decode_url(search[3:])
             if not decoded:
-                raise Exception("ParsingError")
+                raise Exception("SpotifyParsingError")
 
             if decoded['type'] == spotify.SpotifySearchType.track:
                 tracks = await spotify.SpotifyTrack.search(query=decoded['id'], type=spotify.SpotifySearchType.track, return_first=True) # spotify tracks
