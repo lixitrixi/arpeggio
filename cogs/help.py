@@ -29,7 +29,7 @@ class Help(commands.Cog):
         help_menu = ReactionMenu(ctx, back_button='◀️', next_button='▶️', config=ReactionMenu.STATIC, show_page_director=False, navigation_speed=ReactionMenu.FAST)
 
         for embed in embeds:
-            embed.set_footer(text=f"(required) [optional] | This server's prefix is: {utils.get_prefix(self.bot, ctx.message)}")
+            embed.set_footer(text=f"(required) [optional]  |  This server's prefix is: {utils.get_prefix(self.bot, ctx.message)}")
             help_menu.add_page(embed)
         
         await help_menu.start()
