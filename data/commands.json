@@ -8,6 +8,7 @@
         "toggle_pause/tp": "Toggles playback",
         "stop": "Stops playback and deletes all upcoming tracks",
         "queue/q [page]": "Displays the current and upcoming tracks; each page contains 5 tracks",
+        "set_channel": "Sets a channel as the one upcoming tracks should be sent to",
         "current/nowplaying": "Shows the currently playing track link",
         "loop": "Enables the queue's looping feature; after the queue finishes, it will start again with the track for which looping was first enabled",
         "unloop": "Disables the queue's looping feature",

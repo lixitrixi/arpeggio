@@ -66,7 +66,7 @@ class Music(commands.Cog):
                 await vc.disconnect()
     
     @commands.command()
-    async def music_channel(self, ctx:commands.Context):
+    async def set_channel(self, ctx:commands.Context):
         vc: Player = ctx.voice_client
         vc.request_channel = ctx.channel
         await ctx.message.add_reaction('✅')
