@@ -70,7 +70,7 @@ class Music(commands.Cog):
         vc: Player = ctx.voice_client
         vc.request_channel = ctx.channel
         await ctx.message.add_reaction('✅')
-
+    
     @commands.command(aliases=['join', 'j'])
     async def connect(self, ctx: commands.Context):
         try:
@@ -82,9 +82,9 @@ class Music(commands.Cog):
             vc: Player = await channel.connect(cls=Player())
         else:
             vc: Player = ctx.voice_client
-            if vc.channel.id == ctx.author.voice.channel.id:
+            if self.bot in ctx.author.voice.channel.members:
                 raise Exception("AlreadyConnected")
-            if len(vc.channel.members) > 1 and ctx.author.id not in [m.id for m in vc.channel.members]:
+            if len(vc.channel.members) > 1 and ctx.author not in vc.channel.members:
                 raise Exception("StealingBot")
             await vc.disconnect()
             vc: Player = await channel.connect(cls=Player())
@@ -96,6 +96,7 @@ class Music(commands.Cog):
 
         return vc
     
+
     @commands.command(aliases=['leave', 'l'])
     async def disconnect(self, ctx):
         vc: Player = ctx.voice_client
