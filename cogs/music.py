@@ -241,7 +241,7 @@ class Music(commands.Cog):
         self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
-        if vc.is_paused:
+        if vc.is_paused():
             await ctx.invoke(self.resume)
         else:
             await ctx.invoke(self.pause)
