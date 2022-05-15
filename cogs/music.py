@@ -112,7 +112,7 @@ class Music(commands.Cog):
         """Play a song with the given search query.
         If not connected, connect to the user's voice channel.
         """
-        if not ctx.voice_client and vc.self.bot.user not in ctx.author.voice.channel.members:
+        if not ctx.voice_client and self.bot.user not in ctx.author.voice.channel.members:
             vc: Player = await ctx.invoke(self.connect)
         else:
             vc: Player = ctx.voice_client
