@@ -82,7 +82,7 @@ class Music(commands.Cog):
             vc: Player = await channel.connect(cls=Player())
         else:
             vc: Player = ctx.voice_client
-            if self.bot in ctx.author.voice.channel.members:
+            if self.bot.user in ctx.author.voice.channel.members:
                 raise Exception("AlreadyConnected")
             if len(vc.channel.members) > 1 and ctx.author not in vc.channel.members:
                 raise Exception("StealingBot")
