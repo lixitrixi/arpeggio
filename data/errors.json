@@ -7,7 +7,7 @@
     "StealingBot": "I'm already playing music in another channel!",
     "AlreadyConnected": "Already connected!",
     "ParsingError": "There was an error while parsing your input",
-    "SpotifyParsingError": "Not a valid Spotify link or URL",
+    "SpotifyParsingError": "Not a valid Spotify URL",
     "IndexError": "Given index does not exist!",
     "TargetCurrentTrack": "You cannot target the current track with this command!",
     "NotEnoughTracks": "There are not enough tracks in the queue to run this command",

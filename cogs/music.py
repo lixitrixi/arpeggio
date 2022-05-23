@@ -108,7 +108,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('👋')
 
     @commands.command(aliases=['p'])
-    async def play(self, ctx: commands.Context, *, search):
+    async def play(self, ctx: commands.Context, *, search:str):
         """Play a song with the given search query.
         If not connected, connect to the user's voice channel.
         """
@@ -133,7 +133,7 @@ class Music(commands.Cog):
                 raise Exception("NoResults")
             to_play = tracks[0]
 
-        elif search_prefix=='sp':
+        elif search.startswith("https://open.spotify.com/"):
             decoded = spotify.decode_url(search[3:])
             if not decoded:
                 raise Exception("SpotifyParsingError")
@@ -304,7 +304,7 @@ class Music(commands.Cog):
         ctx.invoke(self.resume)
         await ctx.message.add_reaction('⏪')
     
-    @commands.command()
+    @commands.command(aliases=['rm'])
     async def remove(self, ctx, i=-1):
         self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
