@@ -259,6 +259,14 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('⏹️')
     
     @commands.command()
+    async def kill(self, ctx):
+        self.author_in_vc(ctx)
+        vc: Player = ctx.voice_client
+
+        await ctx.invoke(self.stop)
+        await ctx.invoke(self.disconnect)
+    
+    @commands.command()
     async def clear(self, ctx):
         self.author_in_vc(ctx)
         vc: Player = ctx.voice_client

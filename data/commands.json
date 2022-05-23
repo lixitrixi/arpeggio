@@ -2,11 +2,12 @@
     "music": {
         "join/j": "Joins your voice channel",
         "leave/l": "Leaves the voice channel",
-        "play/p (query)": "Searches and plays a track; accepts keywords or links\nDefault source is YouTube\nTo search SoundCloud, prefix your search with 'sc:' (ex: `.play sc:song name`)\n For Spotify, simply search using the track, album, or playlist URL",
+        "play/p (query)": "Searches and plays a track; accepts keywords or links\nDefault source is YouTube\nTo search SoundCloud with keywords, prefix your search with 'sc:' (ex: `.play sc:song name`)\n For Spotify, simply search the track, album, or playlist URL",
         "pause": "Pauses playback",
         "resume": "Resumes playback",
         "toggle_pause/tp": "Toggles playback",
         "stop": "Stops playback and deletes all upcoming tracks",
+        "kill": "Stops playback, clears the queue, and leaves the voice channel",
         "queue/q [page]": "Displays the current and upcoming tracks; each page contains 5 tracks",
         "set_channel": "Sets a channel as the one upcoming tracks should be sent to",
         "current/nowplaying": "Shows the currently playing track link",
