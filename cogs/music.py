@@ -134,7 +134,7 @@ class Music(commands.Cog):
             to_play = tracks[0]
 
         elif search.startswith("https://open.spotify.com/"):
-            decoded = spotify.decode_url(search[3:])
+            decoded = spotify.decode_url(search)
             if not decoded:
                 raise Exception("SpotifyParsingError")
 
