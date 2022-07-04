@@ -138,7 +138,7 @@ class Music(commands.Cog):
             if not decoded:
                 raise Exception("SpotifyParsingError")
 
-            await ctx.send(embed=utils.embed(f"Searching ` {search[3:]} ` on **Spotify**", emoji='mag_right'))
+            await ctx.send(embed=utils.embed(f"Searching ` {search} ` on **Spotify**", emoji='mag_right'))
 
             if decoded['type'] == spotify.SpotifySearchType.track:
                 tracks = await spotify.SpotifyTrack.search(query=decoded['id'], type=spotify.SpotifySearchType.track, return_first=True) # spotify tracks
