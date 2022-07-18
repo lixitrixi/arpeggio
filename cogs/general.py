@@ -56,5 +56,9 @@ class General(commands.Cog):
             color=(90, 160, 230)
         ))
 
+    @commands.command()
+    async def didyou(self, ctx):
+        await ctx.send(":pizza:")
+
 def setup(bot):
     bot.add_cog(General(bot))
