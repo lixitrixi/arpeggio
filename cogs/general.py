@@ -55,10 +55,6 @@ class General(commands.Cog):
             "[Support Server](https://discord.gg/fmPTwfw) | [Invite!](https://discord.com/api/oauth2/authorize?client_id=732712093756948579&permissions=11889728&scope=bot) | [Top.gg](https://top.gg/bot/732712093756948579) | [Vote!](https://top.gg/bot/732712093756948579/vote) | [GitHub](https://github.com/lixitrixi/arpeggio)",
             color=(90, 160, 230)
         ))
-
-    @commands.command()
-    async def didyou(self, ctx):
-        await ctx.send(":pizza:")
-
+        
 def setup(bot):
     bot.add_cog(General(bot))
