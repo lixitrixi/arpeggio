@@ -292,7 +292,7 @@ class Music(commands.Cog):
         await vc.seek(min(utils.parse_time(pos), vc.queue.current().length)) # make sure position isn't past the length of the song
         await ctx.message.add_reaction('↔️')
     
-    @commands.command()
+    @commands.command(aliases=["next"])
     async def skip(self, ctx):
         self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
