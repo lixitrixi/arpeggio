@@ -54,7 +54,7 @@ class Music(commands.Cog):
     
     def author_in_vc(self, ctx):
         vc: Player = ctx.voice_client
-        if not player.channel: return
+        if not vc.channel: return
         try: 
             member_ids = [member.id for member in self.bot.get_channel(vc.channel.id).members]
         except AttributeError:
