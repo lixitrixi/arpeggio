@@ -42,8 +42,11 @@ class Music(commands.Cog):
     
     @commands.Cog.listener()
     async def on_wavelink_track_end(self, player, track, reason):
-        track = player.queue.next()
+        if not player.channel:
+            ctx.invoke(self.kill)
+            return
 
+        track = player.queue.next()
         if track:
             await player.play(track)
             if player.request_channel:
@@ -51,6 +54,7 @@ class Music(commands.Cog):
     
     def author_in_vc(self, ctx):
         vc: Player = ctx.voice_client
+        if not player.channel: return
         try: 
             member_ids = [member.id for member in self.bot.get_channel(vc.channel.id).members]
         except AttributeError:
