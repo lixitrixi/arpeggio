@@ -63,17 +63,17 @@ def format_time(sec):
 
 def parse_time(time):
     '''
-    parses hr:min:sec to milliseconds
+    parses hr:min:sec to seconds
     '''
     time = time.split(':')
     try:
         time = list(map(int, time))
         if len(time) == 3: # hr:min:sec
-            time = time[0]*(1000*60*60) + time[1]*(1000*60) + time[2]*(1000)
+            time = time[0]*(1*60*60) + time[1]*(1*60) + time[2]*(1)
         elif len(time) == 2: # min:sec
-            time = time[0]*(1000*60) + time[1]*(1000)
+            time = time[0]*(1*60) + time[1]*(1)
         elif len(time) == 3: # sec
-            time = time[0]*(1000)
+            time = time[0]*(1)
         else:
             raise Exception('ParsingError')
         
