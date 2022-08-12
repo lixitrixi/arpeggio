@@ -292,6 +292,7 @@ class Music(commands.Cog):
     async def seek(self, ctx, pos='0'):
         self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
+        await ctx.send(utils.parse_time(pos))
 
         await vc.seek(min(utils.parse_time(pos), vc.queue.current().length)) # make sure position isn't past the length of the song
         await ctx.message.add_reaction('↔️')
