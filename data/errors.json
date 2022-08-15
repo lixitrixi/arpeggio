@@ -1,6 +1,6 @@
 {
     "NotInSameVoice": "You must be in the same voice channel as the bot to use this command!",
-    "NoResults": "No results; check your query or contact our support server",
+    "NoResults": "No results; check your query or contact our [support server](https://discord.gg/fmPTwfw)",
     "NoChannel": "You must be in a voice channel to use this command!",
     "NoQuery": "Try that again with some keywords, a video link, or a playlist link!",
     "QueueEmpty": "The queue is empty!",
