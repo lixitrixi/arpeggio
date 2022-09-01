@@ -59,7 +59,8 @@ class General(commands.Cog):
     @commands.command(aliases=["blacklist"])
     @commands.has_permissions(administrator=True)
     async def blocklist(self, ctx, member):
-        await ctx.send(f"`{member}`")
+        mem_id = member[2:-1]
+        await ctx.send(mem_id)
 
         with open("../blacklist.json", 'r') as f:
             blacklists = json.load(f)
