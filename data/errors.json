@@ -1,5 +1,4 @@
 {
-    "NotInSameVoice": "You must be in the same voice channel as the bot to use this command!",
     "NoResults": "No results; check your query or contact our [support server](https://discord.gg/fmPTwfw)",
     "NoChannel": "You must be in a voice channel to use this command!",
     "NoQuery": "Try that again with some keywords, a video link, or a playlist link!",
@@ -11,5 +10,6 @@
     "IndexError": "Given index does not exist!",
     "TargetCurrentTrack": "You cannot target the current track with this command!",
     "NotEnoughTracks": "There are not enough tracks in the queue to run this command",
-    "PageError": "Specific page does not exist"
+    "PageError": "Specific page does not exist",
+    "Blacklisted": "You are not allowed to use that command on this server"
 }
