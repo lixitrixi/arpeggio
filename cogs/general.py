@@ -60,7 +60,6 @@ class General(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def blocklist(self, ctx, member):
         mem_id = member[2:-1]
-        await ctx.send(mem_id)
 
         with open("../blacklist.json", 'r') as f:
             blacklists = json.load(f)
@@ -68,6 +67,12 @@ class General(commands.Cog):
             ids = set(blacklists[ctx.guild.id])
         except KeyError:
             ids = set()
+
+        ids.add(mem_id)
+        blacklists[ctx.guild.id] = list(ids)
+
+        await ctx.message.add_reaction('✅')
+        
         
 def setup(bot):
     bot.add_cog(General(bot))
