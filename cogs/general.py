@@ -70,6 +70,9 @@ class General(commands.Cog):
 
         ids.add(mem_id)
         blacklists[ctx.guild.id] = list(ids)
+        
+        with open("../blacklist.json", 'w') as f:
+            json.dump(blacklists, f, indent=4)
 
         await ctx.message.add_reaction('✅')
         
