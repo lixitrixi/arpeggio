@@ -7,7 +7,7 @@
         "resume": "Resumes playback",
         "toggle_pause/tp": "Toggles playback",
         "clear": "Clears all upcoming tracks from the queue",
-        "stop": "Stops playback and deletes all upcoming tracks",
+        "stop": "Stops playback and clears the queue",
         "kill": "Stops playback, clears the queue, and leaves the voice channel",
         "queue/q [page]": "Displays the current and upcoming tracks; each page contains 5 tracks",
         "set_channel": "Sets a channel as the one upcoming tracks should be sent to",

@@ -1,6 +1,7 @@
 # Imports
 import discord
 from discord.ext import commands
+import asyncio
 # from discord.ext import menus
 import wavelink
 from wavelink.ext import spotify
@@ -35,33 +36,34 @@ class Music(commands.Cog):
                                             password='youshallnotpass',
                                             spotify_client=spotify.SpotifyClient(client_id="b4729e0a7b144f44bfda14a3111cf016", client_secret=SPOTIFY_SECRET))
     
+    async def player_timeout(self, player):
+        await asyncio.sleep(5*60)
+        if not player.queue.is_empty:
+            return
+        if len(player.channel.members) > 1: # channel has members, wait another 5 mins
+            return self.player_timeout(player)
+        await player.disconnect()
+        player.cleanup()
+    
     @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
         """Event fired when a node has finished connecting."""
         print(f'Node: {node.identifier} is ready!')
     
     @commands.Cog.listener()
-    async def on_wavelink_track_end(self, player, track, reason):
+    async def on_wavelink_track_end(self, player:wavelink.Player, track, reason):
         if not player.channel:
-            ctx.invoke(self.kill)
-            return
+            await player.stop()
+            player.cleanup()
 
-        track = player.queue.next()
-        if track:
-            await player.play(track)
+        nexttrack = player.queue.next()
+        if nexttrack:
+            await player.play(nexttrack)
             if player.request_channel:
-                await player.request_channel.send(embed=utils.embed(f"Now playing [{track.title}]({track.uri})", emoji="cd"))
-    
-    # def author_in_vc(self, ctx):
-    #     vc: Player = ctx.voice_client
-    #     if not vc.channel: return
-    #     try: 
-    #         member_ids = [member.id for member in self.bot.get_channel(vc.channel.id).members]
-    #     except AttributeError:
-    #         raise Exception("NotInSameVoice")
-    #     if not ctx.author.id in member_ids:
-    #         raise Exception("NotInSameVoice")
-    
+                await player.request_channel.send(embed=utils.embed(f"Now playing [{nexttrack.title}]({nexttrack.uri})", emoji="cd"))
+        else:
+            self.bot.loop.create_task(self.player_timeout(player)) # wait 5 mins before leaving if the bot isn't playing anything
+        
     @commands.command()
     async def disconnect_all_players(self, ctx):
         for guild in self.bot.guilds: # disconnect all player clients
@@ -108,10 +110,8 @@ class Music(commands.Cog):
     async def disconnect(self, ctx):
         vc: Player = ctx.voice_client
 
-        # if len(self.bot.get_channel(vc.channel.id).members) > 1: # if bot is alone it's ok
-        #     # self.author_in_vc(ctx)
-
         await vc.disconnect()
+        player.cleanup()
         await ctx.message.add_reaction('👋')
 
     @commands.command(aliases=['p'])
@@ -127,8 +127,6 @@ class Music(commands.Cog):
                 vc: Player = ctx.voice_client
         except Exception:
             pass
-        
-        # self.author_in_vc(ctx)
 
         playlist = None
         
@@ -204,7 +202,6 @@ class Music(commands.Cog):
         '''
         enables the player's looping feature
         '''
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         vc.queue.looping = True
@@ -216,7 +213,6 @@ class Music(commands.Cog):
         '''
         disables the player's looping
         '''
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         vc.queue.looping = False
@@ -226,7 +222,6 @@ class Music(commands.Cog):
     @commands.command(aliases=['tl'])
     @utils.whitelisted()
     async def toggle_loop(self, ctx):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         if vc.queue.looping:
@@ -237,7 +232,6 @@ class Music(commands.Cog):
     @commands.command()
     @utils.whitelisted()
     async def pause(self, ctx):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         await vc.set_pause(True)
@@ -246,7 +240,6 @@ class Music(commands.Cog):
     @commands.command(aliases=['res'])
     @utils.whitelisted()
     async def resume(self, ctx):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         await vc.set_pause(False)
@@ -255,7 +248,6 @@ class Music(commands.Cog):
     @commands.command(aliases=['tp'])
     @utils.whitelisted()
     async def toggle_pause(self, ctx):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         if vc.is_paused():
@@ -266,7 +258,6 @@ class Music(commands.Cog):
     @commands.command() # clear queue and history, stop player, disconnect
     @utils.whitelisted()
     async def stop(self, ctx):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         vc.queue.tracks = []
@@ -285,7 +276,6 @@ class Music(commands.Cog):
     @commands.command()
     @utils.whitelisted()
     async def clear(self, ctx):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         vc.queue.clear()
@@ -305,7 +295,6 @@ class Music(commands.Cog):
     @commands.command()
     @utils.whitelisted()
     async def seek(self, ctx, pos='0'):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         await vc.seek(
@@ -319,7 +308,6 @@ class Music(commands.Cog):
     @commands.command(aliases=["next"])
     @utils.whitelisted()
     async def skip(self, ctx):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         if vc.queue.is_empty():
@@ -331,7 +319,6 @@ class Music(commands.Cog):
     @commands.command()
     @utils.whitelisted()
     async def restart(self, ctx):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         await vc.seek(0)
@@ -341,7 +328,6 @@ class Music(commands.Cog):
     @commands.command(aliases=['rm'])
     @utils.whitelisted()
     async def remove(self, ctx, i=-1):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         if i == 0:
@@ -356,7 +342,6 @@ class Music(commands.Cog):
     @commands.command()
     @utils.whitelisted()
     async def move(self, ctx, i:int, f:int):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         if len(vc.queue.tracks) < 3:
@@ -371,7 +356,6 @@ class Music(commands.Cog):
     @commands.command()
     @utils.whitelisted()
     async def shuffle(self, ctx):
-        # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
 
         if vc.queue.len < 3:

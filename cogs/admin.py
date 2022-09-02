@@ -69,7 +69,7 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def clear_status(self, ctx):
-        await self.bot.change_presence(status=discord.Status.online, activity=None)
+        await self.bot.change_presence(status=discord.Status.online, activity=discord.Game("@Arpeggio help"))
         await ctx.message.add_reaction('✅')
     
     @commands.command()
