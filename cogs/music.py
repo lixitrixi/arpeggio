@@ -44,6 +44,7 @@ class Music(commands.Cog):
             return self.player_timeout(player)
         await player.disconnect()
         player.cleanup()
+        await player.request_channel.send(embed=utils.embed("I left the voice channel because of inactivity!", emoji='wave'))
     
     @commands.Cog.listener()
     async def on_wavelink_node_ready(self, node: wavelink.Node):
