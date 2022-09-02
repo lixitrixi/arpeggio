@@ -38,6 +38,8 @@ class Music(commands.Cog):
     
     async def player_timeout(self, player):
         await asyncio.sleep(3*60)
+        if not player.is_connected():
+            return
         if not player.queue.is_empty():
             return
         if len(player.channel.members) > 1: # channel has members, wait another 5 mins
