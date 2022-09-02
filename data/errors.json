@@ -11,5 +11,5 @@
     "TargetCurrentTrack": "You cannot target the current track with this command!",
     "NotEnoughTracks": "There are not enough tracks in the queue to run this command",
     "PageError": "Specific page does not exist",
-    "Blacklisted": "You are not allowed to use that command on this server"
+    "MemberBlocked": "You are not allowed to use that command on this server"
 }

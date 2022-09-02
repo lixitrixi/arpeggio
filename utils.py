@@ -8,7 +8,7 @@ def whitelisted(): # returns if a user is not blacklisted
         with open("../blacklist.json", 'r') as f:
             blacklist = json.load(f)[ctx.guild.id]
         if ctx.author.id in blacklist:
-            raise Exception("Blacklisted")
+            raise Exception("MemberBlocked")
         return True
     return commands.check(pred)
 # get the bot's prefix on a given guild

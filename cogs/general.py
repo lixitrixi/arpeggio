@@ -52,7 +52,11 @@ class General(commands.Cog):
     @commands.command(aliases=['links', 'support'])
     async def info(self, ctx):
         await ctx.send(embed=utils.embed(
-            "[Support Server](https://discord.gg/fmPTwfw) | [Invite!](https://discord.com/api/oauth2/authorize?client_id=732712093756948579&permissions=11889728&scope=bot) | [Top.gg](https://top.gg/bot/732712093756948579) | [Vote!](https://top.gg/bot/732712093756948579/vote) | [GitHub](https://github.com/lixitrixi/arpeggio)",
+            """[Support Server](https://discord.gg/fmPTwfw) | 
+            [Invite!](https://discord.com/api/oauth2/authorize?client_id=732712093756948579&permissions=11889728&scope=bot) | 
+            [Top.gg](https://top.gg/bot/732712093756948579) | 
+            [Vote!](https://top.gg/bot/732712093756948579/vote) | 
+            [GitHub](https://github.com/lixitrixi/arpeggio)""",
             color=(90, 160, 230)
         ))
     
@@ -63,13 +67,14 @@ class General(commands.Cog):
 
         with open("../blacklist.json", 'r') as f:
             blacklists = json.load(f)
+
         try:
-            ids = set(blacklists[ctx.guild.id])
+            ids = set(blacklists[str(ctx.guild.id)])
         except KeyError:
             ids = set()
 
         ids.add(mem_id)
-        blacklists[ctx.guild.id] = list(ids)
+        blacklists[str(ctx.guild.id)] = list(ids)
         
         with open("../blacklist.json", 'w') as f:
             json.dump(blacklists, f, indent=4)
@@ -83,13 +88,14 @@ class General(commands.Cog):
 
         with open("../blacklist.json", 'r') as f:
             blacklists = json.load(f)
+
         try:
-            ids = set(blacklists[ctx.guild.id])
+            ids = set(blacklists[str(ctx.guild.id)])
         except KeyError:
-            ids = set()
+            return await ctx.message.add_reaction('✅')
 
         ids.discard(mem_id)
-        blacklists[ctx.guild.id] = list(ids)
+        blacklists[str(ctx.guild.id)] = list(ids)
         
         with open("../blacklist.json", 'w') as f:
             json.dump(blacklists, f, indent=4)
