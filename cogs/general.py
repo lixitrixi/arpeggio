@@ -63,6 +63,8 @@ class General(commands.Cog):
     @commands.command(aliases=["blacklist"])
     @commands.has_permissions(mute_members=True)
     async def block(self, ctx, member):
+        if not (ctx.author.guild_permissions.administrator or ctx.author.guild_permissions.mute_members):
+            raise Exception("BlockPerms")
         mem_id = member[2:-1]
 
         with open("../blacklist.json", 'r') as f:
@@ -82,10 +84,11 @@ class General(commands.Cog):
         await ctx.message.add_reaction('✅')
     
     @commands.command(aliases=["whitelist"])
-    @commands.has_permissions(mute_members=True)
-    async def unblock(self, ctx, member):
+    async def unblock(self, ctx:commands.Context, member):
+        if not (ctx.author.guild_permissions.administrator or ctx.author.guild_permissions.mute_members):
+            raise Exception("BlockPerms")
         mem_id = member[2:-1]
-
+        
         with open("../blacklist.json", 'r') as f:
             blacklists = json.load(f)
 

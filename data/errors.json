@@ -11,5 +11,6 @@
     "TargetCurrentTrack": "You cannot target the current track with this command!",
     "NotEnoughTracks": "There are not enough tracks in the queue to run this command",
     "PageError": "Specific page does not exist",
-    "MemberBlocked": "You are not allowed to use that command on this server"
+    "MemberBlocked": "You are not allowed to use that command on this server",
+    "BlockPerms": "You must either be an Administrator or have the 'Mute Members' permission to block/unblock members!"
 }

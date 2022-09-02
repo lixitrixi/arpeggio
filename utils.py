@@ -7,7 +7,7 @@ def whitelisted(): # returns if a guild member is not blocked
     async def pred(ctx):
         with open("../blacklist.json", 'r') as f:
             bl = json.load(f)[str(ctx.guild.id)]
-        if ctx.author.id in bl:
+        if not ctx.author.guild_permissions.administrator and ctx.author.id in bl:
             raise Exception("MemberBlocked")
         return True
     return commands.check(pred)
