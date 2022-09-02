@@ -125,6 +125,8 @@ class Music(commands.Cog):
         """
         if not ctx.voice_client:
             vc: Player = await ctx.invoke(self.connect)
+        else:
+            vc: Player = ctx.voice_client
 
         playlist = None
         
