@@ -3,11 +3,11 @@ import discord
 from discord.ext import commands
 import json
 
-def whitelisted(): # returns if a user is not blacklisted
+def whitelisted(): # returns if a guild member is not blocked
     async def pred(ctx):
         with open("../blacklist.json", 'r') as f:
-            blacklist = json.load(f)[ctx.guild.id]
-        if ctx.author.id in blacklist:
+            bl = json.load(f)[str(ctx.guild.id)]
+        if ctx.author.id in bl:
             raise Exception("MemberBlocked")
         return True
     return commands.check(pred)
