@@ -28,8 +28,8 @@
         "invite": "Shows the bot's invite link",
         "vote": "Shows the bot's Top.gg vote link",
         "info/support": "Sends important links (support server, GitHub repo, etc.)",
-        "block/blacklist @member": "Blocks a server member from using most music commands",
-        "unblock/whitelist @member": "Unblocks a previously blocked member"
+        "block/blacklist (@member)": "Blocks a server member from using most music commands",
+        "unblock/whitelist (@member)": "Unblocks a previously blocked member"
     },
     "fun": {
         "roll [value]": "Rolls one or more die with a given number of sides; default 1d6; supports D&D dice syntax",
