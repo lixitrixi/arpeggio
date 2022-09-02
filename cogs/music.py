@@ -111,7 +111,7 @@ class Music(commands.Cog):
         vc: Player = ctx.voice_client
 
         await vc.disconnect()
-        player.cleanup()
+        vc.cleanup()
         await ctx.message.add_reaction('👋')
 
     @commands.command(aliases=['p'])
