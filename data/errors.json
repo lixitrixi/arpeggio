@@ -1,10 +1,10 @@
 {
     "NoResults": "No results; check your query or contact our [support server](https://discord.gg/fmPTwfw)",
-    "NoChannel": "You must be in a voice channel to use this command!",
+    "NoChannel": "You are not in a channel!",
     "NoQuery": "Try that again with some keywords, a video link, or a playlist link!",
     "QueueEmpty": "The queue is empty!",
-    "StealingBot": "I'm already playing music in another channel!",
-    "AlreadyConnected": "Already connected!",
+    "StealingBot": "I'm already playing music in another channel! Follow your command with 'force' to override this check",
+    "AlreadyConnected": "Already connected! If this is a bug, follow your command with 'force' to override this check",
     "ParsingError": "There was an error while parsing your input",
     "SpotifyParsingError": "Not a valid Spotify URL",
     "IndexError": "Given index does not exist!",

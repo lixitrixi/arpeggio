@@ -58,7 +58,7 @@ class General(commands.Cog):
     
     @commands.command(aliases=["blacklist"])
     @commands.has_permissions(administrator=True)
-    async def blocklist(self, ctx, member):
+    async def block(self, ctx, member):
         mem_id = member[2:-1]
 
         with open("../blacklist.json", 'r') as f:
@@ -75,7 +75,26 @@ class General(commands.Cog):
             json.dump(blacklists, f, indent=4)
 
         await ctx.message.add_reaction('✅')
+    
+    @commands.command(aliases=["whitelist"])
+    @commands.has_permissions(administrator=True)
+    async def unblock(self, ctx, member):
+        mem_id = member[2:-1]
+
+        with open("../blacklist.json", 'r') as f:
+            blacklists = json.load(f)
+        try:
+            ids = set(blacklists[ctx.guild.id])
+        except KeyError:
+            ids = set()
+
+        ids.discard(mem_id)
+        blacklists[ctx.guild.id] = list(ids)
         
+        with open("../blacklist.json", 'w') as f:
+            json.dump(blacklists, f, indent=4)
+
+        await ctx.message.add_reaction('✅')
         
 def setup(bot):
     bot.add_cog(General(bot))

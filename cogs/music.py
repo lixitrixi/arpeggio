@@ -70,13 +70,15 @@ class Music(commands.Cog):
                 await vc.disconnect()
     
     @commands.command()
+    @utils.whitelisted()
     async def set_channel(self, ctx:commands.Context):
         vc: Player = ctx.voice_client
         vc.request_channel = ctx.channel
         await ctx.message.add_reaction('✅')
     
     @commands.command(aliases=['join', 'j'])
-    async def connect(self, ctx: commands.Context):
+    @utils.whitelisted()
+    async def connect(self, ctx: commands.Context, force=None):
         try:
             channel = ctx.author.voice.channel
         except AttributeError:
@@ -86,9 +88,9 @@ class Music(commands.Cog):
             vc: Player = await channel.connect(cls=Player())
         else:
             vc: Player = ctx.voice_client
-            if self.bot.user in ctx.author.voice.channel.members:
+            if self.bot.user in ctx.author.voice.channel.members and force != "force":
                 raise Exception("AlreadyConnected")
-            if len(vc.channel.members) > 1 and ctx.author not in vc.channel.members:
+            if len(vc.channel.members) > 1 and ctx.author not in vc.channel.members and force != "force":
                 raise Exception("StealingBot")
             await vc.disconnect()
             vc: Player = await channel.connect(cls=Player())
@@ -102,6 +104,7 @@ class Music(commands.Cog):
     
 
     @commands.command(aliases=['leave', 'l'])
+    @utils.whitelisted()
     async def disconnect(self, ctx):
         vc: Player = ctx.voice_client
 
@@ -112,6 +115,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('👋')
 
     @commands.command(aliases=['p'])
+    @utils.whitelisted()
     async def play(self, ctx: commands.Context, *, search:str):
         """Play a song with the given search query.
         If not connected, connect to the user's voice channel.
@@ -195,6 +199,7 @@ class Music(commands.Cog):
         await ctx.send(embed=vc.queue.embed(page))
     
     @commands.command()
+    @utils.whitelisted()
     async def loop(self, ctx):
         '''
         enables the player's looping feature
@@ -206,6 +211,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('🔁')
     
     @commands.command()
+    @utils.whitelisted()
     async def unloop(self, ctx):
         '''
         disables the player's looping
@@ -218,6 +224,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('✅')
     
     @commands.command(aliases=['tl'])
+    @utils.whitelisted()
     async def toggle_loop(self, ctx):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -228,6 +235,7 @@ class Music(commands.Cog):
             await ctx.invoke(self.loop)
     
     @commands.command()
+    @utils.whitelisted()
     async def pause(self, ctx):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -236,6 +244,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('⏸')
 
     @commands.command(aliases=['res'])
+    @utils.whitelisted()
     async def resume(self, ctx):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -244,6 +253,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('▶')
     
     @commands.command(aliases=['tp'])
+    @utils.whitelisted()
     async def toggle_pause(self, ctx):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -254,6 +264,7 @@ class Music(commands.Cog):
             await ctx.invoke(self.pause)
     
     @commands.command() # clear queue and history, stop player, disconnect
+    @utils.whitelisted()
     async def stop(self, ctx):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -266,14 +277,13 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('⏹️')
     
     @commands.command()
+    @utils.whitelisted()
     async def kill(self, ctx):
-        # self.author_in_vc(ctx)
-        vc: Player = ctx.voice_client
-
         await ctx.invoke(self.stop)
         await ctx.invoke(self.disconnect)
     
     @commands.command()
+    @utils.whitelisted()
     async def clear(self, ctx):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -282,6 +292,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('✅')
     
     @commands.command(aliases=['nowplaying', 'now_playing'])
+    @utils.whitelisted()
     async def current(self, ctx):
         vc: Player = ctx.voice_client
 
@@ -292,6 +303,7 @@ class Music(commands.Cog):
         ))
     
     @commands.command()
+    @utils.whitelisted()
     async def seek(self, ctx, pos='0'):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -305,6 +317,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('↔️')
     
     @commands.command(aliases=["next"])
+    @utils.whitelisted()
     async def skip(self, ctx):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -316,6 +329,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('⏩')
     
     @commands.command()
+    @utils.whitelisted()
     async def restart(self, ctx):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -325,6 +339,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('⏪')
     
     @commands.command(aliases=['rm'])
+    @utils.whitelisted()
     async def remove(self, ctx, i=-1):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -339,6 +354,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('✅')
 
     @commands.command()
+    @utils.whitelisted()
     async def move(self, ctx, i:int, f:int):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
@@ -353,6 +369,7 @@ class Music(commands.Cog):
         await ctx.message.add_reaction('✅')
 
     @commands.command()
+    @utils.whitelisted()
     async def shuffle(self, ctx):
         # self.author_in_vc(ctx)
         vc: Player = ctx.voice_client
