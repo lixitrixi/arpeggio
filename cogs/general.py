@@ -61,7 +61,6 @@ class General(commands.Cog):
         ))
     
     @commands.command(aliases=["blacklist"])
-    @commands.has_permissions(mute_members=True)
     async def block(self, ctx, member):
         if not (ctx.author.guild_permissions.administrator or ctx.author.guild_permissions.mute_members):
             raise Exception("BlockPerms")
