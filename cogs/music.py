@@ -37,7 +37,7 @@ class Music(commands.Cog):
                                             spotify_client=spotify.SpotifyClient(client_id="b4729e0a7b144f44bfda14a3111cf016", client_secret=SPOTIFY_SECRET))
     
     async def player_timeout(self, player):
-        await asyncio.sleep(10)
+        await asyncio.sleep(3*60)
         if not player.queue.is_empty():
             return
         if len(player.channel.members) > 1: # channel has members, wait another 5 mins
