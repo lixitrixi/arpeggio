@@ -64,8 +64,6 @@ class Music(commands.Cog):
             await player.play(nexttrack)
             if player.request_channel:
                 await player.request_channel.send(embed=utils.embed(f"Now playing [{nexttrack.title}]({nexttrack.uri})", emoji="cd"))
-        else:
-            self.bot.loop.create_task(self.player_timeout(player)) # wait 5 mins before leaving if the bot isn't playing anything
         
     @commands.command()
     async def disconnect_all_players(self, ctx):
@@ -99,6 +97,8 @@ class Music(commands.Cog):
                 raise Exception("StealingBot")
             await vc.disconnect()
             vc: Player = await channel.connect(cls=Player())
+        
+        self.bot.loop.create_task(self.player_timeout(player))
 
         bot_member = ctx.guild.get_member(self.bot.user.id)
         await bot_member.edit(deafen=True)
