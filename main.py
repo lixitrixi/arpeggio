@@ -14,7 +14,7 @@ TOKEN = tokens['arpeggio']
 SPOTIFY_SECRET = tokens['spotify']
 
 # initiation
-intents = discord.Intents(messages=True, guilds=True)
+intents = discord.Intents(messages=True, message_content=True, guilds=True)
 bot = commands.Bot(command_prefix=utils.get_prefix, intents=intents)
 bot.remove_command('help') # we add our own later
 bot.add_check(commands.guild_only())
@@ -27,32 +27,32 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.Game("@Arpeggio help"))
 
 @bot.command(name="test")
-async def test(ctx):
-    await ctx.send("testing")
+async def test(ctx: commands.Context):
+    await ctx.send()
 
-@bot.event
-async def on_message(msg):
-    if msg.content == bot.user.mention: # user mentioned bot; give prefix and help command
-            return await msg.channel.send(
-                embed=utils.embed(
-                    f"Hi! My command prefix for this server is `{utils.get_prefix(bot, msg)}`"
-                    f"\nUse `{utils.get_prefix(bot, msg)}help` for a list of commands",
-                    color=(90, 160, 230)
-                )
-            )
-    elif msg.content.startswith(bot.user.mention):
-        msg.content = msg.content.replace(bot.user.mention+' ', utils.get_prefix(bot, msg))
-        msg.content = msg.content.replace(bot.user.mention, utils.get_prefix(bot, msg))
+# @bot.event
+# async def on_message(msg):
+#     if msg.content == bot.user.mention: # user mentioned bot; give prefix and help command
+#             return await msg.channel.send(
+#                 embed=utils.embed(
+#                     f"Hi! My command prefix for this server is `{utils.get_prefix(bot, msg)}`"
+#                     f"\nUse `{utils.get_prefix(bot, msg)}help` for a list of commands",
+#                     color=(90, 160, 230)
+#                 )
+#             )
+#     elif msg.content.startswith(bot.user.mention):
+#         msg.content = msg.content.replace(bot.user.mention+' ', utils.get_prefix(bot, msg))
+#         msg.content = msg.content.replace(bot.user.mention, utils.get_prefix(bot, msg))
 
-    cont = msg.content.split()
-    try:
-        f = cont.pop(0)
-    except Exception:
-        return
-    f = f.lower()
-    msg.content = f + (' ' + ' '.join(cont) if cont else '')
+#     cont = msg.content.split()
+#     try:
+#         f = cont.pop(0)
+#     except Exception:
+#         return
+#     f = f.lower()
+#     msg.content = f + (' ' + ' '.join(cont) if cont else '')
 
-    await bot.process_commands(msg)
+#     await bot.process_commands(msg)
 
 @bot.command()
 async def reload_utils(ctx):
