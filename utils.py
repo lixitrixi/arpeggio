@@ -14,6 +14,7 @@ def whitelisted(): # returns if a guild member is not blocked
 
 # get the bot's prefix on a given guild
 def get_prefix(bot, message):
+    return ""
     try:
         with open('../prefixes.json', 'r') as f:
             prefixes = json.load(f)
