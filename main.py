@@ -26,6 +26,10 @@ async def on_ready():
     print(f"Logged in as {bot.user.name} | {bot.user.id}")
     await bot.change_presence(status=discord.Status.online, activity=discord.Game("@Arpeggio help"))
 
+@bot.command()
+async def test(ctx):
+    await ctx.send("testing")
+
 @bot.event
 async def on_message(msg):
     if msg.content == bot.user.mention: # user mentioned bot; give prefix and help command
