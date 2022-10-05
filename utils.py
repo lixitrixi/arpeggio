@@ -3,23 +3,16 @@ import discord
 from discord.ext import commands
 import json
 
-def get_bl(guild_id):
-    try:
-        with open('../blacklists.json', 'r') as f:
-            blacklists = json.load(f)
-        bl = blacklists[str(guild_id)]
-        return bl
-    except KeyError:
-        return []
+
 
 def whitelisted(): # returns if a guild member is not blocked
     async def pred(ctx):
-        with open("../blacklist.json", 'r') as f:
-            bls = json.load(f)[str(ctx.guild.id)]
+        bls = get_bl(ctx.guild.id)
         if not ctx.author.guild_permissions.administrator and str(ctx.author.id) in bl:
             raise Exception("MemberBlocked")
         return True
     return commands.check(pred)
+
 # get the bot's prefix on a given guild
 def get_prefix(bot, message):
     try:
@@ -29,6 +22,15 @@ def get_prefix(bot, message):
         return prefix
     except Exception:
         return "." if bot.user.name == 'Arpeggio' else ','
+
+def get_bl(guild_id):
+    try:
+        with open('../blacklists.json', 'r') as f:
+            blacklists = json.load(f)
+        bl = blacklists[str(guild_id)]
+        return bl
+    except KeyError:
+        return []
 
 # embed template to share a line of feedback
 def embed(content: str, color=(90, 180, 90), emoji=''):
