@@ -26,7 +26,7 @@ async def on_ready():
     print(f"Logged in as {bot.user.name} | {bot.user.id}")
     await bot.change_presence(status=discord.Status.online, activity=discord.Game("@Arpeggio help"))
 
-@bot.command()
+@bot.command(name="test")
 async def test(ctx):
     await ctx.send("testing")
 
