@@ -3,10 +3,19 @@ import discord
 from discord.ext import commands
 import json
 
+def get_bl(guild_id):
+    try:
+        with open('../blacklists.json', 'r') as f:
+            blacklists = json.load(f)
+        bl = blacklists[str(guild_id)]
+        return bl
+    except KeyError:
+        return []
+
 def whitelisted(): # returns if a guild member is not blocked
     async def pred(ctx):
         with open("../blacklist.json", 'r') as f:
-            bl = json.load(f)[str(ctx.guild.id)]
+            bls = json.load(f)[str(ctx.guild.id)]
         if not ctx.author.guild_permissions.administrator and str(ctx.author.id) in bl:
             raise Exception("MemberBlocked")
         return True

@@ -14,11 +14,16 @@ class Events(commands.Cog):
     async def on_guild_join(self, guild):
         with open('../prefixes.json', 'r') as f:
             prefixes = json.load(f)
+        with open('../blacklist.json', 'r') as f:
+            blacklists = json.load(f)
 
         prefixes[str(guild.id)] = '.'
+        blacklists[str(guild.d)] = []
 
         with open('../prefixes.json', 'w') as f:
             json.dump(prefixes, f, indent=4)
+        with open('../blacklist.json', 'r') as f:
+            json.dump(blacklists, f, indent=4)
 
     @commands.Cog.listener() # delete entry when leaving a guild
     async def on_guild_remove(self, guild):
