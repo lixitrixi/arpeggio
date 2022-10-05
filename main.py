@@ -14,7 +14,7 @@ TOKEN = tokens['arpeggio']
 SPOTIFY_SECRET = tokens['spotify']
 
 # initiation
-bot = commands.Bot(command_prefix=utils.get_prefix)
+bot = commands.Bot(command_prefix=utils.get_prefix, intents=discord.Intents.default())
 bot.remove_command('help') # we add our own later
 bot.add_check(commands.guild_only())
 

@@ -4,7 +4,6 @@ from discord.ext import commands
 import json
 
 
-
 def whitelisted(): # returns if a guild member is not blocked
     async def pred(ctx):
         bls = get_bl(ctx.guild.id)
